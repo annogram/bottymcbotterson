@@ -24,7 +24,8 @@ dependencies:
 
 library:
   source-dirs: src
-
+  dependencies:
+  - discord-haskell
 executables:
   discord-bot-exe:
     main:                Main.hs
@@ -34,7 +35,6 @@ executables:
     - -rtsopts
     - -with-rtsopts=-N
     dependencies:
-    - discord-haskell
     - text
     - discord-bot
 
