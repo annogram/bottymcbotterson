@@ -1,3 +1,4 @@
+{-# Language OverloadedStrings #-}
 module Lib
     ( botstart
     ) where
@@ -21,4 +22,11 @@ botstart = do
 
 eventHandler :: DiscordHandle -> Event -> IO ()
 eventHandler handle event = case event of 
+    MessageCreate m -> botFilter m Nothing $ do
+        _ <- restCall handle $ R.CreateReaction (messageChannel m, messageId m) "eyes"
+        pure ()
     _ -> pure ()
+
+botFilter ::Applicative f => Message -> Maybe Bool -> f () -> f ()
+botFilter m (Just condition) f = when ((userIsBot $ messageAuthor m )&& condition) $ f
+botFilter m Nothing f = when ((userIsBot $ messageAuthor m )) $ f
