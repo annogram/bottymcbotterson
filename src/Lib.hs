@@ -28,5 +28,5 @@ eventHandler handle event = case event of
     _ -> pure ()
 
 botFilter ::Applicative f => Message -> Maybe Bool -> f () -> f ()
-botFilter m (Just condition) f = when ((userIsBot $ messageAuthor m )&& condition) $ f
+botFilter m (Just condition) f = when ((userIsBot $ messageAuthor m ) && condition) $ f
 botFilter m Nothing f = when ((userIsBot $ messageAuthor m )) $ f
