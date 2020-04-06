@@ -28,7 +28,7 @@ eventHandler :: DiscordHandle -> Event -> IO ()
 eventHandler handle event = case event of 
     MessageCreate m -> botFilter m Nothing $ do
         _ <- restCall handle $ R.CreateReaction (messageChannel m, messageId m) "eyes"
-        case  (messageText m) `M.lookup` eventPool of
+        case (T.toLower . messageText $ m) `M.lookup` eventPool of
             Nothing     -> pure ()
             Just (f)    -> f handle event
     _ -> pure ()
