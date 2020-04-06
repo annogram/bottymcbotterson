@@ -2,13 +2,15 @@
 module Lib
     ( botstart
     ) where
-import Control.Monad (when)
-import System.Environment (getEnv)
+import Control.Monad        (when)
+import System.Environment   (getEnv)
+import Events               (eventPool)
 import Discord
 import Discord.Types
 import qualified Discord.Requests as R
 import qualified Data.Text.IO as TIO
 import qualified Data.Text as T
+import qualified Data.Map.Lazy as M
 
 botstart :: IO ()
 botstart = do 
@@ -24,13 +26,15 @@ eventHandler :: DiscordHandle -> Event -> IO ()
 eventHandler handle event = case event of 
     MessageCreate m -> botFilter m Nothing $ do
         _ <- restCall handle $ R.CreateReaction (messageChannel m, messageId m) "eyes"
-        pure ()
+        case  (messageText m) `M.lookup` eventPool of
+            Nothing     -> pure ()
+            Just (f)    -> f handle event
     _ -> pure ()
 
 
 
 botCommandQuery :: Message -> Bool
-botCommandQuery m = (notElem (messageText m) $ defaultCommand ) && 
+botCommandQuery m = (notElem (messageText m) $ defaultCommand) && 
                         (not . userIsBot $ messageAuthor m)
     where defaultCommand = [ "/giphy"
                            , "/tenor"

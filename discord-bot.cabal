@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 40e13dabe78369560fca67d261bd5294dfbb90bc38e643c87474a05afe321d47
+-- hash: e6e8e84b61ff6d8d550ccac2646fccd3da06a03257d7eb63451214712c274570
 
 name:           discord-bot
 version:        0.1.0.0
@@ -28,12 +28,16 @@ source-repository head
 library
   exposed-modules:
       Lib
+      Events
+      PongEvent
   other-modules:
       Paths_discord_bot
   hs-source-dirs:
       src
+      src/commands
   build-depends:
       base >=4.7 && <5
+    , containers
     , discord-haskell
     , text
   default-language: Haskell2010

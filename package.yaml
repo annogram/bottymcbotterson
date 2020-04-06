@@ -23,10 +23,13 @@ dependencies:
 - base >= 4.7 && < 5
 
 library:
-  source-dirs: src
+  source-dirs: 
+  - src
+  - src/commands
   dependencies:
+  - text
   - discord-haskell
-  - text  
+  - containers
 executables:
   discord-bot-exe:
     main:                Main.hs
