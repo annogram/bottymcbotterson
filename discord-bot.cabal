@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: b12fbc05cbbc1bb00698f690f7562c994ea4601ba11a560d05337d68994ee0f4
+-- hash: 40e13dabe78369560fca67d261bd5294dfbb90bc38e643c87474a05afe321d47
 
 name:           discord-bot
 version:        0.1.0.0
@@ -35,6 +35,7 @@ library
   build-depends:
       base >=4.7 && <5
     , discord-haskell
+    , text
   default-language: Haskell2010
 
 executable discord-bot-exe
@@ -47,7 +48,6 @@ executable discord-bot-exe
   build-depends:
       base >=4.7 && <5
     , discord-bot
-    , text
   default-language: Haskell2010
 
 test-suite discord-bot-test
