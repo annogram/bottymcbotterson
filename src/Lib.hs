@@ -27,6 +27,21 @@ eventHandler handle event = case event of
         pure ()
     _ -> pure ()
 
+
+
+botCommandQuery :: Message -> Bool
+botCommandQuery m = (notElem (messageText m) $ defaultCommand ) && 
+                        (not . userIsBot $ messageAuthor m)
+    where defaultCommand = [ "/giphy"
+                           , "/tenor"
+                           , "/tts"
+                           , "/me"
+                           , "/tableflip"
+                           , "/unflip"
+                           , "/shrug"
+                           , "/spoiler"
+                           , "/nick" ]
+
 botFilter ::Applicative f => Message -> Maybe Bool -> f () -> f ()
-botFilter m (Just condition) f = when ((userIsBot $ messageAuthor m ) && condition) $ f
-botFilter m Nothing f = when ((userIsBot $ messageAuthor m )) $ f
+botFilter m (Just condition) f = when (botCommandQuery m && condition) $ f
+botFilter m Nothing f = when (botCommandQuery m) $ f
