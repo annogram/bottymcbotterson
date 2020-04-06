@@ -11,16 +11,14 @@ import qualified Data.Text as T
 
 botstart :: IO ()
 botstart = do 
-            token <- T.pack <$> (getEnv $ "DISCORD_CLIENT_SECRET")
+            putStrLn "Starting bot..."
+            token <- T.pack <$> getEnv "DISCORD_CLIENT_SECRET"
             userFacing <- runDiscord $ def 
                             { discordToken = token
                             , discordOnEvent = eventHandler
-                            , discordOnStart = handleStart }
+                            , discordOnStart = \handle -> putStrLn "...Bot started" }
             TIO.putStrLn userFacing
 
 eventHandler :: DiscordHandle -> Event -> IO ()
 eventHandler handle event = case event of 
     _ -> pure ()
-
-handleStart :: DiscordHandle -> IO ()
-handleStart handle = putStrLn "Bot started"
