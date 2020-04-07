@@ -5,6 +5,7 @@ module Lib
 import Control.Monad        (when)
 import System.Environment   (getEnv)
 import Events               (eventPool)
+import Data.Monoid          
 import Discord
 import Discord.Types
 import qualified Discord.Requests as R
@@ -30,6 +31,7 @@ eventHandler handle event = case event of
         case (T.toLower . messageText $ m) `M.lookup` eventPool of
             Nothing     -> pure ()
             Just (f)    -> do
+                            putStrLn $ "Event from user: " <> T.unpack (userName . messageAuthor $ m)
                             seen handle m
                             f handle event
     _ -> pure ()
