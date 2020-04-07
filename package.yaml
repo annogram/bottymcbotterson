@@ -30,6 +30,7 @@ library:
   - text
   - discord-haskell
   - containers
+  - wreq
 executables:
   discord-bot-exe:
     main:                Main.hs

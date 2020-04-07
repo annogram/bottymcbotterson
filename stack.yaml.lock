@@ -19,6 +19,13 @@ packages:
   original:
     hackage: containers-0.6.2.1
 - completed:
+    hackage: wreq-0.5.3.2@sha256:eb1d848e983a1d1b8960c28840b55e56d8b3d760e9d014b5d9d018b13439e63f,5570
+    pantry-tree:
+      size: 2423
+      sha256: 30d7ad14313cbb3b2efa18665c50853b71941253ce6d182e30a1c11e35c01141
+  original:
+    hackage: wreq-0.5.3.2
+- completed:
     hackage: emoji-0.1.0.2@sha256:d995572a5c7dcd28f98eb15c6e387a7b3bda1ac2477ab0d9dba8580d5d7b161f,1273
     pantry-tree:
       size: 437
