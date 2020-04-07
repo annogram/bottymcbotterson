@@ -27,11 +27,17 @@ botstart = do
 eventHandler :: DiscordHandle -> Event -> IO ()
 eventHandler handle event = case event of 
     MessageCreate m -> botFilter m Nothing $ do
-        _ <- restCall handle $ R.CreateReaction (messageChannel m, messageId m) "eyes"
         case (T.toLower . messageText $ m) `M.lookup` eventPool of
             Nothing     -> pure ()
-            Just (f)    -> f handle event
+            Just (f)    -> do
+                            seen handle m
+                            f handle event
     _ -> pure ()
+
+seen:: DiscordHandle -> Message -> IO ()
+seen handle m = do 
+                 _ <- restCall handle $ R.CreateReaction (messageChannel m, messageId m) "ok_hand"
+                 pure ()
 
 
 -- The bot command query will filter all messages that do not meet the criteria for the bot to respond to
