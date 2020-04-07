@@ -21,7 +21,9 @@ botstart = do
             userFacing <- runDiscord $ def 
                             { discordToken = token
                             , discordOnEvent = eventHandler
-                            , discordOnStart = \handle -> putStrLn "...Bot started" }
+                            , discordOnEnd = putStrLn "Bot terminating."
+                            , discordOnStart = \handle -> putStrLn "...Bot started"
+                            , discordForkThreadForEvents = True }
             TIO.putStrLn userFacing
 
 -- The event handler will be passed to the discord client and execute the comands in the event module
@@ -31,7 +33,8 @@ eventHandler handle event = case event of
         case (T.toLower . messageText $ m) `M.lookup` eventPool of
             Nothing     -> pure ()
             Just (f)    -> do
-                            putStrLn $ "Event from user: " <> T.unpack (userName . messageAuthor $ m)
+                            putStrLn $ "Event from user: " <> T.unpack (userName . messageAuthor $ m) 
+                                <> " with command: " <> T.unpack (messageText m)
                             seen handle m
                             f handle event
     _ -> pure ()
