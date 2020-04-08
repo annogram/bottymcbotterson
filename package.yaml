@@ -33,6 +33,7 @@ library:
   - aeson
   - lens
   - lens-aeson
+  - unordered-containers
   - wreq
 executables:
   discord-bot-exe:

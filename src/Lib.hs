@@ -30,7 +30,7 @@ botstart = do
 eventHandler :: DiscordHandle -> Event -> IO ()
 eventHandler handle event = case event of 
     MessageCreate m -> botFilter m Nothing $ do
-        case (T.toLower . messageText $ m) `M.lookup` eventPool of
+        case (getCommandStart m) `M.lookup` eventPool of
             Nothing     -> pure ()
             Just (f)    -> do
                             putStrLn $ "Event from user: " <> T.unpack (userName . messageAuthor $ m) 
@@ -38,6 +38,7 @@ eventHandler handle event = case event of
                             seen handle m
                             f handle event
     _ -> pure ()
+    where getCommandStart = head . T.words . T.toLower . messageText
 
 seen:: DiscordHandle -> Message -> IO ()
 seen handle m = do 

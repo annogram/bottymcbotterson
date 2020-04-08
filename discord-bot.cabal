@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 89b4af1e5ebc1c4850687aa1b5858dec8d1632b1cbcbd6f7b3036960b34558c2
+-- hash: be2e1e2b93727f094c203c95097eb2453f27c514c2caad594956f74e2cbea3e8
 
 name:           discord-bot
 version:        0.1.0.0
@@ -44,6 +44,7 @@ library
     , lens
     , lens-aeson
     , text
+    , unordered-containers
     , wreq
   default-language: Haskell2010
 
