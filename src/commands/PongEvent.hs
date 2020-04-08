@@ -3,8 +3,6 @@ module PongEvent
     ( pongResp
     , pongCommand
     ) where
-import Control.Monad        (when)
-import System.Environment   (getEnv)
 import Discord
 import Discord.Types
 import Data.Text

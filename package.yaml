@@ -30,6 +30,11 @@ library:
   - text
   - discord-haskell
   - containers
+  - aeson
+  - lens
+  - lens-aeson
+  - unordered-containers
+  - wreq
 executables:
   discord-bot-exe:
     main:                Main.hs

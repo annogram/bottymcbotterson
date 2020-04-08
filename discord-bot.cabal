@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: e6e8e84b61ff6d8d550ccac2646fccd3da06a03257d7eb63451214712c274570
+-- hash: be2e1e2b93727f094c203c95097eb2453f27c514c2caad594956f74e2cbea3e8
 
 name:           discord-bot
 version:        0.1.0.0
@@ -28,6 +28,7 @@ source-repository head
 library
   exposed-modules:
       Lib
+      CovidStatsEvent
       Events
       PongEvent
   other-modules:
@@ -36,10 +37,15 @@ library
       src
       src/commands
   build-depends:
-      base >=4.7 && <5
+      aeson
+    , base >=4.7 && <5
     , containers
     , discord-haskell
+    , lens
+    , lens-aeson
     , text
+    , unordered-containers
+    , wreq
   default-language: Haskell2010
 
 executable discord-bot-exe

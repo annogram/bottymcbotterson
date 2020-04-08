@@ -19,6 +19,27 @@ packages:
   original:
     hackage: containers-0.6.2.1
 - completed:
+    hackage: lens-4.18.1@sha256:5c21912d5af370ae608a7e010c8a705e987e42e89bbed306de73f87166251c27,15419
+    pantry-tree:
+      size: 8253
+      sha256: fa3064a40ece524cbb8af7d22caf3f9c662a1d9fb0cc860726658fc6625b452c
+  original:
+    hackage: lens-4.18.1
+- completed:
+    hackage: wreq-0.5.3.2@sha256:eb1d848e983a1d1b8960c28840b55e56d8b3d760e9d014b5d9d018b13439e63f,5570
+    pantry-tree:
+      size: 2423
+      sha256: 30d7ad14313cbb3b2efa18665c50853b71941253ce6d182e30a1c11e35c01141
+  original:
+    hackage: wreq-0.5.3.2
+- completed:
+    hackage: aeson-1.4.7.1@sha256:6d8d2fd959b7122a1df9389cf4eca30420a053d67289f92cdc0dbc0dab3530ba,7098
+    pantry-tree:
+      size: 40133
+      sha256: caa9306e519c601ab0170d113daa03c1163db53e5466be2968bbd61a771bebcb
+  original:
+    hackage: aeson-1.4.7.1
+- completed:
     hackage: emoji-0.1.0.2@sha256:d995572a5c7dcd28f98eb15c6e387a7b3bda1ac2477ab0d9dba8580d5d7b161f,1273
     pantry-tree:
       size: 437

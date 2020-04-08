@@ -5,6 +5,7 @@ module Lib
 import Control.Monad        (when)
 import System.Environment   (getEnv)
 import Events               (eventPool)
+import Data.Monoid          
 import Discord
 import Discord.Types
 import qualified Discord.Requests as R
@@ -20,18 +21,29 @@ botstart = do
             userFacing <- runDiscord $ def 
                             { discordToken = token
                             , discordOnEvent = eventHandler
-                            , discordOnStart = \handle -> putStrLn "...Bot started" }
+                            , discordOnEnd = putStrLn "Bot terminating."
+                            , discordOnStart = \handle -> putStrLn "...Bot started"
+                            , discordForkThreadForEvents = True }
             TIO.putStrLn userFacing
 
 -- The event handler will be passed to the discord client and execute the comands in the event module
 eventHandler :: DiscordHandle -> Event -> IO ()
 eventHandler handle event = case event of 
     MessageCreate m -> botFilter m Nothing $ do
-        _ <- restCall handle $ R.CreateReaction (messageChannel m, messageId m) "eyes"
-        case (T.toLower . messageText $ m) `M.lookup` eventPool of
+        case (getCommandStart m) `M.lookup` eventPool of
             Nothing     -> pure ()
-            Just (f)    -> f handle event
+            Just (f)    -> do
+                            putStrLn $ "Event from user: " <> T.unpack (userName . messageAuthor $ m) 
+                                <> " with command: " <> T.unpack (messageText m)
+                            seen handle m
+                            f handle event
     _ -> pure ()
+    where getCommandStart = head . T.words . T.toLower . messageText
+
+seen:: DiscordHandle -> Message -> IO ()
+seen handle m = do 
+                 _ <- restCall handle $ R.CreateReaction (messageChannel m, messageId m) "ok_hand"
+                 pure ()
 
 
 -- The bot command query will filter all messages that do not meet the criteria for the bot to respond to
