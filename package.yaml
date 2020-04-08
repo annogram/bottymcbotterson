@@ -30,6 +30,9 @@ library:
   - text
   - discord-haskell
   - containers
+  - aeson
+  - lens
+  - lens-aeson
   - wreq
 executables:
   discord-bot-exe:
