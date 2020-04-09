@@ -2,6 +2,19 @@
 
 A discord bot to manage my discord servers, also serves as learnings and showings for my haskell language training
 
+## Features
+
+1. Integrates with COVID api to retrieve up to date data
+
+![covid](res/covid.png)
+
+2. Multithreaded and quick, Botty compiles to an executable file that runs withought needing a `node`, `python`, `java`, `or`, `.net` runtime
+3. Dynamically populated `/help` command that is populated based on the features added to the bot
+
+![help](res/help.png)
+
+4. Quirky but usable interactions, the bot will notify you immediately when it has understood your command and will let you know
+
 # Prerequisites
 
 To compile and build this project you will need
