@@ -15,7 +15,7 @@ import qualified Data.Text as T
 eventPool :: M.Map T.Text (DiscordHandle -> Event -> IO Bool)
 eventPool = M.fromList [ ("/help", helpEvent)
                        , (pongCommand, pongResp)
-                    --    , (covidStatsCommand, getCovidInfo)
+                       , (covidStatsCommand, getCovidInfo)
                        ]
 
 helpEvent :: DiscordHandle -> Event -> IO Bool
