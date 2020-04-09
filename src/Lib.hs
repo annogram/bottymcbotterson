@@ -33,17 +33,30 @@ eventHandler handle event = case event of
         case (getCommandStart m) `M.lookup` eventPool of
             Nothing     -> pure ()
             Just (f)    -> do
-                            putStrLn $ "Event from user: " <> T.unpack (userName . messageAuthor $ m) 
-                                <> " with command: " <> T.unpack (messageText m)
+                            let thisUser = userName . messageAuthor $ m
+                            let command  = messageText m
+                            putStrLn $ "Event from user: " <> T.unpack thisUser
+                                <> " with command: " <> T.unpack command
+                            _ <- restCall handle $ R.CreateMessage (messageChannel m) 
+                                $ "> Responding to **" <> (userName $ (messageAuthor m)) <> "**"
                             seen handle m
                             f handle event
     _ -> pure ()
     where getCommandStart = head . T.words . T.toLower . messageText
 
 seen:: DiscordHandle -> Message -> IO ()
-seen handle m = do 
-                 _ <- restCall handle $ R.CreateReaction (messageChannel m, messageId m) "ok_hand"
-                 pure ()
+seen = addReaction "ok_hand"
+
+addReaction :: T.Text -> DiscordHandle -> Message -> IO ()
+addReaction emoji handle m = do
+                               _ <- restCall handle $ R.CreateReaction (messageChannel m, messageId m) emoji
+                               pure ()
+
+unSeen :: DiscordHandle -> Message -> IO ()
+unSeen handle m = do
+                   _ <- restCall handle $ R.DeleteAllReactions (messageChannel m, messageId m)
+                   pure ()
+
 
 
 -- The bot command query will filter all messages that do not meet the criteria for the bot to respond to
