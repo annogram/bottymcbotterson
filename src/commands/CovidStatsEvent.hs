@@ -41,12 +41,12 @@ getInfoForCountry c = do
     let totalInfections = show $ r ^?! responseBody . key "cases" . _Number
     let activeInfections = show $ r ^?! responseBody . key "active" . _Number
     let recovered = show $ r ^?! responseBody . key "recovered" . _Number
-    let info = "Deaths :skull_crossbones: :\t" <> deaths <> "\n"
-                    <> "Critical cases :biohazard: :\t"  <> critical <> "\n"
-                    <> "Infections today :calendar: :\t" <> todayInfections <> "\n"
-                    <> "All infections :nauseated_face: :\t" <> totalInfections <> "\n"
-                    <> "Active infections :face_vomiting: :\t" <> activeInfections <> "\n"
-                    <> "Recovered :muscle: :\t" <> recovered <> "\n"
+    let info = ":skull_crossbones: - Deaths :\t" <> deaths <> "\n"
+                    <> ":biohazard: - Critical cases :\t"  <> critical <> "\n"
+                    <> ":calendar: - Infections today :\t" <> todayInfections <> "\n"
+                    <> ":nauseated_face: - All infections :\t" <> totalInfections <> "\n"
+                    <> ":face_vomiting: - Active infections :\t" <> activeInfections <> "\n"
+                    <> ":muscle: - Recovered :\t" <> recovered <> "\n"
 
     return (T.pack info)
 
@@ -59,10 +59,10 @@ getInfo = do
     let totalInfections = show $ r ^?! responseBody . key "cases" . _Number
     let activeInfections = show $ r ^?! responseBody . key "active" . _Number
     let recovered = show $ r ^?! responseBody . key "recovered" . _Number
-    let info = "Deaths :skull_crossbones: :\t " <> deaths <> "\n"
-                    <> "Critical cases :biohazard: :\t"  <> critical <> "\n"
-                    <> "Infections today :calendar: :\t" <> todayInfections <> "\n"
-                    <> "All infections :nauseated_face: :\t" <> totalInfections <> "\n"
-                    <> "Active infections :face_vomiting: :\t" <> activeInfections <> "\n"
-                    <> "Recovered :muscle: :\t" <> recovered <> "\n"
+    let info = ":skull_crossbones: - Deaths :\t " <> deaths <> "\n"
+                    <> ":biohazard: - Critical cases :\t"  <> critical <> "\n"
+                    <> ":calendar: - Infections today :\t" <> todayInfections <> "\n"
+                    <> ":nauseated_face: - All infections :\t" <> totalInfections <> "\n"
+                    <> ":face_vomiting: - Active infections :\t" <> activeInfections <> "\n"
+                    <> ":muscle: - Recovered :\t" <> recovered <> "\n"
     return (T.pack info)
