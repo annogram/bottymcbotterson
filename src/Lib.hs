@@ -5,7 +5,8 @@ module Lib
 import Control.Monad        (when)
 import System.Environment   (getEnv)
 import Events               (eventPool)
-import Data.Monoid          
+import Control.Concurrent   (threadDelay)
+import Data.Monoid
 import Discord
 import Discord.Types
 import qualified Discord.Requests as R
@@ -40,7 +41,10 @@ eventHandler handle event = case event of
                             _ <- restCall handle $ R.CreateMessage (messageChannel m) 
                                 $ "> Responding to **" <> (userName $ (messageAuthor m)) <> "**"
                             seen handle m
-                            f handle event
+                            succ <- f handle event
+                            if succ 
+                                then pure ()
+                                else addReaction "thumbsdown" handle m
     _ -> pure ()
     where getCommandStart = head . T.words . T.toLower . messageText
 
