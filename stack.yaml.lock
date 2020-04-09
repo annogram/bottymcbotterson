@@ -45,7 +45,7 @@ packages:
       size: 437
       sha256: dd9ea90a631342e5db0fc21331ade4d563a685e9125d5a3989eefa8e1b96c6c6
   original:
-    hackage: emoji-0.1.0.2@sha256:d995572a5c7dcd28f98eb15c6e387a7b3bda1ac2477ab0d9dba8580d5d7b161f,1273
+    hackage: emoji-0.1.0.2
 snapshots:
 - completed:
     size: 491372
