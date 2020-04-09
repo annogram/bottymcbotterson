@@ -63,7 +63,6 @@ getInfo = do
                     <> "Critical cases :biohazard: :\t"  <> critical <> "\n"
                     <> "Infections today :calendar: :\t" <> todayInfections <> "\n"
                     <> "All infections :nauseated_face: :\t" <> totalInfections <> "\n"
-                    <> "Active infections :face_vomiting:\t:" <> activeInfections <> "\n"
+                    <> "Active infections :face_vomiting: :\t" <> activeInfections <> "\n"
                     <> "Recovered :muscle: :\t" <> recovered <> "\n"
     return (T.pack info)
-    
