@@ -33,6 +33,7 @@ library:
   - aeson
   - lens
   - lens-aeson
+  - split
   - unordered-containers
   - wreq
 executables:
