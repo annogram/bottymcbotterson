@@ -39,7 +39,7 @@ eventHandler handle event = case event of
                             putStrLn $ "Event from user: " <> T.unpack thisUser
                                 <> " with command: " <> T.unpack command
                             _ <- restCall handle $ R.CreateMessage (messageChannel m) 
-                                $ "> Responding to **" <> (userName $ (messageAuthor m)) <> "**"
+                                $ "> Responding to <@" <> (T.pack . show . userId $ (messageAuthor m)) <> ">"
                             seen handle m
                             succ <- f handle event
                             if succ 
