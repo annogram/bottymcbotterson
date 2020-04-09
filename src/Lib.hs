@@ -42,7 +42,7 @@ eventHandler handle event = case event of
                                 $ "> Responding to <@" <> (T.pack . show . userId $ (messageAuthor m)) <> ">"
                             seen handle m
                             succ <- f handle event
-                            if succ 
+                            if succ
                                 then pure ()
                                 else addReaction "thumbsdown" handle m
     _ -> pure ()

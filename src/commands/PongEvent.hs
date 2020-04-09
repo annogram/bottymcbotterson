@@ -13,7 +13,7 @@ pongCommand :: Text
 pongCommand = "/ping"
 
 -- Functionality to reply to ping
-pongResp :: DiscordHandle -> Event -> IO ()
+pongResp :: DiscordHandle -> Event -> IO Bool
 pongResp handle (MessageCreate m) = do 
     _ <- restCall handle $  R.CreateMessage (messageChannel m) $ "Pong!"
-    pure ()
+    pure True

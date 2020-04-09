@@ -14,7 +14,7 @@ import qualified Data.Text as T
 -- All the commands that this bot can act on
 eventPool :: M.Map T.Text (DiscordHandle -> Event -> IO Bool)
 eventPool = M.fromList [ ("/help", helpEvent)
-                    --    , (pongCommand, pongResp)
+                       , (pongCommand, pongResp)
                     --    , (covidStatsCommand, getCovidInfo)
                        ]
 
