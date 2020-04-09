@@ -20,54 +20,67 @@ covidStatsCommand :: Text
 covidStatsCommand = "/covid"
 
 -- Get information on the Covid-19 pandemic
-getCovidInfo :: DiscordHandle -> Event -> IO ()
+getCovidInfo :: DiscordHandle -> Event -> IO Bool
 getCovidInfo handle (MessageCreate m) = do 
     apiData <- covidBasic . T.words . messageText $ m
-    _ <- restCall handle $  R.CreateMessage (messageChannel m) $ apiData
-    return ()
+    case apiData of
+        Left (d) -> do 
+                     _ <- restCall handle $  R.CreateMessage (messageChannel m) $ d
+                     return (True)
+        Right (fail) -> return (fail)
 
-covidBasic :: [Text] -> IO (Text)
-covidBasic ("/covid":[])   = getInfo
-covidBasic ("/covid":f)  = getInfoForCountry $ T.unwords f
+
+covidBasic :: [Text] -> IO (Either Text Bool)
+covidBasic (_:[])   = getInfo
+covidBasic (_:f)    = getInfoForCountry $ T.unwords f
 
 headerOpt :: Options
 headerOpt = defaults & header "Accept" .~ ["application/json"]
+                     & checkResponse   .~ (Just $ \_ _ -> return ())
 
 commas :: [Char] -> [Char]
 commas = reverse . intercalate "," . chunksOf (3) . reverse . fst . break (== '.')
 
-getInfoForCountry :: Text -> IO (Text)
+getInfoForCountry :: Text -> IO (Either Text Bool)
 getInfoForCountry c = do 
     let url = "https://corona.lmao.ninja/countries/" <> c
     r <- getWith headerOpt $ T.unpack url
-    let deaths = commas. show $ r ^?! responseBody . key "deaths" . _Number
-    let critical = commas. show $ r ^?! responseBody . key "critical" . _Number
-    let todayInfections = commas. show $ r ^?! responseBody . key "todayCases" . _Number
-    let totalInfections = commas. show $ r ^?! responseBody . key "cases" . _Number
-    let activeInfections = commas. show $ r ^?! responseBody . key "active" . _Number
-    let recovered = commas. show $ r ^?! responseBody . key "recovered" . _Number
-    let info = ":skull_crossbones: - Deaths :\t" <> deaths <> "\n"
-                    <> ":biohazard: - Critical cases :\t"  <> critical <> "\n"
-                    <> ":calendar: - Infections today :\t" <> todayInfections <> "\n"
-                    <> ":nauseated_face: - All infections :\t" <> totalInfections <> "\n"
-                    <> ":face_vomiting: - Active infections :\t" <> activeInfections <> "\n"
-                    <> ":muscle: - Recovered :\t" <> recovered <> "\n"
+    let status = r ^. responseStatus . statusCode
+    case status of 
+        200 -> do
+            let deaths = commas. show $ r ^?! responseBody . key "deaths" . _Number
+            let critical = commas. show $ r ^?! responseBody . key "critical" . _Number
+            let todayInfections = commas. show $ r ^?! responseBody . key "todayCases" . _Number
+            let totalInfections = commas. show $ r ^?! responseBody . key "cases" . _Number
+            let activeInfections = commas. show $ r ^?! responseBody . key "active" . _Number
+            let recovered = commas. show $ r ^?! responseBody . key "recovered" . _Number
+            let info = ":skull_crossbones: - Deaths :\t" <> deaths <> "\n"
+                            <> ":biohazard: - Critical cases :\t"  <> critical <> "\n"
+                            <> ":calendar: - Infections today :\t" <> todayInfections <> "\n"
+                            <> ":nauseated_face: - All infections :\t" <> totalInfections <> "\n"
+                            <> ":face_vomiting: - Active infections :\t" <> activeInfections <> "\n"
+                            <> ":muscle: - Recovered :\t" <> recovered <> "\n"
+            return (Left (T.pack info))
+        otherwise -> return (Right False)
+    
 
-    return (T.pack info)
-
-getInfo :: IO (Text)
+getInfo :: IO (Either Text Bool)
 getInfo = do
     r <- getWith headerOpt "https://corona.lmao.ninja/all"
-    let deaths = commas . show $ r ^?! responseBody . key "deaths" . _Number
-    let critical = commas. show $ r ^?! responseBody . key "critical" . _Number
-    let todayInfections = commas. show $ r ^?! responseBody . key "todayCases" . _Number
-    let totalInfections = commas. show $ r ^?! responseBody . key "cases" . _Number
-    let activeInfections = commas. show $ r ^?! responseBody . key "active" . _Number
-    let recovered = commas. show $ r ^?! responseBody . key "recovered" . _Number
-    let info = ":skull_crossbones: - Deaths :\t " <> deaths <> "\n"
-                    <> ":biohazard: - Critical cases :\t"  <> critical <> "\n"
-                    <> ":calendar: - Infections today :\t" <> todayInfections <> "\n"
-                    <> ":nauseated_face: - All infections :\t" <> totalInfections <> "\n"
-                    <> ":face_vomiting: - Active infections :\t" <> activeInfections <> "\n"
-                    <> ":muscle: - Recovered :\t" <> recovered <> "\n"
-    return (T.pack info)
+    let status = r ^. responseStatus . statusCode
+    case status of 
+        200 -> do
+            let deaths = commas. show $ r ^?! responseBody . key "deaths" . _Number
+            let critical = commas. show $ r ^?! responseBody . key "critical" . _Number
+            let todayInfections = commas. show $ r ^?! responseBody . key "todayCases" . _Number
+            let totalInfections = commas. show $ r ^?! responseBody . key "cases" . _Number
+            let activeInfections = commas. show $ r ^?! responseBody . key "active" . _Number
+            let recovered = commas. show $ r ^?! responseBody . key "recovered" . _Number
+            let info = ":skull_crossbones: - Deaths :\t" <> deaths <> "\n"
+                            <> ":biohazard: - Critical cases :\t"  <> critical <> "\n"
+                            <> ":calendar: - Infections today :\t" <> todayInfections <> "\n"
+                            <> ":nauseated_face: - All infections :\t" <> totalInfections <> "\n"
+                            <> ":face_vomiting: - Active infections :\t" <> activeInfections <> "\n"
+                            <> ":muscle: - Recovered :\t" <> recovered <> "\n"
+            return (Left (T.pack info))
+        otherwise -> return (Right False)
