@@ -38,12 +38,9 @@ eventHandler handle event = case event of
                             let command  = messageText m
                             putStrLn $ "Event from user: " <> T.unpack thisUser
                                 <> " with command: " <> T.unpack command
-                            _ <- restCall handle $ R.CreateMessage (messageChannel m) 
-                                $ "> Responding to <@" <> (T.pack . show . userId $ (messageAuthor m)) <> ">"
-                            seen handle m
                             succ <- f handle event
                             if succ
-                                then pure ()
+                                then seen handle m
                                 else addReaction "thumbsdown" handle m
     _ -> pure ()
     where getCommandStart = head . T.words . T.toLower . messageText
