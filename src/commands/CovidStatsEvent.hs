@@ -33,6 +33,7 @@ covidBasic ("/covid":f)  = getInfoForCountry $ T.unwords f
 headerOpt :: Options
 headerOpt = defaults & header "Accept" .~ ["application/json"]
 
+commas :: [Char] -> [Char]
 commas = reverse . intercalate "," . chunksOf (3) . reverse . fst . break (== '.')
 
 getInfoForCountry :: Text -> IO (Text)
