@@ -1,4 +1,12 @@
 image: fpco/stack-build:lts-15.5
+variables:
+  STACK_ROOT: "${CI_PROJECT_DIR}/.stack-root"
+
+chace: 
+  paths:
+    - .stack-root
+    - .stack-work
+    - target
 
 stages:
   - build
