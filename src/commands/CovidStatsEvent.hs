@@ -53,15 +53,16 @@ getInfoForCountry c = do
                     200 -> Just (r)
                     otherwise -> Nothing
 
-    let countryCode = r ^. responseBody . key "countryInfo" . key "iso2" . _String
-    p <- getWith headerOpt $ T.unpack $ "https://restcountries.eu/rest/v2/alpha/" <> countryCode
-    let population = p ^?! responseBody . key "population" . _Integer
-    
     case today of
         Just (v) -> do
                      y <- getWith headerOpt $ T.unpack yestUrl
                      if y ^. responseStatus . statusCode == 200
-                         then return (Just (craftResponse r y (show population)))
+                         then do
+                                 -- Get countries population
+                                let countryCode = v ^. responseBody . key "countryInfo" . key "iso2" . _String
+                                p <- getWith headerOpt $ T.unpack $ "https://restcountries.eu/rest/v2/alpha/" <> countryCode
+                                let population = p ^?! responseBody . key "population" . _Integer
+                                return (Just (craftResponse r y (show population)))
                          else return Nothing
         Nothing  -> return Nothing
 
