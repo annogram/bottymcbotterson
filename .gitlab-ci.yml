@@ -16,4 +16,4 @@ build:
     - stack install --local-bin-path ./build
   artifacts:
     paths:
-      - build
+      - build/*
