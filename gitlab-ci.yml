@@ -1,9 +1,0 @@
-image: fpco/stack-build:lts-15.5
-
-stages:
-  - build
-
-build:
-  stage: build
-  script:
-    - stack build
