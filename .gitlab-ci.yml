@@ -1,6 +1,8 @@
-image: fpco/stack-build:lts-15.5
+image: haskell:8.6.5
 variables:
   STACK_ROOT: "${CI_PROJECT_DIR}/.stack-root"
+
+service: docker
 
 cache: 
   paths:
@@ -16,4 +18,4 @@ build:
     - stack install --local-bin-path ./build
   artifacts:
     paths:
-      - build/*
+      - build
