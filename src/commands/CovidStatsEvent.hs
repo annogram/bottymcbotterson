@@ -11,7 +11,6 @@ import Discord.Types
 import Data.Aeson.Lens
 import Network.Wreq
 import Control.Lens
-import Data.Map as Map
 import qualified Data.ByteString.Lazy as B
 import qualified Data.Text as T
 import qualified Discord.Requests as R
@@ -90,18 +89,21 @@ craftResponse r y p = let deaths = r ^?! responseBody . key "deaths" . _Number
                     in T.pack (
                         "Countries population: " <> commas p <> "\n"
                         <> ":skull_crossbones: - Deaths :\t" <> (commas . show) deaths
-                            <> " (**" <> (commas . show) diffDeaths <> "**)" <>"\n"
+                            <> " (**" <> formatNumber diffDeaths <> "**)" <>"\n"
                         <> ":biohazard: - Critical cases :\t"  <> (commas. show) critical
-                            <> " (**" <> (commas . show) diffCritical <> "**)" <>"\n"
+                            <> " (**" <> formatNumber diffCritical <> "**)" <>"\n"
                         <> ":calendar: - Infections today :\t" <> (commas. show) todayInfections
-                            <> " (**" <> (commas . show) diffInfections <> "**)" <>"\n"
+                            <> " (**" <> formatNumber diffInfections <> "**)" <>"\n"
                         <> ":nauseated_face: - All infections :\t" <> (commas. show) totalInfections
-                            <> " (**" <> (commas . show) diffTotalInfections <> "**)" <>"\n"
+                            <> " (**" <> formatNumber diffTotalInfections <> "**)" <>"\n"
                         <> ":face_vomiting: - Active infections :\t" <> (commas. show) activeInfections
-                            <> " (**" <> (commas . show) diffActiveInfections <> "**)" <>"\n"
+                            <> " (**" <> formatNumber diffActiveInfections <> "**)" <>"\n"
                         <> ":muscle: - Recovered :\t" <> (commas. show) recovered
                             <> " (**" <> (commas . show) percentageRecovered <> "%**)" <>"\n"
                         )
+                    where formatNumber n = if (n > 0)
+                                            then ("+"++) . commas . show $ n
+                                            else ("-"++) . commas . snd . splitAt (1) $ show n
 
 craftBasicResponse :: Response B.ByteString -> Text
 craftBasicResponse r = let deaths = commas. show $ r ^?! responseBody . key "deaths" . _Number
