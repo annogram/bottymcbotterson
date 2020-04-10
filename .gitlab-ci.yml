@@ -2,8 +2,6 @@ image: haskell:8.6.5
 variables:
   STACK_ROOT: "${CI_PROJECT_DIR}/.stack-root"
 
-service: docker
-
 cache: 
   paths:
     - .stack-root
