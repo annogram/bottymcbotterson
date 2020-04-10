@@ -28,12 +28,13 @@ library:
   - src/commands
   dependencies:
   - text
-  - discord-haskell
   - containers
+  - split
+  - bytestring
+  - discord-haskell
   - aeson
   - lens
   - lens-aeson
-  - split
   - unordered-containers
   - wreq
 executables:
