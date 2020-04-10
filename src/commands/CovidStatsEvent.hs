@@ -3,15 +3,16 @@ module CovidStatsEvent
     ( getCovidInfo
     , covidStatsCommand
     ) where
-import Data.Text (Text)
-import Data.List (intercalate)
-import Data.List.Split (chunksOf)
+import Data.Text        (Text)
+import Data.List        (intercalate)
+import Data.List.Split  (chunksOf)
 import Discord
 import Discord.Types
 import Data.Aeson.Lens
 import Network.Wreq
 import Control.Lens
 import Data.Map as Map
+import qualified Data.ByteString.Lazy as B
 import qualified Data.Text as T
 import qualified Discord.Requests as R
 import qualified Data.HashMap.Lazy as M
@@ -47,20 +48,7 @@ getInfoForCountry c = do
     r <- getWith headerOpt $ T.unpack url
     let status = r ^. responseStatus . statusCode
     case status of 
-        200 -> do
-            let deaths = commas. show $ r ^?! responseBody . key "deaths" . _Number
-            let critical = commas. show $ r ^?! responseBody . key "critical" . _Number
-            let todayInfections = commas. show $ r ^?! responseBody . key "todayCases" . _Number
-            let totalInfections = commas. show $ r ^?! responseBody . key "cases" . _Number
-            let activeInfections = commas. show $ r ^?! responseBody . key "active" . _Number
-            let recovered = commas. show $ r ^?! responseBody . key "recovered" . _Number
-            let info = ":skull_crossbones: - Deaths :\t" <> deaths <> "\n"
-                            <> ":biohazard: - Critical cases :\t"  <> critical <> "\n"
-                            <> ":calendar: - Infections today :\t" <> todayInfections <> "\n"
-                            <> ":nauseated_face: - All infections :\t" <> totalInfections <> "\n"
-                            <> ":face_vomiting: - Active infections :\t" <> activeInfections <> "\n"
-                            <> ":muscle: - Recovered :\t" <> recovered <> "\n"
-            return (Left (T.pack info))
+        200 -> return (Left (craftResponse r))
         otherwise -> return (Right False)
     
 
@@ -69,18 +57,20 @@ getInfo = do
     r <- getWith headerOpt "https://corona.lmao.ninja/all"
     let status = r ^. responseStatus . statusCode
     case status of 
-        200 -> do
-            let deaths = commas. show $ r ^?! responseBody . key "deaths" . _Number
-            let critical = commas. show $ r ^?! responseBody . key "critical" . _Number
-            let todayInfections = commas. show $ r ^?! responseBody . key "todayCases" . _Number
-            let totalInfections = commas. show $ r ^?! responseBody . key "cases" . _Number
-            let activeInfections = commas. show $ r ^?! responseBody . key "active" . _Number
-            let recovered = commas. show $ r ^?! responseBody . key "recovered" . _Number
-            let info = ":skull_crossbones: - Deaths :\t" <> deaths <> "\n"
-                            <> ":biohazard: - Critical cases :\t"  <> critical <> "\n"
-                            <> ":calendar: - Infections today :\t" <> todayInfections <> "\n"
-                            <> ":nauseated_face: - All infections :\t" <> totalInfections <> "\n"
-                            <> ":face_vomiting: - Active infections :\t" <> activeInfections <> "\n"
-                            <> ":muscle: - Recovered :\t" <> recovered <> "\n"
-            return (Left (T.pack info))
+        200 -> return (Left (craftResponse r))
         otherwise -> return (Right False)
+
+craftResponse :: Response B.ByteString -> Text
+craftResponse r = let deaths = commas. show $ r ^?! responseBody . key "deaths" . _Number
+                      critical = commas. show $ r ^?! responseBody . key "critical" . _Number
+                      todayInfections = commas. show $ r ^?! responseBody . key "todayCases" . _Number
+                      totalInfections = commas. show $ r ^?! responseBody . key "cases" . _Number
+                      activeInfections = commas. show $ r ^?! responseBody . key "active" . _Number
+                      recovered = commas. show $ r ^?! responseBody . key "recovered" . _Number
+                      info = ":skull_crossbones: - Deaths :\t" <> deaths <> "\n"
+                   in T.pack (":skull_crossbones: - Deaths :\t" <> deaths <> "\n"
+                        <> ":biohazard: - Critical cases :\t"  <> critical <> "\n"
+                        <> ":calendar: - Infections today :\t" <> todayInfections <> "\n"
+                        <> ":nauseated_face: - All infections :\t" <> totalInfections <> "\n"
+                        <> ":face_vomiting: - Active infections :\t" <> activeInfections <> "\n"
+                        <> ":muscle: - Recovered :\t" <> recovered <> "\n")
