@@ -17,3 +17,6 @@ build:
   artifacts:
     paths:
       - build
+  only:
+    - master
+    - develop
