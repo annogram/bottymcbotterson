@@ -13,4 +13,7 @@ stages:
 build:
   stage: build
   script:
-    - stack build
+    - stack install --local-bin-path ./build
+  artifacts:
+    paths:
+      - build
