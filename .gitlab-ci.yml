@@ -1,0 +1,19 @@
+image: fpco/stack-build-small:lts-15.5
+variables:
+  STACK_ROOT: "${CI_PROJECT_DIR}/.stack-root"
+
+cache: 
+  paths:
+    - .stack-root
+    - .stack-work
+
+stages:
+  - build
+
+build:
+  stage: build
+  script:
+    - stack install --local-bin-path ./build
+  artifacts:
+    paths:
+      - build
