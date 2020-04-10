@@ -58,8 +58,6 @@ unSeen handle m = do
                    _ <- restCall handle $ R.DeleteAllReactions (messageChannel m, messageId m)
                    pure ()
 
-
-
 -- The bot command query will filter all messages that do not meet the criteria for the bot to respond to
 botCommandQuery :: Message -> Bool
 botCommandQuery m = (notElem (messageText m) $ defaultCommand) && 

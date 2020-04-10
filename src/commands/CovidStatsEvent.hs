@@ -52,14 +52,18 @@ getInfoForCountry c = do
     let today = case status of 
                     200 -> Just (r)
                     otherwise -> Nothing
+
+    let countryCode = r ^. responseBody . key "countryInfo" . key "iso2" . _String
+    p <- getWith headerOpt $ T.unpack $ "https://restcountries.eu/rest/v2/alpha/" <> countryCode
+    let population = p ^?! responseBody . key "population" . _Integer
+    
     case today of
         Just (v) -> do
                      y <- getWith headerOpt $ T.unpack yestUrl
                      if y ^. responseStatus . statusCode == 200
-                         then return (Just (craftResponse r y))
+                         then return (Just (craftResponse r y (show population)))
                          else return Nothing
         Nothing  -> return Nothing
-    
 
 getInfo :: IO (Maybe Text)
 getInfo = do
@@ -69,23 +73,24 @@ getInfo = do
         200 -> return (Just (craftBasicResponse r))
         otherwise -> return Nothing
 
-craftResponse :: Response B.ByteString -> Response B.ByteString -> Text
-craftResponse r y = let deaths = r ^?! responseBody . key "deaths" . _Number
-                        diffDeaths = deaths - (y ^?! responseBody . key "deaths" . _Number)
-                        critical = r ^?! responseBody . key "critical" . _Number
-                        diffCritical = critical - (y ^?! responseBody . key "critical" . _Number)
-                        todayInfections = r ^?! responseBody . key "todayCases" . _Number
-                        diffInfections = todayInfections - (y  ^?! responseBody . key "todayCases" . _Number)
-                        totalInfections = r ^?! responseBody . key "cases" . _Double
-                        diffTotalInfections = totalInfections - (y ^?! responseBody . key "cases" . _Double)
-                        activeInfections = r ^?! responseBody . key "active" . _Number
-                        diffActiveInfections = activeInfections - (y ^?! responseBody . key "active" . _Number)
-                        recovered = r ^?! responseBody . key "recovered" . _Double
-                        percentageRecovered = (recovered / totalInfections) * 100
+craftResponse :: Response B.ByteString -> Response B.ByteString -> String -> Text
+craftResponse r y p = let deaths = r ^?! responseBody . key "deaths" . _Number
+                          diffDeaths = deaths - (y ^?! responseBody . key "deaths" . _Number)
+                          critical = r ^?! responseBody . key "critical" . _Number
+                          diffCritical = critical - (y ^?! responseBody . key "critical" . _Number)
+                          todayInfections = r ^?! responseBody . key "todayCases" . _Number
+                          diffInfections = todayInfections - (y  ^?! responseBody . key "todayCases" . _Number)
+                          totalInfections = r ^?! responseBody . key "cases" . _Double
+                          diffTotalInfections = totalInfections - (y ^?! responseBody . key "cases" . _Double)
+                          activeInfections = r ^?! responseBody . key "active" . _Number
+                          diffActiveInfections = activeInfections - (y ^?! responseBody . key "active" . _Number)
+                          recovered = r ^?! responseBody . key "recovered" . _Double
+                          percentageRecovered = (recovered / totalInfections) * 100
                     in T.pack (
-                        ":skull_crossbones: - Deaths :\t" <> (commas . show) deaths
+                        "Countries population: " <> commas p <> "\n"
+                        <> ":skull_crossbones: - Deaths :\t" <> (commas . show) deaths
                             <> " (**" <> (commas . show) diffDeaths <> "**)" <>"\n"
-                        <> ":biohazard: - Critical cases :\t"  <> (commas. show) critical 
+                        <> ":biohazard: - Critical cases :\t"  <> (commas. show) critical
                             <> " (**" <> (commas . show) diffCritical <> "**)" <>"\n"
                         <> ":calendar: - Infections today :\t" <> (commas. show) todayInfections
                             <> " (**" <> (commas . show) diffInfections <> "**)" <>"\n"
