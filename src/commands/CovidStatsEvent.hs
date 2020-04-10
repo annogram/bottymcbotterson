@@ -32,7 +32,7 @@ getCovidInfo handle (MessageCreate m) = do
 
 
 covidBasic :: [Text] -> IO (Maybe Text)
--- covidBasic (_:[])   = getInfo
+covidBasic (_:[])   = getInfo
 covidBasic (_:f)    = getInfoForCountry $ T.unwords f
 
 headerOpt :: Options
@@ -61,13 +61,13 @@ getInfoForCountry c = do
         Nothing  -> return Nothing
     
 
--- getInfo :: IO (Either Text Bool)
--- getInfo = do
---     r <- getWith headerOpt "https://corona.lmao.ninja/all"
---     let status = r ^. responseStatus . statusCode
---     case status of 
---         200 -> return (Left (craftResponse r))
---         otherwise -> return (Right False)
+getInfo :: IO (Maybe Text)
+getInfo = do
+    r <- getWith headerOpt "https://corona.lmao.ninja/all"
+    let status = r ^. responseStatus . statusCode
+    case status of 
+        200 -> return (Just (craftBasicResponse r))
+        otherwise -> return Nothing
 
 craftResponse :: Response B.ByteString -> Response B.ByteString -> Text
 craftResponse r y = let deaths = r ^?! responseBody . key "deaths" . _Number
@@ -96,3 +96,17 @@ craftResponse r y = let deaths = r ^?! responseBody . key "deaths" . _Number
                         <> ":muscle: - Recovered :\t" <> (commas. show) recovered
                             <> " (**" <> (commas . show) percentageRecovered <> "%**)" <>"\n"
                         )
+
+craftBasicResponse :: Response B.ByteString -> Text
+craftBasicResponse r = let deaths = commas. show $ r ^?! responseBody . key "deaths" . _Number
+                           critical = commas. show $ r ^?! responseBody . key "critical" . _Number
+                           todayInfections = commas. show $ r ^?! responseBody . key "todayCases" . _Number
+                           totalInfections = commas. show $ r ^?! responseBody . key "cases" . _Number
+                           activeInfections = commas. show $ r ^?! responseBody . key "active" . _Number
+                           recovered = commas. show $ r ^?! responseBody . key "recovered" . _Number
+                   in T.pack (":skull_crossbones: - Deaths :\t" <> deaths <> "\n"
+                        <> ":biohazard: - Critical cases :\t"  <> critical <> "\n"
+                        <> ":calendar: - Infections today :\t" <> todayInfections <> "\n"
+                        <> ":nauseated_face: - All infections :\t" <> totalInfections <> "\n"
+                        <> ":face_vomiting: - Active infections :\t" <> activeInfections <> "\n"
+                        <> ":muscle: - Recovered :\t" <> recovered <> "\n")
