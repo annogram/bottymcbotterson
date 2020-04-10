@@ -11,7 +11,6 @@ import Discord.Types
 import Data.Aeson.Lens
 import Network.Wreq
 import Control.Lens
-import Data.Map as Map
 import qualified Data.ByteString.Lazy as B
 import qualified Data.Text as T
 import qualified Discord.Requests as R
@@ -53,15 +52,16 @@ getInfoForCountry c = do
                     200 -> Just (r)
                     otherwise -> Nothing
 
-    let countryCode = r ^. responseBody . key "countryInfo" . key "iso2" . _String
-    p <- getWith headerOpt $ T.unpack $ "https://restcountries.eu/rest/v2/alpha/" <> countryCode
-    let population = p ^?! responseBody . key "population" . _Integer
-    
     case today of
         Just (v) -> do
                      y <- getWith headerOpt $ T.unpack yestUrl
                      if y ^. responseStatus . statusCode == 200
-                         then return (Just (craftResponse r y (show population)))
+                         then do
+                                 -- Get countries population
+                                let countryCode = v ^. responseBody . key "countryInfo" . key "iso2" . _String
+                                p <- getWith headerOpt $ T.unpack $ "https://restcountries.eu/rest/v2/alpha/" <> countryCode
+                                let population = p ^?! responseBody . key "population" . _Integer
+                                return (Just (craftResponse r y (show population)))
                          else return Nothing
         Nothing  -> return Nothing
 
@@ -89,18 +89,21 @@ craftResponse r y p = let deaths = r ^?! responseBody . key "deaths" . _Number
                     in T.pack (
                         "Countries population: " <> commas p <> "\n"
                         <> ":skull_crossbones: - Deaths :\t" <> (commas . show) deaths
-                            <> " (**" <> (commas . show) diffDeaths <> "**)" <>"\n"
+                            <> " (**" <> formatNumber diffDeaths <> "**)" <>"\n"
                         <> ":biohazard: - Critical cases :\t"  <> (commas. show) critical
-                            <> " (**" <> (commas . show) diffCritical <> "**)" <>"\n"
+                            <> " (**" <> formatNumber diffCritical <> "**)" <>"\n"
                         <> ":calendar: - Infections today :\t" <> (commas. show) todayInfections
-                            <> " (**" <> (commas . show) diffInfections <> "**)" <>"\n"
+                            <> " (**" <> formatNumber diffInfections <> "**)" <>"\n"
                         <> ":nauseated_face: - All infections :\t" <> (commas. show) totalInfections
-                            <> " (**" <> (commas . show) diffTotalInfections <> "**)" <>"\n"
+                            <> " (**" <> formatNumber diffTotalInfections <> "**)" <>"\n"
                         <> ":face_vomiting: - Active infections :\t" <> (commas. show) activeInfections
-                            <> " (**" <> (commas . show) diffActiveInfections <> "**)" <>"\n"
+                            <> " (**" <> formatNumber diffActiveInfections <> "**)" <>"\n"
                         <> ":muscle: - Recovered :\t" <> (commas. show) recovered
                             <> " (**" <> (commas . show) percentageRecovered <> "%**)" <>"\n"
                         )
+                    where formatNumber n = if (n > 0)
+                                            then ("+"++) . commas . show $ n
+                                            else ("-"++) . commas . snd . splitAt (1) $ show n
 
 craftBasicResponse :: Response B.ByteString -> Text
 craftBasicResponse r = let deaths = commas. show $ r ^?! responseBody . key "deaths" . _Number
