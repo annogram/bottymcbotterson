@@ -2,12 +2,12 @@
 module Events (
     eventPool
     ) where
+import PongEvent        (pongCommand, pongResp)
+import CovidStatsEvent  (covidStatsCommand, getCovidInfo)
 import Data.List
 import Discord
 import Discord.Types
 import qualified Discord.Requests as R
-import PongEvent        (pongCommand, pongResp)
-import CovidStatsEvent  (covidStatsCommand, getCovidInfo)
 import qualified Data.Map.Lazy as M
 import qualified Data.Text as T
 
