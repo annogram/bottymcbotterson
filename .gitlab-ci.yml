@@ -22,6 +22,7 @@ build:
 
 deploy_staging:
   stage: deploy
+  image: registry.gitlab.com/gitlab-org/cloud-deploy:latest
   script:
     - "echo Deploying to staging server"
   environment:
