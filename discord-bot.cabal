@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 336eff10729e4cd9c2ad3301fb73c21ea9704ca29581c077cf2731260fa3f073
+-- hash: 017c43c8971f5538bd9dd6246456bac1301d06f6f3c9317d23017731e1c50b4a
 
 name:           discord-bot
 version:        0.1.0.0
@@ -28,6 +28,7 @@ source-repository head
 library
   exposed-modules:
       Lib
+      CommunityEvent
       CovidStatsEvent
       Events
       PongEvent
@@ -41,9 +42,11 @@ library
     , base >=4.7 && <5
     , bytestring
     , containers
+    , directory
     , discord-haskell
     , lens
     , lens-aeson
+    , random
     , split
     , text
     , unordered-containers

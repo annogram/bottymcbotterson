@@ -31,6 +31,8 @@ library:
   - containers
   - split
   - bytestring
+  - random
+  - directory
   - discord-haskell
   - aeson
   - lens
