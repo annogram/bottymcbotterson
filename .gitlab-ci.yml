@@ -1,4 +1,5 @@
 image: fpco/stack-build-small:lts-15.5
+
 variables:
   STACK_ROOT: "${CI_PROJECT_DIR}/.stack-root"
 
@@ -9,6 +10,7 @@ cache:
 
 stages:
   - build
+  - deploy
 
 build:
   stage: build
@@ -17,3 +19,14 @@ build:
   artifacts:
     paths:
       - build
+
+deploy_staging:
+  stage: deploy
+  script:
+    - "echo Deploying to staging server"
+  environment:
+    name: staging
+    url: www.example.com
+  only:
+    - master
+  when: manual

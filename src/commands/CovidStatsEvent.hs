@@ -67,7 +67,7 @@ getInfoForCountry c = do
                                 let countryCode = v ^. responseBody . key "countryInfo" . key "iso2" . _String
                                 p <- getWith headerOpt $ T.unpack $ "https://restcountries.eu/rest/v2/alpha/" <> countryCode
                                 let population = p ^?! responseBody . key "population" . _Integer
-                                return (Just (craftResponse r y (show population)))
+                                return $ Just (craftResponse r y $ show population)
                          else return Nothing
         Nothing  -> return Nothing
 
@@ -76,7 +76,7 @@ getInfo = do
     r <- getWith headerOpt "https://corona.lmao.ninja/all"
     let status = r ^. responseStatus . statusCode
     case status of 
-        200 -> return (Just (craftBasicResponse r))
+        200 -> return $ Just (craftBasicResponse r)
         otherwise -> return Nothing
 
 craftResponse :: Response B.ByteString -> Response B.ByteString -> String -> Text
@@ -93,7 +93,7 @@ craftResponse r y p = let deaths = r ^?! responseBody . key "deaths" . _Number
                           recovered = r ^?! responseBody . key "recovered" . _Double
                           percentageRecovered = (recovered / totalInfections) * 100
                     in T.pack (
-                        "Countries population: " <> commas p <> "\n"
+                        "Country's population: " <> commas p <> "\n"
                         <> ":skull_crossbones: - Deaths :\t" <> (commas . show) deaths
                             <> " (**" <> formatNumber diffDeaths <> "**)" <>"\n"
                         <> ":biohazard: - Critical cases :\t"  <> (commas. show) critical
@@ -107,7 +107,7 @@ craftResponse r y p = let deaths = r ^?! responseBody . key "deaths" . _Number
                         <> ":muscle: - Recovered :\t" <> (commas. show) recovered
                             <> " (**" <> (commas . show) percentageRecovered <> "%**)" <>"\n"
                         )
-                    where formatNumber n = if (n > 0)
+                    where formatNumber n = if (n >= 0)
                                             then ("+"++) . commas . show $ n
                                             else ("-"++) . commas . snd . splitAt (1) $ show n
 
