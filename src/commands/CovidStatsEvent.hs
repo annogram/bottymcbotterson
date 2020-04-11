@@ -2,6 +2,7 @@
 module CovidStatsEvent 
     ( getCovidInfo
     , covidStatsCommand
+    , covidDesc
     ) where
 import Data.Text        (Text)
 import Data.List        (intercalate)
@@ -18,6 +19,11 @@ import qualified Data.HashMap.Lazy as M
 
 covidStatsCommand :: Text
 covidStatsCommand = "/covid"
+
+covidDesc :: Text
+covidDesc = "/covid - Reports statistics on the covid-19 pandameic \n" 
+            <> "\tUsage: /covid - all stats \n"
+            <> "\tUsage: /covid {country} - countries statistics"
 
 -- Get information on the Covid-19 pandemic
 getCovidInfo :: DiscordHandle -> Event -> IO Bool
