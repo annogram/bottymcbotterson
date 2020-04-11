@@ -26,7 +26,7 @@ eventPool = M.fromList [ ("/help", helpEvent)
 
 -- Help commands
 helpCommands :: [T.Text]
-helpCommands =  [ "/helo - Get help message\n" <> "\tUsage: /help"
+helpCommands =  [ "/help - Get help message\n" <> "\tUsage: /help"
                 , pongDesc
                 , covidDesc
                 ]
