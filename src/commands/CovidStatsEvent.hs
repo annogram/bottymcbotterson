@@ -50,11 +50,11 @@ commas = reverse . intercalate "," . chunksOf (3) . reverse . fst . break (== '.
 getInfoForCountry :: Text -> IO (Maybe Text)
 getInfoForCountry c = do 
     let url = "https://corona.lmao.ninja/countries/" <> c
-    let yestUrl = "https://corona.lmao.ninja/yesterday/" <> c
+        yestUrl = "https://corona.lmao.ninja/yesterday/" <> c
     -- Get todays information
     r <- getWith headerOpt $ T.unpack url
     let status = r ^. responseStatus . statusCode
-    let today = case status of 
+        today = case status of 
                     200 -> Just (r)
                     otherwise -> Nothing
 

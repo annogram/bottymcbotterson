@@ -29,9 +29,14 @@ communityEvent handle (MessageCreate m) = do
 
 getRandomQuote :: IO T.Text
 getRandomQuote = do
-    gen <- getStdGen
+    gen <- newStdGen
     cwd <- getCurrentDirectory
-    x   <- getDirectoryContents $ cwd <> "\\res\\community-subtitles"
+    let baseDir = cwd <> "\\res\\community-subtitles"
+    x   <- listDirectory $ baseDir
     let (fileNo, nextGen) = randomR (0, length x) (gen)
-    let file = x !! fileNo
-    pure (T.pack file)
+        file = baseDir <> "\\" <> x !! fileNo
+    print file
+    pure . findQuote =<< readFile file
+
+findQuote :: String -> T.Text
+findQuote fileContent = T.pack fileContent
