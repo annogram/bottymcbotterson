@@ -2,8 +2,14 @@
 module Events (
     eventPool
     ) where
-import PongEvent        (pongCommand, pongResp)
-import CovidStatsEvent  (covidStatsCommand, getCovidInfo)
+import PongEvent        (pongCommand
+                        , pongResp
+                        , pongDesc
+                        )
+import CovidStatsEvent  (covidStatsCommand
+                        , getCovidInfo
+                        , covidDesc
+                        )
 import Data.List
 import Discord
 import Discord.Types
@@ -18,9 +24,18 @@ eventPool = M.fromList [ ("/help", helpEvent)
                        , (covidStatsCommand, getCovidInfo)
                        ]
 
+-- Help commands
+helpCommands :: [T.Text]
+helpCommands =  [ "/help - Get help message\n" <> "\tUsage: /help"
+                , pongDesc
+                , covidDesc
+                ]
+
 helpEvent :: DiscordHandle -> Event -> IO Bool
 helpEvent handle (MessageCreate m) = do
     let text = "Here are the commands you can run: \n" 
-                <> (T.unwords $ intersperse ("\n") . map (\x -> "`"  <> x <> "`") $ M.keys eventPool)
+                <> "```\n"
+                <> (foldr1 (\m acc -> acc <> "\n" <> m) $ helpCommands)
+                <> "```"
     _ <- restCall handle $ R.CreateMessage (messageChannel m) $ text
     return True
