@@ -35,7 +35,7 @@ helpEvent :: DiscordHandle -> Event -> IO Bool
 helpEvent handle (MessageCreate m) = do
     let text = "Here are the commands you can run: \n" 
                 <> "```\n"
-                <> (foldr1 (\m acc -> acc <> "\n" <> m) $ helpCommands)
+                <> (foldl1 (\acc m -> acc <> "\n" <> m) $ helpCommands)
                 <> "```"
     _ <- restCall handle $ R.CreateMessage (messageChannel m) $ text
     return True
