@@ -31,8 +31,8 @@ getCovidInfo handle (MessageCreate m) = do
     apiData <- covidBasic . T.words . messageText $ m
     case apiData of
         Just (d) -> do
-                     _ <- restCall handle $  R.CreateMessage (messageChannel m) $ d
-                     return True
+            _ <- restCall handle $  R.CreateMessage (messageChannel m) $ d
+            return True
         Nothing -> return False
 
 
@@ -60,15 +60,15 @@ getInfoForCountry c = do
 
     case today of
         Just (v) -> do
-                     y <- getWith headerOpt $ T.unpack yestUrl
-                     if y ^. responseStatus . statusCode == 200
-                         then do
-                                 -- Get countries population
-                                let countryCode = v ^. responseBody . key "countryInfo" . key "iso2" . _String
-                                p <- getWith headerOpt $ T.unpack $ "https://restcountries.eu/rest/v2/alpha/" <> countryCode
-                                let population = p ^?! responseBody . key "population" . _Integer
-                                return (Just (craftResponse r y (show population)))
-                         else return Nothing
+            y <- getWith headerOpt $ T.unpack yestUrl
+            if y ^. responseStatus . statusCode == 200
+                then do
+                    -- Get countries population
+                    let countryCode = v ^. responseBody . key "countryInfo" . key "iso2" . _String
+                    p <- getWith headerOpt $ T.unpack $ "https://restcountries.eu/rest/v2/alpha/" <> countryCode
+                    let population = p ^?! responseBody . key "population" . _Integer
+                    return (Just (craftResponse r y (show population)))
+                else return Nothing
         Nothing  -> return Nothing
 
 getInfo :: IO (Maybe Text)
@@ -107,7 +107,7 @@ craftResponse r y p = let deaths = r ^?! responseBody . key "deaths" . _Number
                         <> ":muscle: - Recovered :\t" <> (commas. show) recovered
                             <> " (**" <> (commas . show) percentageRecovered <> "%**)" <>"\n"
                         )
-                    where formatNumber n = if (n > 0)
+                    where formatNumber n = if (n >= 0)
                                             then ("+"++) . commas . show $ n
                                             else ("-"++) . commas . snd . splitAt (1) $ show n
 
