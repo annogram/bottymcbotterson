@@ -34,11 +34,11 @@ getRandomQuote = do
     gen <- newStdGen
     cwd <- getCurrentDirectory
     print cwd
-    let baseDir = cwd <> "\\res\\community-subtitles"
+    let baseDir = cwd <> "/res/community-subtitles"
     x   <- listDirectory $ baseDir
     let (fileNo, nextGen) = randomR (0, length x) (gen)
         fileName = x !! fileNo
-        file = baseDir <> "\\" <> fileName
+        file = baseDir <> "/" <> fileName
     print $ "Getting a quote from: " <> (fst . break (== '.') $ fileName)
     quote <- pure . findQuote (nextGen) =<< readFile file
     return ("> Quote from: " <> (T.pack . fst . break (== '.') $ fileName) <> "\n\n"
