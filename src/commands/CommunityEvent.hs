@@ -34,6 +34,7 @@ getRandomQuote :: IO T.Text
 getRandomQuote = do
     gen <- newStdGen
     cwd <- getDataDir
+    print cwd
     let baseDir = cwd <> "\\res\\community-subtitles"
     x   <- listDirectory $ baseDir
     let (fileNo, nextGen) = randomR (0, length x) (gen)
