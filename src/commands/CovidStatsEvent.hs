@@ -50,25 +50,25 @@ commas = reverse . intercalate "," . chunksOf (3) . reverse . fst . break (== '.
 getInfoForCountry :: Text -> IO (Maybe Text)
 getInfoForCountry c = do 
     let url = "https://corona.lmao.ninja/countries/" <> c
-    let yestUrl = "https://corona.lmao.ninja/yesterday/" <> c
+        yestUrl = "https://corona.lmao.ninja/yesterday/" <> c
     -- Get todays information
     r <- getWith headerOpt $ T.unpack url
     let status = r ^. responseStatus . statusCode
-    let today = case status of 
+        today = case status of 
                     200 -> Just (r)
                     otherwise -> Nothing
 
     case today of
         Just (v) -> do
-                     y <- getWith headerOpt $ T.unpack yestUrl
-                     if y ^. responseStatus . statusCode == 200
-                         then do
-                                 -- Get countries population
-                                let countryCode = v ^. responseBody . key "countryInfo" . key "iso2" . _String
-                                p <- getWith headerOpt $ T.unpack $ "https://restcountries.eu/rest/v2/alpha/" <> countryCode
-                                let population = p ^?! responseBody . key "population" . _Integer
-                                return $ Just (craftResponse r y $ show population)
-                         else return Nothing
+            y <- getWith headerOpt $ T.unpack yestUrl
+            if y ^. responseStatus . statusCode == 200
+                then do
+                    -- Get countries population
+                    let countryCode = v ^. responseBody . key "countryInfo" . key "iso2" . _String
+                    p <- getWith headerOpt $ T.unpack $ "https://restcountries.eu/rest/v2/alpha/" <> countryCode
+                    let population = p ^?! responseBody . key "population" . _Integer
+                    return (Just (craftResponse r y (show population)))
+                else return Nothing
         Nothing  -> return Nothing
 
 getInfo :: IO (Maybe Text)

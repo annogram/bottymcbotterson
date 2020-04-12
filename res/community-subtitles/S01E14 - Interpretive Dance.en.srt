@@ -1,0 +1,1735 @@
+1
+00:00:03,219 --> 00:00:08,634
+Before we start, I'd like to have a
+preliminary powwow, or prelimi-wow,
+
+2
+00:00:08,635 --> 00:00:11,570
+about what I'm calling
+our library's back door conundrum.
+
+3
+00:00:11,972 --> 00:00:13,337
+Sounds like a porno
+with Kate Winslet.
+
+4
+00:00:13,540 --> 00:00:14,507
+Abed, ew.
+
+5
+00:00:15,542 --> 00:00:17,407
+The door on that side
+is locked after 5,
+
+6
+00:00:17,611 --> 00:00:19,670
+which means that most us have
+to walk all the way around.
+
+7
+00:00:19,880 --> 00:00:21,780
+Now if we were to move
+our meetings to 4:30...
+
+8
+00:00:21,982 --> 00:00:23,506
+No.
+
+9
+00:00:25,252 --> 00:00:27,618
+I have a regular class at that time.
+
+10
+00:00:27,821 --> 00:00:30,085
+It's like Math
+or other regular classes.
+
+11
+00:00:30,290 --> 00:00:32,690
+Yeah. I have something
+unimportant that can't ever move.
+
+12
+00:00:32,893 --> 00:00:36,021
+Well, maybe one of us could stand by
+the back door and let the rest in?
+
+13
+00:00:36,229 --> 00:00:38,129
+Mm. I nominate Pierce.
+Where is he?
+
+14
+00:00:38,331 --> 00:00:39,958
+I have not seen him around all day.
+
+15
+00:00:40,467 --> 00:00:41,695
+I haven't either.
+
+16
+00:00:42,969 --> 00:00:44,129
+Has anyone called him?
+I did.
+
+17
+00:00:44,337 --> 00:00:46,134
+Several times, actually.
+But he never returned my calls.
+
+18
+00:00:46,339 --> 00:00:48,330
+Oh, no.
+
+19
+00:00:48,675 --> 00:00:50,939
+Oh. The last thing I said to him
+was, "Suck it."
+
+20
+00:00:51,144 --> 00:00:52,634
+Me too.
+Good morning.
+
+21
+00:00:52,846 --> 00:00:54,370
+Ha-ha-ha.
+Yes.
+
+22
+00:00:54,581 --> 00:00:56,378
+Oh, thank God.
+Whew.
+
+23
+00:00:56,583 --> 00:00:58,175
+You thought I was dead, didn't you?
+
+24
+00:00:58,385 --> 00:00:59,750
+No.
+I did.
+
+25
+00:00:59,953 --> 00:01:02,080
+Do you people have any idea
+how emasculating that is?
+
+26
+00:01:02,656 --> 00:01:03,645
+I'm not Mickey Rooney.
+
+27
+00:01:03,857 --> 00:01:06,018
+You don't have to cross your
+fingers to see if I'll show up.
+
+28
+00:01:06,226 --> 00:01:09,923
+You know, when I was 30, people used
+to wish that I was dead to my face.
+
+29
+00:01:10,497 --> 00:01:11,589
+That's called respect.
+
+30
+00:01:11,798 --> 00:01:14,824
+Mm. Who is the lucky brunette?
+
+31
+00:01:15,035 --> 00:01:17,162
+Last name Beeswax,
+first name Nunnuyuh.
+
+32
+00:01:17,370 --> 00:01:18,962
+Oh, my third wife was biracial.
+
+33
+00:01:20,340 --> 00:01:22,934
+Stop it.
+I am trying to keep you out of trouble.
+
+34
+00:01:23,143 --> 00:01:25,270
+What if the next girl saw these?
+Well, then
+
+35
+00:01:25,479 --> 00:01:26,468
+she would know it was hers.
+
+36
+00:01:28,148 --> 00:01:31,083
+Jeff, you're sleeping with a woman
+you already slept with?
+
+37
+00:01:31,284 --> 00:01:34,447
+Can't I be the friend in the group whose
+trademark is his well-defined boundaries?
+
+38
+00:01:34,654 --> 00:01:38,522
+Like Privacy Smurf, Discreet Bear
+or Confidentiality Spice?
+
+39
+00:01:38,725 --> 00:01:41,819
+Why would you keep her a secret?
+Don't you want us to meet her?
+
+40
+00:01:42,028 --> 00:01:44,326
+We have an agreement
+to keep it low-key.
+
+41
+00:01:44,831 --> 00:01:46,423
+That's ridiculous.
+Obviously, it's a guy.
+
+42
+00:01:46,633 --> 00:01:48,726
+You're wrong, Pierce.
+It's two guys.
+
+43
+00:01:48,935 --> 00:01:50,960
+Sometimes I do wish you were dead.
+
+44
+00:01:51,638 --> 00:01:53,003
+Thank you.
+
+45
+00:01:54,000 --> 00:01:57,074
+Subtitles downloaded from Podnapisi.NET
+
+46
+00:02:01,481 --> 00:02:04,279
+Hey, what's up, man? Boo!
+
+47
+00:02:04,484 --> 00:02:05,473
+Hey, what's up, J-Dog?
+
+48
+00:02:07,521 --> 00:02:09,182
+Yeah. Ha-ha-ha.
+
+49
+00:02:09,389 --> 00:02:10,981
+Hey, what's up, man? What's up?
+
+50
+00:02:21,334 --> 00:02:22,323
+Sorry I'm late.
+
+51
+00:02:25,972 --> 00:02:27,496
+Uh, and step into place.
+
+52
+00:02:27,707 --> 00:02:31,803
+Six, seven, eight, and reach.
+Two, three, four, pose.
+
+53
+00:02:32,012 --> 00:02:33,070
+Reach back and arm.
+
+54
+00:02:34,681 --> 00:02:36,171
+Professor Slater, quick question.
+
+55
+00:02:36,383 --> 00:02:38,317
+You know the answer.
+I don't date students.
+
+56
+00:02:38,518 --> 00:02:40,748
+Even if you are no longer
+in my Statistics class.
+
+57
+00:02:40,954 --> 00:02:43,514
+I'm actually kind of seeing someone
+right now, thank you very much.
+
+58
+00:02:43,723 --> 00:02:46,214
+Really? How's that going?
+Fine for now. She's smart, pretty.
+
+59
+00:02:46,426 --> 00:02:50,089
+But sometimes I feel like she's just waiting
+for me to stop talking and take off my pants.
+
+60
+00:02:51,264 --> 00:02:53,027
+She is.
+
+61
+00:02:56,403 --> 00:02:58,268
+I've never been
+someone's dirty little secret.
+
+62
+00:02:58,471 --> 00:03:00,132
+I've never had a dirty secret.
+
+63
+00:03:00,340 --> 00:03:01,364
+It's so unprofessional.
+
+64
+00:03:01,575 --> 00:03:03,600
+But the sneaking does make
+the sex 38 percent hotter.
+
+65
+00:03:03,810 --> 00:03:06,370
+Wow, you do like statistics,
+don't you?
+
+66
+00:03:09,449 --> 00:03:11,610
+Hey, midterms and whatever.
+Chalk.
+
+67
+00:03:11,818 --> 00:03:13,718
+Professor Slater,
+there's that transcript you wanted.
+
+68
+00:03:13,920 --> 00:03:18,118
+Jeff, I didn't expect to see you here.
+Hopefully I'm not interrupting.
+
+69
+00:03:20,727 --> 00:03:22,217
+You know, we laugh,
+
+70
+00:03:22,429 --> 00:03:25,159
+but the fact is, student-teacher
+relationships do happen.
+
+71
+00:03:25,365 --> 00:03:28,266
+And they are a magnet for lawsuits,
+so we do stay vigilant.
+
+72
+00:03:28,468 --> 00:03:30,959
+In fact, physically attractive
+students and faculty
+
+73
+00:03:31,171 --> 00:03:33,230
+are actually placed on a watch list.
+
+74
+00:03:33,440 --> 00:03:36,102
+And are ranked by their potential
+to incite fraternization.
+
+75
+00:03:36,309 --> 00:03:37,776
+You rank people
+by how hot they are?
+
+76
+00:03:37,978 --> 00:03:40,037
+You got it, number two.
+
+77
+00:03:40,247 --> 00:03:42,647
+Dean Pelton.
+Yes, Professor Seven... Uh, Slater?
+
+78
+00:03:42,849 --> 00:03:45,511
+I'll return this tomorrow.
+Okay, then.
+
+79
+00:03:45,719 --> 00:03:47,380
+You guys be extra careful now.
+
+80
+00:03:47,587 --> 00:03:50,420
+Two people of your rankings
+in this small a room,
+
+81
+00:03:50,624 --> 00:03:53,092
+with this type of lighting,
+and his upper body
+
+82
+00:03:53,293 --> 00:03:56,160
+and what her heels and hemline
+are doing to enhance
+
+83
+00:03:56,363 --> 00:03:58,957
+what were already
+quite a few favors from God,
+
+84
+00:03:59,165 --> 00:04:02,134
+it's all the more important
+to keep it tasteful. Heh.
+
+85
+00:04:11,411 --> 00:04:13,402
+I think he might have ruined...
+It's dead.
+
+86
+00:04:14,814 --> 00:04:17,112
+Two, three, four,
+five, six, seven, eight.
+
+87
+00:04:17,317 --> 00:04:19,945
+Arm, head, and pose.
+
+88
+00:04:20,153 --> 00:04:23,122
+I can't wait for the recital.
+You were all wonderful.
+
+89
+00:04:23,323 --> 00:04:26,622
+Especially you, Troy.
+Thank you, Madame LeClair.
+
+90
+00:04:27,927 --> 00:04:31,522
+And if any of you mention
+my dancing outside of class,
+
+91
+00:04:31,731 --> 00:04:36,031
+I will break off your legs and use
+them to smash in your friends' cars.
+
+92
+00:04:38,505 --> 00:04:39,870
+Oh!
+Huh!
+
+93
+00:04:43,243 --> 00:04:45,006
+Oh, my God.
+
+94
+00:04:46,680 --> 00:04:49,615
+Troy, since when have you taken
+modern dance?
+
+95
+00:04:49,816 --> 00:04:52,717
+Since last semester. Coach told me
+it would help with my coordination.
+
+96
+00:04:52,919 --> 00:04:56,446
+And I fell in love with it,
+in a very straight way.
+
+97
+00:04:56,923 --> 00:04:58,151
+I know it's tempting
+to sneak a peek,
+
+98
+00:04:58,358 --> 00:05:00,849
+but I'm gonna need for you to keep
+your eyes up here.
+
+99
+00:05:01,061 --> 00:05:03,427
+I should have never dismissed you
+as a shallow jock.
+
+100
+00:05:03,630 --> 00:05:06,121
+Then again, we haven't really spent
+much time together.
+
+101
+00:05:06,333 --> 00:05:08,324
+That's because you don't
+play football or have fun.
+
+102
+00:05:08,535 --> 00:05:11,333
+I have fun tap dancing.
+I started last semester too.
+
+103
+00:05:11,538 --> 00:05:13,369
+It was always something
+I wanted to do,
+
+104
+00:05:13,573 --> 00:05:16,440
+but it was too embarrassing,
+so I never told anyone.
+
+105
+00:05:16,643 --> 00:05:18,201
+Same here.
+
+106
+00:05:18,411 --> 00:05:22,245
+Britta, nobody can know about this.
+Troy, who are we kidding?
+
+107
+00:05:22,449 --> 00:05:25,111
+Look at how much time and energy
+we're putting into hiding something
+
+108
+00:05:25,318 --> 00:05:27,980
+that we're passionate about.
+We are leading a double life.
+
+109
+00:05:28,188 --> 00:05:30,918
+I am spending a lot of money
+on breakaway clothing.
+
+110
+00:05:31,124 --> 00:05:34,116
+We should look at this
+as an opportunity to come clean.
+
+111
+00:05:34,327 --> 00:05:36,261
+Are you saying we tell the group?
+Together?
+
+112
+00:05:36,463 --> 00:05:39,261
+We could invite them
+to the dance recital on Friday.
+
+113
+00:05:41,868 --> 00:05:44,962
+Man, I don't know.
+Let me think about it.
+
+114
+00:05:49,376 --> 00:05:52,743
+Okay, let's do this. Ahem!
+Sorry.
+
+115
+00:05:54,514 --> 00:05:55,572
+Mr. Winger.
+
+116
+00:05:55,782 --> 00:05:58,751
+Would you come to my office?
+We never finished our intercourse.
+
+117
+00:06:00,019 --> 00:06:01,316
+I have study group right now.
+
+118
+00:06:01,521 --> 00:06:04,354
+And nobody uses "intercourse"
+to mean anything other than sex.
+
+119
+00:06:05,425 --> 00:06:06,983
+Look, this is a wall of windows.
+
+120
+00:06:07,193 --> 00:06:09,354
+My study group's behind it.
+I know.
+
+121
+00:06:09,562 --> 00:06:11,928
+Look, as soon as we touch,
+the blinds will open,
+
+122
+00:06:12,132 --> 00:06:14,965
+and six annoying but lovable misfits
+will be staring at us.
+
+123
+00:06:15,168 --> 00:06:16,396
+Come on, what are the odds?
+
+124
+00:06:18,538 --> 00:06:19,971
+Fine.
+
+125
+00:06:27,113 --> 00:06:28,137
+Now, was that so bad?
+
+126
+00:06:29,416 --> 00:06:32,647
+Hey, could you open the back door?
+
+127
+00:06:40,827 --> 00:06:44,319
+You all remember Michelle Slater,
+my professor from last semester.
+
+128
+00:06:44,898 --> 00:06:47,332
+As most of you may have realized
+by now,
+
+129
+00:06:47,534 --> 00:06:50,094
+she's the woman
+I've been seeing lately.
+
+130
+00:06:51,204 --> 00:06:53,263
+Why are they looking at me
+like I'm a zoo animal?
+
+131
+00:06:53,473 --> 00:06:55,031
+Jeff acts
+as sort of the dad of the group.
+
+132
+00:06:55,241 --> 00:06:57,072
+So, emotionally, this is like
+being told you're our new mom.
+
+133
+00:06:57,710 --> 00:07:00,304
+But you know
+it's nothing like that, right?
+
+134
+00:07:00,513 --> 00:07:01,844
+Absolutely. You cook macaroni?
+
+135
+00:07:02,048 --> 00:07:03,345
+I have.
+Macaroni's my favorite.
+
+136
+00:07:03,550 --> 00:07:06,417
+The important thing is
+we all understand
+
+137
+00:07:06,619 --> 00:07:10,680
+Professor Slater and I need this
+to be our little secret.
+
+138
+00:07:10,890 --> 00:07:12,585
+Everyone understand that?
+Yes.
+
+139
+00:07:12,792 --> 00:07:14,851
+Hey, my macaroni noodle
+is so good.
+
+140
+00:07:15,061 --> 00:07:17,029
+Sure, sure.
+The pepper jack,
+
+141
+00:07:17,230 --> 00:07:19,095
+and you bake it.
+See? All good.
+
+142
+00:07:19,299 --> 00:07:21,927
+Well, thank you, everyone.
+I appreciate it.
+
+143
+00:07:22,135 --> 00:07:23,602
+I should get going.
+Yeah.
+
+144
+00:07:23,803 --> 00:07:24,770
+Mm.
+Ooh.
+
+145
+00:07:29,909 --> 00:07:32,002
+Bye.
+Bye.
+
+146
+00:07:33,012 --> 00:07:36,641
+Well, Jeff, you've taken a big step
+in knocking down the barriers
+
+147
+00:07:36,850 --> 00:07:40,286
+between students and teachers.
+It's like Rosa Parks.
+
+148
+00:07:40,787 --> 00:07:42,880
+I don't think it's like that.
+No, it's just like that.
+
+149
+00:07:43,089 --> 00:07:46,684
+I feel if you need to explain it,
+it's not just like that.
+
+150
+00:07:47,427 --> 00:07:49,292
+Is your heart gonna be okay
+with this?
+
+151
+00:07:49,496 --> 00:07:53,728
+I will try to find the tools to survive.
+Okay.
+
+152
+00:07:54,067 --> 00:07:55,796
+Hey, everybody,
+speaking of secrets,
+
+153
+00:07:56,002 --> 00:07:57,162
+Troy and I have something
+
+154
+00:07:57,370 --> 00:07:58,997
+that we would like to announce.
+Aah!
+
+155
+00:07:59,205 --> 00:08:01,730
+No, no. There is a dance recital
+on Friday,
+
+156
+00:08:01,941 --> 00:08:03,806
+and I would be honored
+if you guys would attend.
+
+157
+00:08:04,010 --> 00:08:06,376
+Because since last semester, I
+
+158
+00:08:07,881 --> 00:08:09,644
+have been taking a tap class.
+
+159
+00:08:12,118 --> 00:08:13,847
+That's funny.
+
+160
+00:08:14,053 --> 00:08:16,044
+Well, I don't know how funny it is.
+
+161
+00:08:16,256 --> 00:08:20,522
+Come on, we're not making fun of you,
+but, obviously, you kept it a secret
+
+162
+00:08:20,727 --> 00:08:22,592
+because you saw the irony too.
+Irony?
+
+163
+00:08:22,795 --> 00:08:25,195
+Well, you're not a typically
+vulnerable or feminine person.
+
+164
+00:08:25,398 --> 00:08:28,026
+And the act of dancing is considered
+both vulnerable and feminine.
+
+165
+00:08:28,568 --> 00:08:31,696
+I disagree. What about Fred Astaire?
+What about Baryshnikov?
+
+166
+00:08:31,905 --> 00:08:34,703
+Yeah, I guess.
+There are exceptions to the rule.
+
+167
+00:08:34,908 --> 00:08:37,274
+<i>But even when Jerry Rice went
+on Dancing With the Stars...</i>
+
+168
+00:08:37,477 --> 00:08:40,105
+Jerry Rice? Oh, my God.
+
+169
+00:08:40,313 --> 00:08:41,610
+Oh, I liked him.
+
+170
+00:08:42,882 --> 00:08:45,783
+Troy, what's your secret?
+
+171
+00:08:47,220 --> 00:08:48,244
+Um...
+
+172
+00:08:50,056 --> 00:08:53,457
+M-my secret is that
+
+173
+00:08:53,993 --> 00:08:55,620
+I knew Britta's secret.
+
+174
+00:08:57,163 --> 00:08:59,859
+Yeah. I saw her in her dance outfit
+and she looked ridiculous.
+
+175
+00:09:00,066 --> 00:09:04,127
+So I helped her protect her shame.
+You know, I'm just glad she's out now.
+
+176
+00:09:04,337 --> 00:09:05,634
+Bravo, Britta.
+Thanks.
+
+177
+00:09:05,838 --> 00:09:07,897
+Mr. Winger, there you are.
+
+178
+00:09:08,107 --> 00:09:10,974
+Just got word of your relationship
+with Professor Slater.
+
+179
+00:09:12,145 --> 00:09:14,943
+I'd like to see both of you in my office
+in half an hour.
+
+180
+00:09:15,148 --> 00:09:17,548
+None of you left the room.
+How is that even possible?
+
+181
+00:09:17,750 --> 00:09:19,980
+Well, for one thing,
+it's all over Twitter.
+
+182
+00:09:24,190 --> 00:09:27,057
+Britta in a tutu. Can you imagine?
+Ha-ha-ha.
+
+183
+00:09:27,260 --> 00:09:28,989
+Hey. What the hell?
+
+184
+00:09:29,195 --> 00:09:31,789
+I thought we were supposed
+to come out to the group together.
+
+185
+00:09:31,998 --> 00:09:34,466
+Yeah. I changed my mind.
+
+186
+00:09:34,667 --> 00:09:36,601
+Well, they're gonna find out
+that you dance at the recital.
+
+187
+00:09:36,803 --> 00:09:39,499
+I'm not gonna be in the recital.
+I'm dropping the class.
+
+188
+00:09:39,706 --> 00:09:43,073
+Oh, my God, how can you do this
+to me? I'm so disappointed in you.
+
+189
+00:09:43,276 --> 00:09:46,370
+Hey, you don't get to talk to me
+like that. You are not Shirley.
+
+190
+00:09:46,579 --> 00:09:48,137
+And Shirley's not my mom.
+
+191
+00:09:48,881 --> 00:09:50,974
+Britta, it's not like
+we were in the same boat.
+
+192
+00:09:51,184 --> 00:09:52,708
+Girls are supposed to dance.
+
+193
+00:09:52,919 --> 00:09:55,149
+That's why God gave them parts
+that jiggle.
+
+194
+00:09:55,355 --> 00:09:59,155
+But I'd be going from starting quarterback
+to a guy that twirls around in tights.
+
+195
+00:09:59,359 --> 00:10:02,192
+I've got way more to lose getting
+up on that stage because I'm a man.
+
+196
+00:10:02,395 --> 00:10:03,487
+Well, guess what?
+
+197
+00:10:03,696 --> 00:10:06,995
+A real man doesn't bail
+on his friends, or on himself.
+
+198
+00:10:08,701 --> 00:10:11,761
+You're a dancer, Troy.
+It's who you are.
+
+199
+00:10:13,172 --> 00:10:15,037
+Not anymore.
+
+200
+00:10:17,310 --> 00:10:18,436
+Excuse me.
+Whoa.
+
+201
+00:10:19,846 --> 00:10:21,711
+Come on.
+
+202
+00:10:22,915 --> 00:10:24,246
+Upset about Jeff?
+
+203
+00:10:24,450 --> 00:10:27,180
+No, I am upset about
+
+204
+00:10:27,754 --> 00:10:29,517
+something I can't talk about.
+
+205
+00:10:29,722 --> 00:10:33,453
+We could talk about anything.
+Politics, medicine, Jeff.
+
+206
+00:10:33,660 --> 00:10:36,288
+Okay, uh, did you hear that the
+Shroud of Turin is actually...?
+
+207
+00:10:36,496 --> 00:10:39,056
+Here's the thing about Jeff.
+Wow.
+
+208
+00:10:39,599 --> 00:10:43,035
+Chasing after you made him a better person
+because you always call him on his stuff.
+
+209
+00:10:43,236 --> 00:10:45,864
+All this time, you've been warming
+him up and stirring in sweetener,
+
+210
+00:10:46,072 --> 00:10:47,699
+and making him just right.
+
+211
+00:10:47,907 --> 00:10:49,534
+And sure,
+you weren't ready to take a sip yet.
+
+212
+00:10:49,742 --> 00:10:51,607
+But it didn't mean you want somebody
+to snatch him off the counter,
+
+213
+00:10:51,811 --> 00:10:52,903
+guzzle him down
+in front of you.
+
+214
+00:10:53,112 --> 00:10:57,048
+Shirley, I did not warm Jeff up.
+Nobody ever will.
+
+215
+00:10:57,250 --> 00:11:00,048
+Do you think Professor Slater
+is getting flowers right now?
+
+216
+00:11:00,253 --> 00:11:03,154
+Do you think they are gonna go
+to the movies and hold hands?
+
+217
+00:11:03,690 --> 00:11:05,658
+Visit her parents? No.
+
+218
+00:11:05,858 --> 00:11:08,156
+The only thing keeping them going
+was the thrill of the secrecy.
+
+219
+00:11:08,361 --> 00:11:11,387
+And now that it is out, it is over.
+Believe me.
+
+220
+00:11:12,598 --> 00:11:16,398
+Can... Can I just ask,
+as a divorced, black housewife?
+
+221
+00:11:16,602 --> 00:11:20,163
+What part of being a single, white
+slacker makes you people so jaded?
+
+222
+00:11:20,373 --> 00:11:24,207
+Ooh. "You people"?
+What do you mean, "you people"?
+
+223
+00:11:24,410 --> 00:11:26,037
+I cannot believe I got to say that.
+
+224
+00:11:26,446 --> 00:11:28,607
+Heh-heh.
+It's the little things, isn't it?
+
+225
+00:11:28,815 --> 00:11:31,340
+Okay, well,
+now that your secret is out there,
+
+226
+00:11:31,551 --> 00:11:34,281
+I'm just gonna talk you through this
+teacher-student relationship form,
+
+227
+00:11:34,487 --> 00:11:37,354
+and then we can get you two
+on your very attractive way.
+
+228
+00:11:37,557 --> 00:11:39,252
+We haven't even admitted
+to being a couple.
+
+229
+00:11:39,459 --> 00:11:42,189
+In fact, this is all based on hearsay.
+Worse than hearsay.
+
+230
+00:11:42,395 --> 00:11:45,057
+Pierce's Twitter account,
+in which he says he's 47,
+
+231
+00:11:45,264 --> 00:11:47,357
+and teaches
+a women's-only Pilates class.
+
+232
+00:11:47,567 --> 00:11:49,558
+Jeff, it's okay. It's out.
+
+233
+00:11:49,769 --> 00:11:51,600
+And you know what?
+It doesn't bother me.
+
+234
+00:11:51,804 --> 00:11:53,601
+I'm happy.
+Sweet.
+
+235
+00:11:54,640 --> 00:11:58,542
+Mm. First question.
+How long have you been doing it?
+
+236
+00:11:58,978 --> 00:12:02,709
+Oh, not "it." I mean, this, dating.
+
+237
+00:12:02,915 --> 00:12:04,883
+A few weeks.
+Mm-hm.
+
+238
+00:12:05,084 --> 00:12:08,076
+And how long
+have you been doing it?
+
+239
+00:12:08,654 --> 00:12:11,885
+We don't have to answer that.
+Oh, it's... Hmm?
+
+240
+00:12:12,091 --> 00:12:14,992
+Now, this is just hypothetical.
+
+241
+00:12:15,194 --> 00:12:18,061
+Might you ever consider spending
+the night with a third person?
+
+242
+00:12:18,264 --> 00:12:21,495
+That's not on there.
+Uh...
+
+243
+00:12:22,034 --> 00:12:23,228
+Wow, it's on there.
+
+244
+00:12:23,436 --> 00:12:26,098
+Just exploring your options,
+obviously. Heh-heh-heh.
+
+245
+00:12:26,606 --> 00:12:29,439
+No agenda. I'll put TBD.
+
+246
+00:12:29,642 --> 00:12:32,167
+Would you describe yourself
+as boyfriend and girlfriend?
+
+247
+00:12:32,378 --> 00:12:33,868
+Yes.
+Eh...
+
+248
+00:12:34,080 --> 00:12:35,809
+What?
+Oh, boy.
+
+249
+00:12:36,015 --> 00:12:38,142
+It's semantics, really, isn't it?
+
+250
+00:12:39,552 --> 00:12:41,884
+We've slept together every night
+for the last three weeks.
+
+251
+00:12:42,088 --> 00:12:45,319
+How would you describe me?
+The best friend ever.
+
+252
+00:12:45,625 --> 00:12:46,922
+Oh.
+
+253
+00:12:47,326 --> 00:12:50,784
+Well, uh... I guess
+I've had the wrong idea about us.
+
+254
+00:12:51,364 --> 00:12:56,324
+You know what, this is good.
+I'd be better off dating, um, an adult.
+
+255
+00:12:56,536 --> 00:12:58,265
+See you around.
+Michelle.
+
+256
+00:12:59,605 --> 00:13:01,436
+Rowr.
+
+257
+00:13:03,776 --> 00:13:05,141
+I'll get the breakup form.
+
+258
+00:13:12,218 --> 00:13:15,051
+I got freaked out
+by that boyfriend label.
+
+259
+00:13:15,354 --> 00:13:18,118
+I'm afraid of commitment.
+
+260
+00:13:18,324 --> 00:13:19,689
+How original.
+Look,
+
+261
+00:13:19,892 --> 00:13:21,120
+the biggest truths
+aren't original.
+
+262
+00:13:21,327 --> 00:13:24,490
+Truth is ketchup, it's Jim Belushi.
+
+263
+00:13:24,697 --> 00:13:27,564
+Its job isn't to blow our minds,
+it's to be within reach.
+
+264
+00:13:27,767 --> 00:13:31,134
+So the truth is, I get claustrophobic
+when things get official.
+
+265
+00:13:31,337 --> 00:13:33,305
+You're acting like
+I'm a Venus flytrap.
+
+266
+00:13:33,506 --> 00:13:35,565
+I didn't want or need more
+than what we were doing.
+
+267
+00:13:35,775 --> 00:13:37,640
+Let's get back to it.
+Should I get the door?
+
+268
+00:13:37,844 --> 00:13:39,744
+I can't now because
+you went to the friend place.
+
+269
+00:13:39,946 --> 00:13:41,811
+That's you getting official, not me.
+
+270
+00:13:42,014 --> 00:13:44,380
+Because unless there's something
+I need to know about the lunch lady,
+
+271
+00:13:44,584 --> 00:13:47,985
+or that blond in your Spanish class with
+the infinite supply of leather jackets,
+
+272
+00:13:48,187 --> 00:13:50,212
+somewhere between
+our ninth and 11 th slumber party,
+
+273
+00:13:50,423 --> 00:13:53,551
+statistically speaking, most people
+would call us more than pals.
+
+274
+00:13:53,759 --> 00:13:56,990
+Yeah, but soon as you say it,
+it can get complicated and messy.
+
+275
+00:13:57,196 --> 00:13:59,221
+How?
+Because when you say it,
+
+276
+00:13:59,432 --> 00:14:01,263
+later on,
+you might have to unsay it.
+
+277
+00:14:01,467 --> 00:14:04,163
+Whoopee flipping ding, Winger.
+It happens 50 million times a day.
+
+278
+00:14:04,370 --> 00:14:06,600
+It's the Jim Belushi
+of sexual commitments.
+
+279
+00:14:06,806 --> 00:14:09,866
+It barely means anything, and it
+grows on what's there over time.
+
+280
+00:14:10,076 --> 00:14:12,670
+Wow, that guy is really taking a
+pounding in this conversation.
+
+281
+00:14:13,779 --> 00:14:15,371
+I'll see you around, Jeff.
+
+282
+00:14:24,357 --> 00:14:25,619
+I really liked what we were doing.
+
+283
+00:14:25,825 --> 00:14:29,818
+And if the ratio of work to pleasure
+can really stay at that same level,
+
+284
+00:14:30,029 --> 00:14:32,827
+I don't care what it's called,
+I'll do it.
+
+285
+00:14:33,032 --> 00:14:34,659
+Let's do it.
+
+286
+00:14:42,675 --> 00:14:44,074
+Okay.
+
+287
+00:14:47,613 --> 00:14:49,046
+Okay.
+
+288
+00:14:57,857 --> 00:15:00,018
+Oh. That's a big crowd
+out there. Heh.
+
+289
+00:15:00,226 --> 00:15:02,421
+Abed's really good at inviting people.
+
+290
+00:15:02,628 --> 00:15:05,563
+We're all here to support you.
+Jeff even brought his girlfriend.
+
+291
+00:15:05,765 --> 00:15:09,257
+Oh, she's his girlfriend now?
+Can't wait till he hears about it.
+
+292
+00:15:09,468 --> 00:15:11,993
+Oh, he knows. They even had to
+file paperwork with the dean.
+
+293
+00:15:12,204 --> 00:15:13,694
+It's pretty serious.
+
+294
+00:15:13,906 --> 00:15:16,204
+Our little Jeff's growing up. Ha.
+
+295
+00:15:17,677 --> 00:15:19,508
+Oh...
+
+296
+00:15:19,712 --> 00:15:21,077
+Break a leg, Britta.
+
+297
+00:15:21,981 --> 00:15:24,950
+I have no idea how someone could do
+what you're about to do. Heh-heh.
+
+298
+00:15:29,221 --> 00:15:31,314
+I brought Goobers.
+Anybody want a Goober?
+
+299
+00:15:31,524 --> 00:15:32,923
+Get them while they're goobie.
+
+300
+00:15:34,327 --> 00:15:36,295
+Yeah.
+Showtime.
+
+301
+00:15:39,632 --> 00:15:42,123
+Well, this is already ridiculous.
+Shh.
+
+302
+00:15:46,172 --> 00:15:48,333
+"Tea for Two"? There...
+There's five people.
+
+303
+00:15:48,541 --> 00:15:50,133
+Shh!
+
+304
+00:15:55,681 --> 00:15:57,376
+Good Lord.
+
+305
+00:16:01,253 --> 00:16:03,118
+Is she a water pot or a tea kettle?
+Shh.
+
+306
+00:16:10,496 --> 00:16:12,225
+Any of you think the flowers
+are dying from the tea?
+
+307
+00:16:12,431 --> 00:16:13,955
+Shh!
+
+308
+00:16:14,166 --> 00:16:15,292
+Everyone can hear you.
+
+309
+00:16:35,221 --> 00:16:36,916
+Britta.
+
+310
+00:16:43,562 --> 00:16:44,551
+Water it.
+
+311
+00:16:45,331 --> 00:16:48,061
+What's going on?
+So embarrassing.
+
+312
+00:16:56,042 --> 00:16:57,407
+Oh, plot twist.
+
+313
+00:16:59,178 --> 00:17:02,045
+Easy girl. There we go.
+Uh...
+
+314
+00:17:02,381 --> 00:17:04,508
+Uh... Ah! Uh...
+
+315
+00:17:04,717 --> 00:17:06,378
+Thank you.
+
+316
+00:17:06,585 --> 00:17:07,711
+Yeah.
+
+317
+00:17:08,187 --> 00:17:09,347
+Play something modern.
+
+318
+00:17:10,790 --> 00:17:13,850
+What are you doing here?
+Being a friend and a man.
+
+319
+00:17:14,060 --> 00:17:16,051
+Oh, thank you.
+
+320
+00:17:17,563 --> 00:17:19,087
+Ah...
+
+321
+00:17:20,800 --> 00:17:22,461
+Aah-aah!
+
+322
+00:17:35,314 --> 00:17:36,713
+It's okay.
+
+323
+00:17:39,685 --> 00:17:43,451
+Culturally, it's unacceptable,
+but it's theatrical dynamite.
+
+324
+00:17:47,026 --> 00:17:48,050
+Hah.
+
+325
+00:17:54,533 --> 00:17:57,127
+Whoo!
+Bravo.
+
+326
+00:17:57,369 --> 00:18:00,736
+Whoo.
+Yeah, all right. Greendale.
+
+327
+00:18:02,441 --> 00:18:03,465
+Greendale.
+
+328
+00:18:08,047 --> 00:18:10,572
+Hi, guys. That was really cool.
+I wish I knew how to tap dance.
+
+329
+00:18:10,783 --> 00:18:12,011
+Oh. Thanks, Abed.
+
+330
+00:18:12,218 --> 00:18:14,482
+It takes a lot of hard work,
+but you could take a class.
+
+331
+00:18:14,687 --> 00:18:16,484
+Hmm, pass.
+
+332
+00:18:17,256 --> 00:18:20,453
+Hey, Troy, thank you.
+
+333
+00:18:20,659 --> 00:18:23,219
+No, thank you.
+I mean, you looked so pathetic,
+
+334
+00:18:23,429 --> 00:18:25,863
+you made going up there
+the most masculine option.
+
+335
+00:18:27,266 --> 00:18:28,665
+Mm.
+
+336
+00:18:31,937 --> 00:18:33,564
+Troy. Oh.
+
+337
+00:18:33,772 --> 00:18:35,501
+What you did up there
+really took guts.
+
+338
+00:18:35,708 --> 00:18:37,676
+I'm impressed.
+Thanks, Pierce.
+
+339
+00:18:37,877 --> 00:18:41,506
+Yeah. And such a creative way
+to tell the world you're gay.
+
+340
+00:18:42,982 --> 00:18:44,347
+Good job up there.
+Thank you.
+
+341
+00:18:44,550 --> 00:18:47,348
+Where's your date?
+Didn't she wanna get my autograph?
+
+342
+00:18:47,553 --> 00:18:50,613
+Oh. She's getting a permission slip from the
+dean to allow us to drive home together.
+
+343
+00:18:50,823 --> 00:18:53,986
+Heard you guys are official now.
+Yeah, I guess.
+
+344
+00:18:54,193 --> 00:18:55,922
+You actually had a big part in that.
+
+345
+00:18:56,128 --> 00:18:58,688
+I mean, if I can handle
+having a girl for a friend,
+
+346
+00:18:58,898 --> 00:19:01,389
+who's to say I'm not ready
+for a girlfriend?
+
+347
+00:19:01,600 --> 00:19:03,727
+Makes perfect sense. Break a leg.
+
+348
+00:19:08,040 --> 00:19:09,234
+Flowers.
+Yeah.
+
+349
+00:19:09,441 --> 00:19:10,908
+Uh, is that...?
+That's what people do, right?
+
+350
+00:19:11,110 --> 00:19:13,977
+I was gonna throw them up on stage,
+but I thought they might catch fire.
+
+351
+00:19:14,180 --> 00:19:17,809
+No, this is... This is good.
+You can hand them to me. Thank you.
+
+352
+00:19:18,984 --> 00:19:20,474
+See you Monday.
+Bye.
+
+353
+00:19:49,982 --> 00:19:51,415
+Good night, everybody.
+
+354
+00:19:56,021 --> 00:19:58,421
+<i>Five letters, Broadway musical.
+Annie.</i>
+
+355
+00:19:58,624 --> 00:20:01,491
+Uh, six letters, to puncture.
+Pierce.
+
+356
+00:20:01,694 --> 00:20:04,185
+Um, a water filter that starts with B.
+Britta.
+
+357
+00:20:04,396 --> 00:20:05,954
+Okay. There's a tough one, though.
+
+358
+00:20:06,165 --> 00:20:08,326
+Um, Helen of...
+Troy.
+
+359
+00:20:08,534 --> 00:20:09,899
+Oh, damn, you're good.
+Thank you.
+
+360
+00:20:10,102 --> 00:20:11,364
+I never even heard
+of that last one.
+
+361
+00:20:11,570 --> 00:20:13,902
+All right, uh, one of the two
+brother actors, Bridges,
+
+362
+00:20:14,106 --> 00:20:15,937
+four letters.
+
+363
+00:20:16,675 --> 00:20:18,836
+Hmm.
+I know. Bridges.
+
+364
+00:20:19,044 --> 00:20:20,238
+I don't know.
+Come on, guys,
+
+365
+00:20:20,446 --> 00:20:21,879
+can't you see the pattern there?
+
+366
+00:20:22,081 --> 00:20:24,606
+Can you see it?
+It's Beau, Beau Bridges.
+
+367
+00:20:24,817 --> 00:20:27,285
+These are all things
+you can see on TV.
+
+368
+00:20:27,486 --> 00:20:28,817
+Except for pierce, that's a misdirect.
+
+369
+00:20:29,021 --> 00:20:30,784
+Oh.
+Oh.
+
+370
+00:20:30,990 --> 00:20:33,925
+<i>I love misdirects.
+I love The Big Lebowski.</i>
+
+371
+00:20:34,000 --> 00:20:37,053
+
