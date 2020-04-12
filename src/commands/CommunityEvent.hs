@@ -5,12 +5,12 @@ module CommunityEvent
     , communityDesc
     , getRandomQuote
     ) where
-import Paths_discord_bot (getDataDir)
+import Paths_discord_bot    (getDataDir)
+import System.Directory     (listDirectory)
 import qualified Data.Text as T
 import Data.List
 import System.Random
 import System.IO
-import System.Directory
 import Discord
 import Discord.Types
 import qualified Discord.Requests as R
