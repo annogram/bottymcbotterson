@@ -2,13 +2,17 @@
 module Events (
     eventPool
     ) where
-import PongEvent        (pongCommand
+import PongEvent        ( pongCommand
                         , pongResp
                         , pongDesc
                         )
-import CovidStatsEvent  (covidStatsCommand
+import CovidStatsEvent  ( covidStatsCommand
                         , getCovidInfo
                         , covidDesc
+                        )
+import CommunityEvent   ( communityCmd
+                        , communityEvent
+                        , communityDesc
                         )
 import Data.List
 import Discord
@@ -22,6 +26,7 @@ eventPool :: M.Map T.Text (DiscordHandle -> Event -> IO Bool)
 eventPool = M.fromList [ ("/help", helpEvent)
                        , (pongCommand, pongResp)
                        , (covidStatsCommand, getCovidInfo)
+                       , (communityCmd, communityEvent)
                        ]
 
 -- Help commands
@@ -29,6 +34,7 @@ helpCommands :: [T.Text]
 helpCommands =  [ "/help - Get help message\n" <> "\tUsage: /help"
                 , pongDesc
                 , covidDesc
+                , communityDesc
                 ]
 
 helpEvent :: DiscordHandle -> Event -> IO Bool

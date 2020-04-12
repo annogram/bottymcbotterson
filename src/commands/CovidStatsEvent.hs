@@ -31,8 +31,8 @@ getCovidInfo handle (MessageCreate m) = do
     apiData <- covidBasic . T.words . messageText $ m
     case apiData of
         Just (d) -> do
-                     _ <- restCall handle $  R.CreateMessage (messageChannel m) $ d
-                     return True
+            _ <- restCall handle $  R.CreateMessage (messageChannel m) $ d
+            return True
         Nothing -> return False
 
 
@@ -50,25 +50,25 @@ commas = reverse . intercalate "," . chunksOf (3) . reverse . fst . break (== '.
 getInfoForCountry :: Text -> IO (Maybe Text)
 getInfoForCountry c = do 
     let url = "https://corona.lmao.ninja/countries/" <> c
-    let yestUrl = "https://corona.lmao.ninja/yesterday/" <> c
+        yestUrl = "https://corona.lmao.ninja/yesterday/" <> c
     -- Get todays information
     r <- getWith headerOpt $ T.unpack url
     let status = r ^. responseStatus . statusCode
-    let today = case status of 
+        today = case status of 
                     200 -> Just (r)
                     otherwise -> Nothing
 
     case today of
         Just (v) -> do
-                     y <- getWith headerOpt $ T.unpack yestUrl
-                     if y ^. responseStatus . statusCode == 200
-                         then do
-                                 -- Get countries population
-                                let countryCode = v ^. responseBody . key "countryInfo" . key "iso2" . _String
-                                p <- getWith headerOpt $ T.unpack $ "https://restcountries.eu/rest/v2/alpha/" <> countryCode
-                                let population = p ^?! responseBody . key "population" . _Integer
-                                return (Just (craftResponse r y (show population)))
-                         else return Nothing
+            y <- getWith headerOpt $ T.unpack yestUrl
+            if y ^. responseStatus . statusCode == 200
+                then do
+                    -- Get countries population
+                    let countryCode = v ^. responseBody . key "countryInfo" . key "iso2" . _String
+                    p <- getWith headerOpt $ T.unpack $ "https://restcountries.eu/rest/v2/alpha/" <> countryCode
+                    let population = p ^?! responseBody . key "population" . _Integer
+                    return (Just (craftResponse r y (show population)))
+                else return Nothing
         Nothing  -> return Nothing
 
 getInfo :: IO (Maybe Text)
@@ -107,7 +107,7 @@ craftResponse r y p = let deaths = r ^?! responseBody . key "deaths" . _Number
                         <> ":muscle: - Recovered :\t" <> (commas. show) recovered
                             <> " (**" <> (commas . show) percentageRecovered <> "%**)" <>"\n"
                         )
-                    where formatNumber n = if (n > 0)
+                    where formatNumber n = if (n >= 0)
                                             then ("+"++) . commas . show $ n
                                             else ("-"++) . commas . snd . splitAt (1) $ show n
 
