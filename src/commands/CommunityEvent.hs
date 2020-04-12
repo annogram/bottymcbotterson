@@ -1,4 +1,5 @@
 {-# Language OverloadedStrings #-}
+{-# Language NamedFieldPuns #-}
 module CommunityEvent 
     ( communityCmd
     , communityEvent
@@ -9,6 +10,7 @@ import Paths_discord_bot    (getDataDir)
 import System.Directory     (listDirectory)
 import qualified Data.Text as T
 import Data.List
+import Data.List.Split
 import System.Random
 import System.IO
 import Discord
@@ -35,9 +37,15 @@ getRandomQuote = do
     let baseDir = cwd <> "\\res\\community-subtitles"
     x   <- listDirectory $ baseDir
     let (fileNo, nextGen) = randomR (0, length x) (gen)
-        file = baseDir <> "\\" <> x !! fileNo
-    print $ "Getting a quote from: " <> file
-    pure . findQuote (nextGen) =<< readFile file
+        fileName = x !! fileNo
+        file = baseDir <> "\\" <> fileName
+    print $ "Getting a quote from: " <> (fst . break (== '.') $ fileName)
+    quote <- pure . findQuote (nextGen) =<< readFile file
+    return ("> Quote from: " <> (T.pack . fst . break (== '.') $ fileName) <> "\n\n"
+                <> quote)
 
 findQuote :: StdGen -> String -> T.Text
-findQuote gen fileContent = T.pack fileContent
+findQuote gen fileContent = (T.pack . randomLine . getQuote . splitOn ("\n\n")) fileContent
+    where getQuote xs = [let (_:_:l) = lines q in unwords l | q <- xs]
+          randomLine xs = let (lineNo, _) = randomR (0, length xs) (gen) in xs !! lineNo
+          
