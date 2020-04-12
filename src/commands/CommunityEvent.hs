@@ -51,6 +51,6 @@ getRandomQuote = do
                 <> quote)
 
 findQuote :: StdGen -> T.Text -> T.Text
-findQuote gen fileContent = (T.pack . randomQuote . getQuotes . splitOn ("\n\n") . T.unpack) fileContent
-    where getQuotes xs = [let (_:_:l) = splitOn ("\n") q in unwords l | q <- xs]
+findQuote gen fileContent = (T.pack . randomQuote . getQuotes . splitOn ("\r\n\r") . T.unpack) fileContent
+    where getQuotes xs = [let (_:_:l) = splitOn ("\r\n") q in unwords l | q <- xs]
           randomQuote xs = let (lineNo, _) = randomR (0, length xs) (gen) in xs !! lineNo
