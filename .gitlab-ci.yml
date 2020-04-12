@@ -16,7 +16,6 @@ build:
   stage: build
   script:
     - stack install --local-bin-path ./build --system-ghc
-    - cp -R --verbose res ./build/
   artifacts:
     paths:
       - build
