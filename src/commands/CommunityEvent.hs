@@ -1,12 +1,14 @@
 {-# Language OverloadedStrings #-}
-{-# Language NamedFieldPuns #-}
+{-# LANGUAGE TemplateHaskell #-}
 module CommunityEvent 
     ( communityCmd
     , communityEvent
     , communityDesc
     , getRandomQuote
+    , communityFiles
     ) where
-import System.Directory     (listDirectory, getCurrentDirectory)
+import System.Directory (listDirectory, getCurrentDirectory)
+import Data.FileEmbed   (getDir, embedDir)
 import qualified Data.Text as T
 import Data.List
 import Data.List.Split
@@ -14,7 +16,12 @@ import System.Random
 import System.IO
 import Discord
 import Discord.Types
+import qualified Data.ByteString as B
+import qualified Data.Text.Encoding as TLE
 import qualified Discord.Requests as R
+
+communityFiles :: [(FilePath, B.ByteString)]
+communityFiles = $(embedDir "res/community-subtitles")
 
 communityCmd :: T.Text
 communityCmd = "/community"
@@ -32,20 +39,18 @@ communityEvent handle (MessageCreate m) = do
 getRandomQuote :: IO T.Text
 getRandomQuote = do
     gen <- newStdGen
-    cwd <- getCurrentDirectory
-    print cwd
-    let baseDir = cwd <> "/res/community-subtitles"
-    x   <- listDirectory $ baseDir
-    let (fileNo, nextGen) = randomR (0, length x) (gen)
-        fileName = x !! fileNo
-        file = baseDir <> "/" <> fileName
-    print $ "Getting a quote from: " <> (fst . break (== '.') $ fileName)
-    quote <- pure . findQuote (nextGen) =<< readFile file
-    return ("> Quote from: " <> (T.pack . fst . break (== '.') $ fileName) <> "\n\n"
+    srt <- getDir "res/community-subtitles"
+    let (fileNo, nextGen) = randomR (0, length srt) (gen)
+        (name, contents) = srt !! fileNo
+    print $ "Getting a quote from: " <> (fst . break (== '.') $ name)
+    quote <- pure . findQuote (nextGen) $ TLE.decodeUtf8 contents
+    -- let t = splitOn ("\r\n\r") . T.unpack $ TLE.decodeUtf8 contents
+    -- print t
+    -- print quote
+    return ("> Quote from: " <> (T.pack . fst . break (== '.') $ name) <> "\n\n"
                 <> quote)
 
-findQuote :: StdGen -> String -> T.Text
-findQuote gen fileContent = (T.pack . randomLine . getQuote . splitOn ("\n\n")) fileContent
-    where getQuote xs = [let (_:_:l) = lines q in unwords l | q <- xs]
-          randomLine xs = let (lineNo, _) = randomR (0, length xs) (gen) in xs !! lineNo
-          
+findQuote :: StdGen -> T.Text -> T.Text
+findQuote gen fileContent = (T.pack . randomQuote . getQuotes . splitOn ("\n\n") . T.unpack) fileContent
+    where getQuotes xs = [let (_:_:l) = lines q in unwords l | q <- xs]
+          randomQuote xs = let (lineNo, _) = randomR (0, length xs) (gen) in xs !! lineNo

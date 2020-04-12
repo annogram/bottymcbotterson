@@ -5,7 +5,6 @@ module Lib
 import Control.Monad        (when)
 import System.Environment   (getEnv)
 import Events               (eventPool)
-import Control.Concurrent   (threadDelay)
 import Data.Monoid
 import Discord
 import Discord.Types
