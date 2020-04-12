@@ -36,8 +36,8 @@ getRandomQuote = do
     x   <- listDirectory $ baseDir
     let (fileNo, nextGen) = randomR (0, length x) (gen)
         file = baseDir <> "\\" <> x !! fileNo
-    print file
-    pure . findQuote =<< readFile file
+    print $ "Getting a quote from: " <> file
+    pure . findQuote (nextGen) =<< readFile file
 
-findQuote :: String -> T.Text
-findQuote fileContent = T.pack fileContent
+findQuote :: StdGen -> String -> T.Text
+findQuote gen fileContent = T.pack fileContent
