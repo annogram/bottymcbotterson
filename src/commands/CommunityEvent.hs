@@ -5,6 +5,7 @@ module CommunityEvent
     , communityDesc
     , getRandomQuote
     ) where
+import Paths_discord_bot (getDataDir)
 import qualified Data.Text as T
 import Data.List
 import System.Random
@@ -30,7 +31,7 @@ communityEvent handle (MessageCreate m) = do
 getRandomQuote :: IO T.Text
 getRandomQuote = do
     gen <- newStdGen
-    cwd <- getCurrentDirectory
+    cwd <- getDataDir
     let baseDir = cwd <> "\\res\\community-subtitles"
     x   <- listDirectory $ baseDir
     let (fileNo, nextGen) = randomR (0, length x) (gen)
