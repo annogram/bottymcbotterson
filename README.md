@@ -20,7 +20,7 @@ A discord bot to manage my discord servers, also serves as learnings and showing
 To compile and build this project you will need
 
 - Haskell stack
-- A discord application setup
+- A discord application setup at - https://discordapp.com/developers/
 - An environment variable for the bot stored in the variable `DISCORD_CLIENT_SECRET`
 
 # To build
@@ -65,8 +65,6 @@ sudo systemctl enable sample.service
     - `systemctl` is the tool you want to use to see running services
     - `journalctl` will give you the logs of a running process
 
-### On AWS
+## More detailed information
 
-
-
-# Learnings
+Please see the wiki for more detailed information on this project
