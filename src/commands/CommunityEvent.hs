@@ -44,13 +44,15 @@ getRandomQuote = do
         (name, contents) = srt !! fileNo
     print $ "Getting a quote from: " <> (fst . break (== '.') $ name)
     quote <- pure . findQuote (nextGen) $ TLE.decodeUtf8 contents
+    print quote
     -- let t = splitOn ("\r\n\r") . T.unpack $ TLE.decodeUtf8 contents
     -- print t
     -- print quote
     return ("> Quote from: " <> (T.pack . fst . break (== '.') $ name) <> "\n\n"
                 <> quote)
+    -- pure ""
 
 findQuote :: StdGen -> T.Text -> T.Text
-findQuote gen fileContent = (T.pack . randomQuote . getQuotes . splitOn ("\r\n\r") . T.unpack) fileContent
+findQuote gen fileContent = (T.pack .  randomQuote . getQuotes . splitOn ("\r\n\r") . T.unpack) fileContent
     where getQuotes xs = [let (_:_:l) = splitOn ("\r\n") q in unwords l | q <- xs]
           randomQuote xs = let (lineNo, _) = randomR (0, length xs) (gen) in xs !! lineNo
