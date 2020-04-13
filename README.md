@@ -29,7 +29,7 @@ Open the root directory in terminal or VSCode and run `stack build` this will pu
 
 # To publish
 
-This project creates an executable file, run `stack publish` to create this file and host it on the system of your choice
+This project is published using gitlab ci/ci. The `.gitlab-ci.yml` has the build and deployment steps.
 
 ## To host
 
