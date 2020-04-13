@@ -19,7 +19,7 @@ build:
     - cp -R --verbose res ./build/
   artifacts:
     paths:
-      - build
+      - build/*
 
 deploy_staging:
   stage: deploy
