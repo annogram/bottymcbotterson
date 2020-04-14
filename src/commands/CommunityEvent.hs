@@ -14,11 +14,8 @@ import Data.List
 import Data.List.Split
 import System.Random
 import System.IO
-import Discord
-import Discord.Types
 import qualified Data.ByteString as B
 import qualified Data.Text.Encoding as TLE
-import qualified Discord.Requests as R
 
 communityFiles :: [(FilePath, B.ByteString)]
 communityFiles = $(embedDir "res/community-subtitles")
@@ -30,11 +27,8 @@ communityDesc :: T.Text
 communityDesc = communityCmd <> " - get a random quote from community\n"
                 <> "\tUsage: " <> communityCmd
 
-communityEvent :: DiscordHandle -> Event -> IO Bool
-communityEvent handle (MessageCreate m) = do
-    randomQuote <- getRandomQuote
-    _ <- restCall handle $ R.CreateMessage (messageChannel m) $ randomQuote
-    pure True
+communityEvent :: T.Text -> IO (Maybe T.Text)
+communityEvent _ = pure . Just =<< getRandomQuote
 
 getRandomQuote :: IO T.Text
 getRandomQuote = do

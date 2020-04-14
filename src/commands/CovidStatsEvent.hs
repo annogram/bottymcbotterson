@@ -7,14 +7,11 @@ module CovidStatsEvent
 import Data.Text        (Text)
 import Data.List        (intercalate)
 import Data.List.Split  (chunksOf)
-import Discord
-import Discord.Types
 import Data.Aeson.Lens
 import Network.Wreq
 import Control.Lens
 import qualified Data.ByteString.Lazy as B
 import qualified Data.Text as T
-import qualified Discord.Requests as R
 import qualified Data.HashMap.Lazy as M
 
 covidStatsCommand :: Text
@@ -26,14 +23,8 @@ covidDesc = "/covid - Reports statistics on the covid-19 pandameic \n"
             <> "\tUsage: /covid {country} - countries statistics"
 
 -- Get information on the Covid-19 pandemic
-getCovidInfo :: DiscordHandle -> Event -> IO Bool
-getCovidInfo handle (MessageCreate m) = do 
-    apiData <- covidBasic . T.words . messageText $ m
-    case apiData of
-        Just (d) -> do
-                     _ <- restCall handle $  R.CreateMessage (messageChannel m) $ d
-                     return True
-        Nothing -> return False
+getCovidInfo :: Text -> IO (Maybe Text)
+getCovidInfo text = return =<< covidBasic . T.words $ text
 
 
 covidBasic :: [Text] -> IO (Maybe Text)
