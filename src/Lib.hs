@@ -5,7 +5,6 @@ module Lib
 import Control.Monad        (when)
 import System.Environment   (getEnv)
 import Events               (eventPool)
-import Control.Concurrent   (threadDelay)
 import Data.Monoid
 import Discord
 import Discord.Types
@@ -38,10 +37,13 @@ eventHandler handle event = case event of
                             let command  = messageText m
                             putStrLn $ "Event from user: " <> T.unpack thisUser
                                 <> " with command: " <> T.unpack command
-                            succ <- f handle event
-                            if succ
-                                then seen handle m
-                                else addReaction "thumbsdown" handle m
+                            succ <- f command
+                            case succ of
+                                Just (text) -> do
+                                    seen handle m
+                                    _ <- restCall handle $ R.CreateMessage (messageChannel m) $ text
+                                    pure ()
+                                Nothing -> addReaction "thumbsdown" handle m
     _ -> pure ()
     where getCommandStart = head . T.words . T.toLower . messageText
 

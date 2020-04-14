@@ -1,4 +1,5 @@
 image: fpco/stack-build-small:lts-15.5
+
 variables:
   STACK_ROOT: "${CI_PROJECT_DIR}/.stack-root"
 
@@ -9,11 +10,26 @@ cache:
 
 stages:
   - build
+  - deploy
 
 build:
   stage: build
   script:
-    - stack install --local-bin-path ./build
+    - stack install --local-bin-path ./build --system-ghc
+    - cp -R --verbose res ./build/
   artifacts:
     paths:
-      - build
+      - build/*
+    expire_in: 1 week
+
+deploy_staging:
+  stage: deploy
+  image: registry.gitlab.com/gitlab-org/cloud-deploy:latest
+  script:
+    - "echo Deploying to staging server"
+  environment:
+    name: staging
+    url: www.example.com
+  only:
+    - master
+  when: manual

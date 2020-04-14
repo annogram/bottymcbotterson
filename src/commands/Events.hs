@@ -15,14 +15,11 @@ import CommunityEvent   ( communityCmd
                         , communityDesc
                         )
 import Data.List
-import Discord
-import Discord.Types
-import qualified Discord.Requests as R
 import qualified Data.Map.Lazy as M
 import qualified Data.Text as T
 
 -- All the commands that this bot can act on
-eventPool :: M.Map T.Text (DiscordHandle -> Event -> IO Bool)
+eventPool :: M.Map T.Text (T.Text -> IO (Maybe T.Text))
 eventPool = M.fromList [ ("/help", helpEvent)
                        , (pongCommand, pongResp)
                        , (covidStatsCommand, getCovidInfo)
@@ -37,11 +34,10 @@ helpCommands =  [ "/help - Get help message\n" <> "\tUsage: /help"
                 , communityDesc
                 ]
 
-helpEvent :: DiscordHandle -> Event -> IO Bool
-helpEvent handle (MessageCreate m) = do
+helpEvent :: T.Text -> IO (Maybe T.Text)
+helpEvent _ = do
     let text = "Here are the commands you can run: \n" 
                 <> "```\n"
-                <> (foldr1 (\m acc -> acc <> "\n" <> m) $ helpCommands)
+                <> (foldl1 (\acc m -> acc <> "\n" <> m) $ helpCommands)
                 <> "```"
-    _ <- restCall handle $ R.CreateMessage (messageChannel m) $ text
-    return True
+    return $ Just text
