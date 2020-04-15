@@ -34,7 +34,7 @@ eventHandler handle event = case event of
             Nothing     -> pure ()
             Just (f)    -> do
                 let command  = messageText m
-                logEvent handle m
+                _ <- logEvent handle m
                 succ <- f command
                 case succ of
                     Just (text) -> do
@@ -60,8 +60,6 @@ logEvent handle m = do
     putStrLn $ prefix
         <> "Event from user: " <> T.unpack thisUser
         <> " with command: " <> T.unpack command
-
-
 
 seen:: DiscordHandle -> Message -> IO ()
 seen = addReaction "ok_hand"
