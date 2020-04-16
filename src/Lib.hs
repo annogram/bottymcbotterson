@@ -33,19 +33,33 @@ eventHandler handle event = case event of
         case (getCommandStart m) `M.lookup` eventPool of
             Nothing     -> pure ()
             Just (f)    -> do
-                            let thisUser = userName . messageAuthor $ m
-                            let command  = messageText m
-                            putStrLn $ "Event from user: " <> T.unpack thisUser
-                                <> " with command: " <> T.unpack command
-                            succ <- f command
-                            case succ of
-                                Just (text) -> do
-                                    seen handle m
-                                    _ <- restCall handle $ R.CreateMessage (messageChannel m) $ text
-                                    pure ()
-                                Nothing -> addReaction "thumbsdown" handle m
+                let command  = messageText m
+                _ <- logEvent handle m
+                succ <- f command
+                case succ of
+                    Just (text) -> do
+                        seen handle m
+                        _ <- restCall handle $ R.CreateMessage (messageChannel m) $ text
+                        pure ()
+                    Nothing -> addReaction "thumbsdown" handle m
     _ -> pure ()
     where getCommandStart = head . T.words . T.toLower . messageText
+          fromServer response = case response of
+                                    Left _        -> "private message"
+                                    Right (guild) -> T.unpack . guildName $ guild
+
+logEvent :: DiscordHandle -> Message -> IO ()
+logEvent handle m = do
+    let thisUser = userName . messageAuthor $ m
+        command  = messageText m
+    prefix <- case (R.GetGuild) <$> messageGuild m of
+        Nothing       -> return $ "(private message) "
+        Just (server) -> do
+            Right (guild) <- restCall handle $ server
+            return $ "(" <> (T.unpack . guildName) guild <> ") "
+    putStrLn $ prefix
+        <> "Event from user: " <> T.unpack thisUser
+        <> " with command: " <> T.unpack command
 
 seen:: DiscordHandle -> Message -> IO ()
 seen = addReaction "ok_hand"
