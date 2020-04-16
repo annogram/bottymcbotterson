@@ -15,6 +15,7 @@ import qualified Data.Text as T
 import Control.Exception
 import qualified GlobalStats as G
 import qualified CountryStats as C
+import Data.Function
 
 covidStatsCommand :: Text
 covidStatsCommand = "/covid"
@@ -112,7 +113,7 @@ craftResponse r y (C.Population p) =  let deaths' = C.deaths r
                                           activeInfections = C.active r
                                           diffActiveInfections = activeInfections - C.active y
                                           recovered' = C.recovered r
-                                          percentageRecovered = (recovered' `div` totalInfections) * 100
+                                          percentageRecovered = (recovered' `doDiv` totalInfections) * 100
                                       in T.pack (
                                             (T.unpack . C.country) r <> "'s population: " <> (commas . show) p <> "\n"
                                             <> ":skull_crossbones: - Deaths :\t" <> (commas . show) deaths'
@@ -128,10 +129,11 @@ craftResponse r y (C.Population p) =  let deaths' = C.deaths r
                                             <> ":muscle: - Recovered :\t" <> (commas. show) recovered'
                                                 <> " (**" <> (commas . show) percentageRecovered <> "%**)" <>"\n"
                                           )
-                    where formatNumber n = if (n >= 0)
-                                            then ("+"++) . commas . show $ n
-                                            else ("-"++) . commas . snd . splitAt (1) $ show n
-
+    where formatNumber n = if (n >= 0)
+            then ("+"++) . commas . show $ n
+            else ("-"++) . commas . snd . splitAt (1) $ show n
+          doDiv = (/) `on` fromIntegral
+                          
 -- getInfoForCountry2 :: Text -> IO (Maybe Text)
 -- getInfoForCountry2 c = do 
 --     let url = "https://corona.lmao.ninja/countries/" <> c
