@@ -35,10 +35,8 @@ library:
   - directory
   - discord-haskell
   - aeson
-  - lens
-  - lens-aeson
   - unordered-containers
-  - wreq
+  - req
   - file-embed
 executables:
   discord-bot-exe:

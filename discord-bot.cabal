@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 445ba46f7ed44976be041d3e09cbcc777df9cd487dcaee62751adb2e64c4b117
+-- hash: 8ff8a544defad683387293da5d5b633aec209ff144af863f2c635e8a142de0c6
 
 name:           discord-bot
 version:        0.2.0.0
@@ -45,13 +45,11 @@ library
     , directory
     , discord-haskell
     , file-embed
-    , lens
-    , lens-aeson
     , random
+    , req
     , split
     , text
     , unordered-containers
-    , wreq
   default-language: Haskell2010
 
 executable discord-bot-exe
