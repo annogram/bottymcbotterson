@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 8ff8a544defad683387293da5d5b633aec209ff144af863f2c635e8a142de0c6
+-- hash: 74338171be62de61965063c5062022b0cb46257c596b262d93ecfdaa0b4feb87
 
 name:           discord-bot
 version:        0.2.0.0
@@ -32,11 +32,14 @@ library
       CovidStatsEvent
       Events
       PongEvent
+      CountryStats
+      GlobalStats
   other-modules:
       Paths_discord_bot
   hs-source-dirs:
       src
       src/commands
+      src/commands/covid-types
   build-depends:
       aeson
     , base >=4.7 && <5

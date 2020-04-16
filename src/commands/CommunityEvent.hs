@@ -1,5 +1,4 @@
-{-# Language OverloadedStrings #-}
-{-# LANGUAGE TemplateHaskell #-}
+{-# Language OverloadedStrings, TemplateHaskell #-}
 module CommunityEvent 
     ( communityCmd
     , communityEvent
