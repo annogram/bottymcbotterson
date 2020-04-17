@@ -1,4 +1,4 @@
-{-# Language OverloadedStrings, DeriveGeneric #-}
+{-# Language OverloadedStrings, DeriveGeneric, ScopedTypeVariables #-}
 module CovidStatsEvent 
     ( getCovidInfo
     , covidStatsCommand
@@ -16,6 +16,7 @@ import Control.Exception
 import qualified GlobalStats as G
 import qualified CountryStats as C
 import Data.Function
+import Control.Monad
 
 covidStatsCommand :: Text
 covidStatsCommand = "/covid"
@@ -23,7 +24,8 @@ covidStatsCommand = "/covid"
 covidDesc :: Text
 covidDesc = "/covid - Reports statistics on the covid-19 pandameic \n" 
             <> "\tUsage: /covid - all stats \n"
-            <> "\tUsage: /covid {country} - countries statistics"
+            <> "\tUsage: /covid {country} - countries statistics \n"
+            <> "\tUsage: /covid {country,country,...} - countries statistics"
 
 -- Get information on the Covid-19 pandemic
 getCovidInfo :: Text -> IO (Maybe Text)
@@ -40,10 +42,9 @@ commas = reverse . intercalate "," . chunksOf (3) . reverse . fst . break (== '.
 httpConfig = defaultHttpConfig {httpConfigCheckResponse = noNoise}
     where noNoise _ _ _ = Nothing
 
-
 getInfo :: IO (Maybe Text)
 getInfo = do
-    let url = https "corona.lmao.ninja" /: "all"
+    let url = https "corona.lmao.ninja" /: "v2" /: "all"
     meme <- catch (runReq httpConfig $ do
                             r' <- req GET url NoReqBody
                                     jsonResponse mempty
@@ -56,36 +57,67 @@ getInfo = do
         Just (i) -> return (Just $ craftBasicResponse i)
 
 getInfoForCountry :: Text -> IO (Maybe Text)
-getInfoForCountry c = do
-    let url = https "corona.lmao.ninja" /: "countries" /: c
-        yestUrl = https "corona.lmao.ninja" /: "yesterday" /: c
-        restContries = https "restcountries.eu" /: "rest" /: "v2" /: "alpha"
-    today <- catch
-                (runReq httpConfig $ pure =<< constructSubMonad url)
-                (\(JsonHttpException _) -> return Nothing)
-    yesterday <- catch
-                    (runReq httpConfig $ pure =<< constructSubMonad yestUrl)
+getInfoForCountry c
+    | ',' `elem` T.unpack c = do -- multiple countries
+        today <- catch
+                    (runReq httpConfig $ pure =<< callToday url)
                     (\(JsonHttpException _) -> return Nothing)
-    case today of
-        Nothing     -> return Nothing
-        Just (info) -> do
-            let restCountries' = restContries /: (C.iso2 . C.countryInfo $ info)
-                Just (yestInfo) = yesterday
-            r <- runReq httpConfig $ do
-                    req GET
-                        restCountries'
-                        NoReqBody
-                        jsonResponse
-                        mempty
-            let b = responseBody r
-            return $ Just (craftResponse info yestInfo b)
-    where constructSubMonad u = do
+        yesterday <- catch
+                        (runReq httpConfig $ pure =<< callYesterday url)
+                        (\(JsonHttpException _) -> return Nothing)
+        case today of
+            Nothing     -> return Nothing
+            Just (info) -> do
+                let Just (yestInfo) = yesterday
+                    both = zip info yestInfo :: [(C.CountryStat, C.CountryStat)]
+                cs <- mapM (\(t, y) -> do
+                        let restCountries' = restContries /: (C.iso2 . C.countryInfo $ t)
+                        r <- runReq httpConfig $ do
+                            req GET
+                                restCountries'
+                                NoReqBody
+                                jsonResponse
+                                mempty
+                        let b = responseBody r
+                        return $ (craftResponse t y b)
+                        ) $ both
+                return $ Just (foldl1 (\agg x -> agg <> "\n" <> x) $ cs)
+    | otherwise = do
+        today <- catch
+                    (runReq httpConfig $ pure =<< callToday url)
+                    (\(JsonHttpException _) -> return Nothing)
+        yesterday <- catch
+                        (runReq httpConfig $ pure =<< callYesterday url)
+                        (\(JsonHttpException _) -> return Nothing)
+        case today of
+            Nothing     -> return Nothing
+            Just (info) -> do
+                let restCountries' = restContries /: (C.iso2 . C.countryInfo $ info)
+                    Just (yestInfo) = yesterday
+                r <- runReq httpConfig $ do
+                        req GET
+                            restCountries'
+                            NoReqBody
+                            jsonResponse
+                            mempty
+                let b = responseBody r
+                return $ Just (craftResponse info yestInfo b)
+    where callToday u = do
             r' <- req GET
                 u
                 NoReqBody
                 jsonResponse
                 mempty
-            return (Just (responseBody r' ))
+            return (Just (responseBody r'))
+          callYesterday u = do
+            r' <- req GET
+                u
+                NoReqBody
+                jsonResponse
+                ("yesterday" =: ("true" :: Text))
+            return (Just (responseBody r'))
+          url = https "corona.lmao.ninja" /: "v2" /:"countries" /: c
+          restContries = https "restcountries.eu" /: "rest" /: "v2" /: "alpha"
 
 craftBasicResponse :: G.GlobalStat -> Text
 craftBasicResponse r = let deaths' = commas . show $ G.deaths r
@@ -133,39 +165,4 @@ craftResponse r y (C.Population p) =  let deaths' = C.deaths r
             then ("+"++) . commas . show $ n
             else ("-"++) . commas . snd . splitAt (1) $ show n
           doDiv = (/) `on` fromIntegral
-                          
--- getInfoForCountry2 :: Text -> IO (Maybe Text)
--- getInfoForCountry2 c = do 
---     let url = "https://corona.lmao.ninja/countries/" <> c
---         yestUrl = "https://corona.lmao.ninja/yesterday/" <> c
---     -- Get todays information
---     r <- getWith headerOpt $ T.unpack url
---     let status = r ^. responseStatus . statusCode
---         today = case status of 
---                     200 -> Just (r)
---                     otherwise -> Nothing
-
---     case today of
---         Just (v) -> do
---             y <- getWith headerOpt $ T.unpack yestUrl
---             if y ^. responseStatus . statusCode == 200
---                 then do
---                     -- Get countries population
---                     let countryCode = v ^. responseBody . key "countryInfo" . key "iso2" . _String
---                     p <- getWith headerOpt $ T.unpack $ "https://restcountries.eu/rest/v2/alpha/" <> countryCode
---                     let population = p ^?! responseBody . key "population" . _Integer
---                     return (Just (craftResponse r y (show population)))
---                 else return Nothing
---         Nothing  -> return Nothing
-
--- getInfo :: IO (Maybe Text)
--- getInfo = do
---     r <- getWith headerOpt "https://corona.lmao.ninja/all"
---     let status = r ^. responseStatus . statusCode
---     case status of 
---         200 -> return $ Just (craftBasicResponse r)
---         otherwise -> return Nothing
-
-
-
 
