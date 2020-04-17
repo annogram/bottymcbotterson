@@ -1,22 +1,19 @@
-{-# Language OverloadedStrings, DeriveGeneric, ScopedTypeVariables #-}
+{-# Language OverloadedStrings #-}
 module CovidStatsEvent 
     ( getCovidInfo
     , covidStatsCommand
     , covidDesc
     , getInfo
     ) where
-import Data.Text        (Text)
-import Data.List        (intercalate)
-import Data.List.Split  (chunksOf)
-import Data.Aeson       (FromJSON, ToJSON)
+import Data.Text         (Text)
+import Data.List         (intercalate)
+import Data.List.Split   (chunksOf)
+import Data.Function     (on)
+import Control.Exception (catch)
 import Network.HTTP.Req
-import GHC.Generics
 import qualified Data.Text as T
-import Control.Exception
 import qualified GlobalStats as G
 import qualified CountryStats as C
-import Data.Function
-import Control.Monad
 
 covidStatsCommand :: Text
 covidStatsCommand = "/covid"

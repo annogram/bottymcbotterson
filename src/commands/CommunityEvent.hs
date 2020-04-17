@@ -3,16 +3,14 @@ module CommunityEvent
     ( communityCmd
     , communityEvent
     , communityDesc
-    , getRandomQuote
-    , communityFiles
     ) where
 import System.Directory (listDirectory, getCurrentDirectory)
 import Data.FileEmbed   (getDir, embedDir)
-import qualified Data.Text as T
 import Data.List
 import Data.List.Split
 import System.Random
 import System.IO
+import qualified Data.Text as T
 import qualified Data.ByteString as B
 import qualified Data.Text.Encoding as TLE
 
@@ -38,9 +36,6 @@ getRandomQuote = do
     print $ "Getting a quote from: " <> (fst . break (== '.') $ name)
     quote <- pure . findQuote (nextGen) $ TLE.decodeUtf8 contents
     print quote
-    -- let t = splitOn ("\r\n\r") . T.unpack $ TLE.decodeUtf8 contents
-    -- print t
-    -- print quote
     return ("> Quote from: " <> (T.pack . fst . break (== '.') $ name) <> "\n\n"
                 <> quote)
     -- pure ""
