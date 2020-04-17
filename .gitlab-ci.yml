@@ -27,9 +27,9 @@ build:
 
 deploy_staging:
   stage: deploy
-  image: registry.gitlab.com/gitlab-org/cloud-deploy:latest
+  image: registry.gitlab.com/gitlab-org/cloud-deploy/aws-base:latest
   script:
-    - "echo Deploying to staging server"
+    - aws ecs register-task-definition ${CI_AWS_ECS_TASK_DEFINITION}
   environment:
     name: staging
     url: www.example.com
