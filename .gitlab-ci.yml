@@ -2,6 +2,9 @@ image: fpco/stack-build-small:lts-15.5
 
 variables:
   STACK_ROOT: "${CI_PROJECT_DIR}/.stack-root"
+  CI_AWS_ECS_CLUSTER: "botty-mccluster"
+  CI_AWS_ECS_SERVICE: "botty-mcservice"
+  CI_AWS_ECS_TASK_DEFINITION: "first-run-task-definition"
 
 cache: 
   paths:
