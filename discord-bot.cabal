@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 74338171be62de61965063c5062022b0cb46257c596b262d93ecfdaa0b4feb87
+-- hash: 6b1e4c93fed6fe3a9100c71930d1b41096863948176f5c333fa92f47c67511cd
 
 name:           discord-bot
 version:        0.2.0.0
@@ -31,6 +31,7 @@ library
       CommunityEvent
       CovidStatsEvent
       Events
+      PollEvent
       PongEvent
       CountryStats
       GlobalStats
@@ -51,6 +52,7 @@ library
     , random
     , req
     , split
+    , stm
     , text
     , unordered-containers
   default-language: Haskell2010
