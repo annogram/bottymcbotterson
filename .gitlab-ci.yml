@@ -31,8 +31,6 @@ application_build:
     expire_in: 1 week
 
 docker_build:
-  dependencies:
-    - application_build
   stage: build
   image: docker:latest
   script:
@@ -41,8 +39,6 @@ docker_build:
     - docker tag $REPOSITORY_URL $REPOSITORY_URL:test
 
 docker_publish:
-  dependencies:
-    - docker_build
   stage: publish
   script:
     - ls -al
