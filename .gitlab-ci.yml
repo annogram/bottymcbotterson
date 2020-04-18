@@ -17,7 +17,6 @@ cache:
 
 stages:
   - application_build
-  - docker_build
   - publish
   - deploy
 
@@ -32,7 +31,7 @@ application_build:
     expire_in: 1 week
 
 docker_build:
-  stage: docker_build
+  stage: publish
   dependencies:
     - application_build
   image: docker:latest
@@ -40,13 +39,6 @@ docker_build:
     - ls -al
     - docker build --no-cache -t $REPOSITORY_URL .
     - docker tag $REPOSITORY_URL $REPOSITORY_URL:test
-
-docker_publish:
-  stage: publish
-  dependencies:
-    - docker_build
-  script:
-    - ls -al
     - docker push $REPOSITORY_URL:test
 
 deploy_staging:
