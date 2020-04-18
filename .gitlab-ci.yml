@@ -1,5 +1,8 @@
 image: fpco/stack-build-small:lts-15.5
 
+services:
+  - docker:dind
+
 variables:
   STACK_ROOT: "${CI_PROJECT_DIR}/.stack-root"
   CI_AWS_ECS_CLUSTER: "botty-mccluster"
