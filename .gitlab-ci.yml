@@ -8,6 +8,7 @@ variables:
   CI_AWS_ECS_CLUSTER: "botty-mccluster"
   CI_AWS_ECS_SERVICE: "botty-mcservice"
   CI_AWS_ECS_TASK_DEFINITION: "first-run-task-definition"
+  REPOSITORY_URL: 571275409555.dkr.ecr.ap-southeast-2.amazonaws.com/bottymcbotterson
 
 cache: 
   paths:
@@ -15,12 +16,12 @@ cache:
     - .stack-work
 
 stages:
-  - application_build
-  - docker_build
+  - build
+  - publish
   - deploy
 
 application_build:
-  stage: application_build
+  stage: build
   script:
     - stack install --local-bin-path ./build --system-ghc
     - cp -R --verbose res ./build/
@@ -32,11 +33,20 @@ application_build:
 docker_build:
   dependencies:
     - application_build
-  stage: docker_build
+  stage: build
   image: docker:latest
   script:
     - ls -al
-    - docker build --no-cache -t bottymcbotterson .
+    - docker build --no-cache -t $REPOSITORY_URL .
+    - docker tag $REPOSITORY_URL $REPOSITORY_URL:test
+
+docker_publish:
+  dependencies:
+    - docker_build
+  stage: publish
+  script:
+    - ls -al
+    - docker push $REPOSITORY_URL:test
 
 deploy_staging:
   stage: deploy
