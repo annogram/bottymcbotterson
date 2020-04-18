@@ -12,12 +12,12 @@ cache:
     - .stack-work
 
 stages:
-  - build
-  - docker
+  - application_build
+  - docker_build
   - deploy
 
-build:
-  stage: build
+application_build:
+  stage: application_build
   script:
     - stack install --local-bin-path ./build --system-ghc
     - cp -R --verbose res ./build/
@@ -25,6 +25,15 @@ build:
     paths:
       - build/*
     expire_in: 1 week
+
+docker_build:
+  dependencies:
+    - application_build
+  stage: docker_build
+  image: docker:latest
+  script:
+    - ls -al
+    - docker build --no-cache -t bottymcbotterson .
 
 deploy_staging:
   stage: deploy
