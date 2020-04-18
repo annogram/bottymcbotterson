@@ -16,12 +16,13 @@ cache:
     - .stack-work
 
 stages:
-  - build
+  - application_build
+  - docker_build
   - publish
   - deploy
 
 application_build:
-  stage: build
+  stage: application_build
   script:
     - stack install --local-bin-path ./build --system-ghc
     - cp -R --verbose res ./build/
@@ -31,7 +32,9 @@ application_build:
     expire_in: 1 week
 
 docker_build:
-  stage: build
+  stage: docker_build
+  dependencies:
+    - application_build
   image: docker:latest
   script:
     - ls -al
@@ -40,6 +43,8 @@ docker_build:
 
 docker_publish:
   stage: publish
+  dependencies:
+    - docker_build
   script:
     - ls -al
     - docker push $REPOSITORY_URL:test
