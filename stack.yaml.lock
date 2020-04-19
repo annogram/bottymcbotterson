@@ -39,6 +39,13 @@ packages:
       sha256: b6297f2e5f1d002ba23be2cf3a0984cc40c120c4defb8c031c7ec311651a9e0d
   original:
     hackage: file-embed-0.0.11.2
+- completed:
+    hackage: stm-2.5.0.0@sha256:c238075f9f0711cd6a78eab6001b3e218cdaa745d6377bf83cc21e58ceec2ea1,2100
+    pantry-tree:
+      size: 898
+      sha256: 8ef9688d399f931a040d5d316ef8d40efacc14fcb099eba637adb7d00e75ecde
+  original:
+    hackage: stm-2.5.0.0
 snapshots:
 - completed:
     size: 491372

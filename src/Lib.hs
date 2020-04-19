@@ -44,9 +44,6 @@ eventHandler handle event = case event of
                     Nothing -> addReaction "thumbsdown" handle m
     _ -> pure ()
     where getCommandStart = head . T.words . T.toLower . messageText
-          fromServer response = case response of
-                                    Left _        -> "private message"
-                                    Right (guild) -> T.unpack . guildName $ guild
 
 logEvent :: DiscordHandle -> Message -> IO ()
 logEvent handle m = do

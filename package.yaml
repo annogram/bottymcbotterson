@@ -39,6 +39,7 @@ library:
   - unordered-containers
   - req
   - file-embed
+  - stm
 executables:
   discord-bot-exe:
     main:                Main.hs
