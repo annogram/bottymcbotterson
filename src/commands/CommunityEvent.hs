@@ -1,9 +1,7 @@
 {-# Language OverloadedStrings, TemplateHaskell #-}
-module CommunityEvent 
-    ( communityCmd
-    , communityEvent
-    , communityDesc
-    ) where
+module CommunityEvent
+    ( communityEvent )
+    where
 import System.Directory (listDirectory, getCurrentDirectory)
 import Data.FileEmbed   (getDir, embedDir)
 import Data.List
@@ -13,6 +11,13 @@ import System.IO
 import qualified Data.Text as T
 import qualified Data.ByteString as B
 import qualified Data.Text.Encoding as TLE
+import BottyEvent
+
+communityEvent :: BottyEvent
+communityEvent = Botty { cmd = communityCmd
+                       , desc = communityDesc
+                       , func = communityFunc
+                       }
 
 communityFiles :: [(FilePath, B.ByteString)]
 communityFiles = $(embedDir "res/community-subtitles")
@@ -20,12 +25,12 @@ communityFiles = $(embedDir "res/community-subtitles")
 communityCmd :: T.Text
 communityCmd = "/community"
 
-communityDesc :: T.Text
-communityDesc = communityCmd <> " - get a random quote from community\n"
+communityDesc :: T.Text -> T.Text
+communityDesc _ = communityCmd <> " - get a random quote from community\n"
                 <> "\tUsage: " <> communityCmd
 
-communityEvent :: T.Text -> IO (Maybe T.Text)
-communityEvent _ = pure . Just =<< getRandomQuote
+communityFunc :: T.Text -> IO (Maybe T.Text)
+communityFunc _ = pure . Just =<< getRandomQuote
 
 getRandomQuote :: IO T.Text
 getRandomQuote = do

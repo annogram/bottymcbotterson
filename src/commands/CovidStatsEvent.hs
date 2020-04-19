@@ -1,10 +1,7 @@
 {-# Language OverloadedStrings #-}
 module CovidStatsEvent 
-    ( getCovidInfo
-    , covidStatsCommand
-    , covidDesc
-    , getInfo
-    ) where
+    (covidEvent)
+    where
 import Data.Text         (Text)
 import Data.List         (intercalate)
 import Data.List.Split   (chunksOf)
@@ -14,15 +11,21 @@ import Network.HTTP.Req
 import qualified Data.Text as T
 import qualified GlobalStats as G
 import qualified CountryStats as C
+import BottyEvent
+
+covidEvent :: BottyEvent
+covidEvent = Botty { cmd = covidStatsCommand 
+                   , desc = covidDesc
+                   , func = getCovidInfo}
 
 covidStatsCommand :: Text
 covidStatsCommand = "/covid"
 
-covidDesc :: Text
-covidDesc = "/covid - Reports statistics on the covid-19 pandameic \n" 
-            <> "\tUsage: /covid - all stats \n"
-            <> "\tUsage: /covid {country} - countries statistics \n"
-            <> "\tUsage: /covid {country,country,...} - countries statistics"
+covidDesc :: Text -> Text
+covidDesc _ = "/covid - Reports statistics on the covid-19 pandameic \n" 
+                <> "\tUsage: /covid - all stats \n"
+                <> "\tUsage: /covid {country} - countries statistics \n"
+                <> "\tUsage: /covid {country,country,...} - countries statistics"
 
 -- Get information on the Covid-19 pandemic
 getCovidInfo :: Text -> IO (Maybe Text)

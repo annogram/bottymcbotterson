@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 6b1e4c93fed6fe3a9100c71930d1b41096863948176f5c333fa92f47c67511cd
+-- hash: 8be4efeb8480d3d1868e83c6673bc7981b9d4113a032f130700f5d4bd78c4020
 
 name:           discord-bot
 version:        0.2.0.0
@@ -28,6 +28,7 @@ source-repository head
 library
   exposed-modules:
       Lib
+      BottyEvent
       CommunityEvent
       CovidStatsEvent
       Events
