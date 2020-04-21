@@ -8,6 +8,8 @@ import Events               (eventPool)
 import Data.Monoid
 import Discord
 import Discord.Types
+import Control.Concurrent
+import Control.Concurrent.STM
 import qualified Discord.Requests as R
 import qualified Data.Text.IO as TIO
 import qualified Data.Text as T
@@ -18,6 +20,7 @@ botstart :: IO ()
 botstart = do 
             putStrLn "Starting bot..."
             token <- T.pack <$> getEnv "DISCORD_CLIENT_SECRET"
+            h <- atomically $ newTVar persistent
             userFacing <- runDiscord $ def 
                             { discordToken = token
                             , discordOnEvent = eventHandler
@@ -25,6 +28,8 @@ botstart = do
                             , discordOnStart = \handle -> putStrLn "...Bot started"
                             , discordForkThreadForEvents = True }
             TIO.putStrLn userFacing
+    where persistent :: M.Map Int (TVar Any)
+          persistent = M.fromList []
 
 -- The event handler will be passed to the discord client and execute the comands in the event module
 eventHandler :: DiscordHandle -> Event -> IO ()

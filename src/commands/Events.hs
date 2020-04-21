@@ -6,9 +6,9 @@ import PongEvent        ( pongEvent )
 import CovidStatsEvent  ( covidEvent )
 import CommunityEvent   ( communityEvent )
 import Data.List
+import BottyEvent
 import qualified Data.Map.Lazy as M
 import qualified Data.Text as T
-import BottyEvent
 
 -- | All the commands that this bot can act on
 eventPool :: M.Map T.Text (T.Text -> IO (Maybe T.Text))
