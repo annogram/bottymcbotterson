@@ -5,6 +5,7 @@ module Lib
 import Control.Monad        (when)
 import System.Environment   (getEnv)
 import Events               (eventPool)
+import BottyEvent
 import Data.Monoid
 import Discord
 import Discord.Types
@@ -18,29 +19,30 @@ import qualified Data.Map.Lazy as M
 -- The program entry point, this function will grab the environment key and attach the event handler
 botstart :: IO ()
 botstart = do 
-            putStrLn "Starting bot..."
-            token <- T.pack <$> getEnv "DISCORD_CLIENT_SECRET"
-            h <- atomically $ newTVar persistent
-            userFacing <- runDiscord $ def 
-                            { discordToken = token
-                            , discordOnEvent = eventHandler
-                            , discordOnEnd = putStrLn "Bot terminating."
-                            , discordOnStart = \handle -> putStrLn "...Bot started"
-                            , discordForkThreadForEvents = True }
-            TIO.putStrLn userFacing
-    where persistent :: M.Map Int (TVar Any)
+    putStrLn "Starting bot..."
+    token <- T.pack <$> getEnv "DISCORD_CLIENT_SECRET"
+    h <- atomically $ newTVar persistent
+    userFacing <- runDiscord $ def 
+                    { discordToken = token
+                    , discordOnEvent = eventHandler h
+                    , discordOnEnd = putStrLn "Bot terminating."
+                    , discordOnStart = \handle -> putStrLn "...Bot started"
+                    , discordForkThreadForEvents = True
+                    }
+    TIO.putStrLn userFacing
+    where persistent :: M.Map Int (TVar String)
           persistent = M.fromList []
 
 -- The event handler will be passed to the discord client and execute the comands in the event module
-eventHandler :: DiscordHandle -> Event -> IO ()
-eventHandler handle event = case event of 
+eventHandler :: Persistent -> DiscordHandle -> Event -> IO ()
+eventHandler p handle event = case event of 
     MessageCreate m -> botFilter m Nothing $ do
         case (getCommandStart m) `M.lookup` eventPool of
             Nothing     -> pure ()
             Just (f)    -> do
                 let command  = messageText m
                 _ <- logEvent handle m
-                succ <- f command
+                succ <- f command p
                 case succ of
                     Just (text) -> do
                         seen handle m

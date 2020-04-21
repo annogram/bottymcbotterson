@@ -28,8 +28,8 @@ covidDesc _ = "/covid - Reports statistics on the covid-19 pandameic \n"
                 <> "\tUsage: /covid {country,country,...} - countries statistics"
 
 -- Get information on the Covid-19 pandemic
-getCovidInfo :: Text -> IO (Maybe Text)
-getCovidInfo text = return =<< covidBasic . T.words $ text
+getCovidInfo :: Text -> Persistent -> IO (Maybe Text)
+getCovidInfo text _ = return =<< covidBasic . T.words $ text
 
 
 covidBasic :: [Text] -> IO (Maybe Text)

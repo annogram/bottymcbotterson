@@ -29,8 +29,8 @@ communityDesc :: T.Text -> T.Text
 communityDesc _ = communityCmd <> " - get a random quote from community\n"
                 <> "\tUsage: " <> communityCmd
 
-communityFunc :: T.Text -> IO (Maybe T.Text)
-communityFunc _ = pure . Just =<< getRandomQuote
+communityFunc :: T.Text -> Persistent -> IO (Maybe T.Text)
+communityFunc _ _ = pure . Just =<< getRandomQuote
 
 getRandomQuote :: IO T.Text
 getRandomQuote = do
