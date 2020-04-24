@@ -1,6 +1,7 @@
 {-# LANGUAGE OverloadedStrings, NamedFieldPuns #-}
 module PollEvent 
-    ( poll
+    ( pollEvent
+    , makePoll
     ) where
 import Control.Monad
 import Control.Concurrent
@@ -41,6 +42,7 @@ poll t p = do
     let (n,_) = randomR (0, maxBound :: Int) (gen)
         poll = makePoll n t
     writeStore p poll
+    temp <- readTVarIO p
     return $ Just (T.pack . show $ poll)
 
 writeStore :: Persistent -> Poll -> IO ()
