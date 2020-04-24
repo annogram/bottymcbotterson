@@ -10,6 +10,7 @@ import Text.Regex.TDFA
 import Data.List.Split
 import System.Random
 import BottyEvent
+import Data.List
 import qualified Data.Map.Lazy as M
 import qualified Data.Text as T
 
@@ -59,9 +60,9 @@ makePoll pollId t = let votes = [ (x, 0) | x <- getCategories t]
 
 -- | Regular expression matching
 getCategories :: T.Text -> [T.Text]
-getCategories t' = let (_,_,_,xs) =  t' =~ (".*{([a-z, ]+)}" :: T.Text) :: (T.Text, T.Text, T.Text, [T.Text])
-                   in map (T.filter (/=' ')) . T.splitOn "," . head $ xs
+getCategories t' = let (_,_,_,xs) =  t' =~ (".*\\(([a-z, ]+)\\)" :: T.Text) :: (T.Text, T.Text, T.Text, [T.Text])
+                   in nub . map (T.filter (/=' ')) . T.splitOn "," . head $ xs
 
 getTitle :: T.Text -> T.Text
-getTitle t = let (interest,_) = T.breakOn "{" t
+getTitle t = let (interest,_) = T.breakOn "(" t
              in T.unwords . tail . T.words $ interest
