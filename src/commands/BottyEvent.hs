@@ -8,7 +8,7 @@ import Control.Concurrent.STM
 import Data.Map.Lazy
 
 -- | Type alias for global persistent state
-type Persistent = TVar (Map Int (TVar String))
+type Persistent = TVar (Map Int String)
 
 -- | Minimal required information for a Botty event
 data BottyEvent = Botty { desc :: Text -> Text

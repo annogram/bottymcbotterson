@@ -30,7 +30,7 @@ botstart = do
                     , discordForkThreadForEvents = True
                     }
     TIO.putStrLn userFacing
-    where persistent :: M.Map Int (TVar String)
+    where persistent :: M.Map Int String
           persistent = M.fromList []
 
 -- The event handler will be passed to the discord client and execute the comands in the event module
