@@ -1,7 +1,6 @@
 {-# LANGUAGE OverloadedStrings, NamedFieldPuns #-}
 module PollEvent 
     ( pollEvent
-    , makePoll
     ) where
 import Control.Monad
 import Control.Concurrent
@@ -41,10 +40,14 @@ poll :: T.Text -> Persistent -> IO (Maybe T.Text)
 poll t p = do
     gen <- newStdGen
     let (n,_) = randomR (0, maxBound :: Int) (gen)
-        poll = makePoll n t
-    writeStore p poll
-    temp <- readTVarIO p
-    return $ Just (T.pack . show $ poll)
+        (pollCommand:t') = T.unpack t
+        poll = makePoll n $ T.pack t'
+    case poll of
+        Nothing -> return (Just $ pollDesc T.empty)
+        Just (poll') -> do 
+            writeStore p poll'
+            temp <- readTVarIO p
+            return $ Just (T.pack . show $ poll')
 
 writeStore :: Persistent -> Poll -> IO ()
 writeStore st p = atomically $ readTVar st >>= 
@@ -53,16 +56,14 @@ writeStore st p = atomically $ readTVar st >>=
 -- | Functionality to cast a vote
 
 -- | Parse a string into a poll
-makePoll :: Int -> T.Text  -> Poll
-makePoll pollId t = let votes = [ (x, 0) | x <- getCategories t]
-                        title = getTitle t
-                    in Poll {votes , pollId, title}
+makePoll :: Int -> T.Text  -> Maybe Poll
+makePoll pollId t = case parseInformation t of
+                        Nothing -> Nothing
+                        Just (title, categories) -> Just Poll {votes = [ (x, 0) | x <- categories] , pollId, title}
 
 -- | Regular expression matching
-getCategories :: T.Text -> [T.Text]
-getCategories t' = let (_,_,_,xs) =  t' =~ (".*\\(([a-z, ]+)\\)" :: T.Text) :: (T.Text, T.Text, T.Text, [T.Text])
-                   in nub . map (T.filter (/=' ')) . T.splitOn "," . head $ xs
-
-getTitle :: T.Text -> T.Text
-getTitle t = let (interest,_) = T.breakOn "(" t
-             in T.unwords . tail . T.words $ interest
+parseInformation :: T.Text -> Maybe (T.Text, [T.Text])
+parseInformation t' = let (a,_,_,xs) =  t' =~ ("\\(([a-z, ]+)\\)" :: T.Text) :: (T.Text, T.Text, T.Text, [T.Text])
+                   in case xs of
+                       [] -> Nothing
+                       (xs') -> Just (a, nub . map (T.filter (/=' ')) . T.splitOn "," . head $ xs')
