@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 9f284bb93a7ff5b69c2bc2829e5e4ab4ea0daa5b4961d5841b1b7de3a02e0b10
+-- hash: 972324bf36b7b45b6184eeeaaa83ffcb8d2757c68953fa6269e6ec5cc22231e2
 
 name:           discord-bot
 version:        0.2.0.0
@@ -49,6 +49,7 @@ library
     , containers
     , directory
     , discord-haskell
+    , emojis
     , file-embed
     , random
     , regex-tdfa

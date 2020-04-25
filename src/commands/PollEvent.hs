@@ -1,6 +1,7 @@
 {-# LANGUAGE OverloadedStrings, NamedFieldPuns #-}
 module PollEvent 
     ( pollEvent
+    , emojiRange
     ) where
 import Control.Monad
 import Control.Concurrent
@@ -10,6 +11,9 @@ import Data.List.Split
 import System.Random
 import BottyEvent
 import Data.List
+import Numeric
+import Data.Char
+import Text.Emoji
 import qualified Data.Map.Lazy as M
 import qualified Data.Text as T
 
@@ -67,3 +71,10 @@ parseInformation t' = let (a,_,_,xs) =  t' =~ ("\\(([a-z, ]+)\\)" :: T.Text) :: 
                    in case xs of
                        [] -> Nothing
                        (xs') -> Just (a, nub . map (T.filter (/=' ')) . T.splitOn "," . head $ xs')
+
+emojiRange :: [T.Text]
+emojiRange = (discordSyn . T.singleton . chr) <$> [readH "1F300" .. readH "1F320"]
+    where readH c = let (n,_):[] = readHex c
+                    in n
+          discordSyn x = let Just (e:_) = aliasesFromEmoji x
+                         in e
