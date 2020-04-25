@@ -6,6 +6,9 @@ import Data.Text
 import Control.Concurrent
 import Control.Concurrent.STM
 import Data.Map.Lazy
+import Discord
+import Discord.Types
+
 
 -- | Type alias for global persistent state
 type Persistent = TVar (Map Int String)
@@ -17,5 +20,5 @@ data BottyEvent = Botty { desc :: Text -> Text
                         }
 
 data BottyFollowUp = Follow { fcmd :: Text
-                            , ffunc :: Text -> Persistent -> IO (Maybe Text)
+                            , ffunc :: DiscordHandle -> Message -> Text -> Persistent -> IO (Maybe Text)
                             }

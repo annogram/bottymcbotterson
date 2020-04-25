@@ -1,6 +1,7 @@
 {-# LANGUAGE OverloadedStrings, NamedFieldPuns #-}
 module PollEvent 
     ( pollEvent
+    , pollFollowUp
     ) where
 import Control.Monad
 import Control.Concurrent
@@ -12,6 +13,9 @@ import Botty.Event
 import Data.List
 import Botty.Utils
 import Text.Emoji
+import Discord
+import Discord.Types
+import qualified Discord.Requests as R
 import qualified Data.Map.Lazy as M
 import qualified Data.Text as T
 
@@ -27,6 +31,13 @@ pollEvent = Botty { cmd = pollCommand
                   , desc = pollDesc
                   , func = poll
                   }
+
+pollFollowUp :: BottyFollowUp
+pollFollowUp = Follow { fcmd = pollCommand
+                      , ffunc = followUp
+                      }
+
+type RegCap = (T.Text, T.Text, T.Text, [T.Text])
 
 -- | Exposed comamnd key
 pollCommand :: T.Text
@@ -70,7 +81,7 @@ makePoll pollId t = do
 
 -- | Regular expression matching
 parseInformation :: T.Text -> Maybe (T.Text, [T.Text])
-parseInformation t' = let (a,_,_,xs) =  t' =~ ("\\((.+)\\)" :: T.Text) :: (T.Text, T.Text, T.Text, [T.Text])
+parseInformation t' = let (a,_,_,xs) =  t' =~ ("\\((.+)\\)" :: T.Text) :: RegCap
                    in case xs of
                        [] -> Nothing
                        (xs') -> Just (a, nub . map (T.filter (/=' ')) . T.splitOn "," . head $ xs')
@@ -84,3 +95,13 @@ printPoll p = let totalVotes = sum . map (\(_,v,_) -> v) $ votes p
     where votesStr to 
             | to == 0 = T.concat $ map (\(t,v,e) -> ":" <> e <> ":" <> " - " <> t <> ": 0%\n") (votes p)
             | otherwise = T.concat $ map (\(t,v,e) -> e <> " - " <> t <> ": " <> (T.pack . show) (v `doDiv` to) <> "%") (votes p)
+
+-- | This follow up will add the reactions to message after it's been posted
+followUp ::  DiscordHandle -> Message -> T.Text -> Persistent -> IO (Maybe T.Text)
+followUp h m t p = do
+    persistent <- readTVarIO p
+    let (_,_,_,pid:_) = messageText m =~ ("poll id: ([0-9]+)" :: T.Text) :: RegCap
+        poll = read $ persistent M.! (read . T.unpack $ pid :: Int) :: Poll
+        es = [ e | (_,_,e) <- votes $ poll]
+    forM_ es (\e -> restCall h $ R.CreateReaction (messageChannel m, messageId m) e)
+    return Nothing

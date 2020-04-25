@@ -4,7 +4,7 @@ module Lib
     ) where
 import Control.Monad        (when)
 import System.Environment   (getEnv)
-import Events               (eventPool)
+import Events               (eventPool, followUpPool)
 import Botty.Event
 import Data.Monoid
 import Discord
@@ -47,16 +47,21 @@ eventHandler p handle event = case event of
                     Just (text) -> do
                         seen handle m
                         result <- restCall handle $ R.CreateMessage (messageChannel m) $ text
-                        shouldFollowUp result
+                        shouldFollowUp handle result (getCommandStart m) p
                         pure ()
                     Nothing -> addReaction "thumbsdown" handle m
     _ -> pure ()
     where getCommandStart = head . T.words . T.toLower . messageText
 
-shouldFollowUp :: Either RestCallErrorCode Message -> IO ()
-shouldFollowUp res = case res of
+-- | Handle followups for commands that need it
+shouldFollowUp :: DiscordHandle -> Either RestCallErrorCode Message -> T.Text -> Persistent -> IO ()
+shouldFollowUp h res cmd p = case res of
     Left _ -> pure ()
-    Right m -> pure ()
+    Right m -> case cmd `M.lookup` followUpPool of
+        Nothing -> pure ()
+        Just (f) -> do
+            succ <- f h m cmd p
+            pure ()
 
 logEvent :: DiscordHandle -> Message -> IO ()
 logEvent handle m = do
