@@ -1,11 +1,12 @@
-module Botty.Utils (
-    emojiRange
-) where
+module Botty.Utils ( emojiRange
+                   , randomEmoji
+                   ) where
 
 import Data.Char
 import Numeric
 import Data.List
 import Text.Emoji
+import System.Random
 import qualified Data.Text as T
 
 emojiRange :: [T.Text]
@@ -24,3 +25,6 @@ emojiRange = let ranges = (\(a,b) -> [readH a .. readH b]) <$> [ ("1F300", "1F32
                     in n
           discordSyn x = let Just (e:_) = aliasesFromEmoji x
                          in e
+
+randomEmoji :: IO T.Text
+randomEmoji = randomRIO(0, length emojiRange) >>= \i -> return $ emojiRange !! i

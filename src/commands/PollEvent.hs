@@ -18,7 +18,7 @@ import qualified Data.Text as T
 -- | A Poll consists of a title, a voting category (which is a title and a list of users)
 -- and an id to uniquely identify the poll in memory
 data Poll = Poll { title :: T.Text
-                 , votes :: [(T.Text, Int)]
+                 , votes :: [(T.Text, Int, T.Text)]
                  , pollId :: Int
                  } deriving (Read, Show, Eq)
 
@@ -41,9 +41,9 @@ pollDesc _ = pollCommand <> " - Responds with pong \n"
 poll :: T.Text -> Persistent -> IO (Maybe T.Text)
 poll t p = do
     gen <- newStdGen
-    let (n,_) = randomR (0, maxBound :: Int) (gen)
+    let (n,newGen) = randomR (0, maxBound :: Int) (gen)
         (pollCommand:t') = T.unpack t
-        poll = makePoll n $ T.pack t'
+    poll <- makePoll n (T.pack t')
     case poll of
         Nothing -> return (Just $ pollDesc T.empty)
         Just (poll') -> do 
@@ -58,10 +58,15 @@ writeStore st p = atomically $ readTVar st >>=
 -- | Functionality to cast a vote
 
 -- | Parse a string into a poll
-makePoll :: Int -> T.Text  -> Maybe Poll
-makePoll pollId t = case parseInformation t of
-                        Nothing -> Nothing
-                        Just (title, categories) -> Just Poll {votes = [ (x, 0) | x <- categories] , pollId, title}
+makePoll :: Int -> T.Text -> IO (Maybe Poll)
+makePoll pollId t = do
+    case parseInformation t of
+        Nothing -> pure Nothing
+        Just (title, categories) -> do
+            e <- forM categories (\_ -> randomEmoji)
+            let dogegories = zip categories e
+            return $ Just Poll {votes = [ (x, 0, y) | (x,y) <- dogegories] , pollId, title}
+
 
 -- | Regular expression matching
 parseInformation :: T.Text -> Maybe (T.Text, [T.Text])
