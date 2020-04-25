@@ -73,7 +73,17 @@ parseInformation t' = let (a,_,_,xs) =  t' =~ ("\\(([a-z, ]+)\\)" :: T.Text) :: 
                        (xs') -> Just (a, nub . map (T.filter (/=' ')) . T.splitOn "," . head $ xs')
 
 emojiRange :: [T.Text]
-emojiRange = (discordSyn . T.singleton . chr) <$> [readH "1F300" .. readH "1F320"]
+emojiRange = let ranges = (\(a,b) -> [readH a .. readH b]) <$> [ ("1F300", "1F320")
+                          , ("1F330", "1F335")
+                          , ("1F337", "1F37C")
+                          , ("1F380", "1F393")
+                          , ("1F3A0", "1F3C4")
+                          , ("1F3C6", "1F3CA")
+                          , ("1F3E0", "1F3F0")
+                          , ("1F400", "1F43E")
+                          , ("1F442", "1F4F7")
+                          ] 
+             in (discordSyn . T.singleton . chr) <$> concat ranges
     where readH c = let (n,_):[] = readHex c
                     in n
           discordSyn x = let Just (e:_) = aliasesFromEmoji x
