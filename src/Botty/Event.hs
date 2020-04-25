@@ -1,7 +1,7 @@
-module Botty.Event (
-    BottyEvent (..)
-    , Persistent
-    ) where
+module Botty.Event ( BottyEvent (..)
+                   , BottyFollowUp (..)
+                   , Persistent
+                   ) where
 import Data.Text
 import Control.Concurrent
 import Control.Concurrent.STM
@@ -15,3 +15,7 @@ data BottyEvent = Botty { desc :: Text -> Text
                         , cmd  :: Text
                         , func :: Text -> Persistent -> IO (Maybe Text)
                         }
+
+data BottyFollowUp = Follow { fcmd :: Text
+                            , ffunc :: Text -> Persistent -> IO (Maybe Text)
+                            }

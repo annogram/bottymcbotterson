@@ -34,7 +34,7 @@ pollCommand = "/poll"
 
 -- | Poll description and usage
 pollDesc :: T.Text -> T.Text
-pollDesc _ = pollCommand <> " - Responds with pong \n"
+pollDesc _ = pollCommand <> " - Starts a poll with options \n"
             <> "\tUsage: " <> pollCommand
 
 -- | Functionality to create a poll

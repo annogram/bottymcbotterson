@@ -13,9 +13,15 @@ import qualified Data.Text as T
 events :: [BottyEvent]
 events = [pongEvent, covidEvent, communityEvent, pollEvent]
 
+followups :: [BottyFollowUp]
+followups = []
+
 -- | All the commands that this bot can act on
 eventPool :: M.Map T.Text (T.Text -> Persistent -> IO (Maybe T.Text))
 eventPool = M.fromList $ ("/help", helpEvent):[ (cmd x, func x) | x <- events ]
+
+followUpPool :: M.Map T.Text (T.Text -> Persistent -> IO (Maybe T.Text))
+followUpPool = M.fromList $ [ (fcmd x, ffunc x) | x <- followups ]
 
 -- | Help commands
 helpCommands :: T.Text -> [T.Text]

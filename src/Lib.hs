@@ -46,11 +46,17 @@ eventHandler p handle event = case event of
                 case succ of
                     Just (text) -> do
                         seen handle m
-                        _ <- restCall handle $ R.CreateMessage (messageChannel m) $ text
+                        result <- restCall handle $ R.CreateMessage (messageChannel m) $ text
+                        shouldFollowUp result
                         pure ()
                     Nothing -> addReaction "thumbsdown" handle m
     _ -> pure ()
     where getCommandStart = head . T.words . T.toLower . messageText
+
+shouldFollowUp :: Either RestCallErrorCode Message -> IO ()
+shouldFollowUp res = case res of
+    Left _ -> pure ()
+    Right m -> pure ()
 
 logEvent :: DiscordHandle -> Message -> IO ()
 logEvent handle m = do
