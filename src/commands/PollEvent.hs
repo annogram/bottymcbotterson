@@ -49,7 +49,7 @@ poll t p = do
         Just (poll') -> do 
             writeStore p poll'
             temp <- readTVarIO p
-            return $ Just (T.pack . show $ poll')
+            return $ Just (printPoll poll')
 
 writeStore :: Persistent -> Poll -> IO ()
 writeStore st p = atomically $ readTVar st >>= 
@@ -70,7 +70,17 @@ makePoll pollId t = do
 
 -- | Regular expression matching
 parseInformation :: T.Text -> Maybe (T.Text, [T.Text])
-parseInformation t' = let (a,_,_,xs) =  t' =~ ("\\(([a-z, ]+)\\)" :: T.Text) :: (T.Text, T.Text, T.Text, [T.Text])
+parseInformation t' = let (a,_,_,xs) =  t' =~ ("\\((.+)\\)" :: T.Text) :: (T.Text, T.Text, T.Text, [T.Text])
                    in case xs of
                        [] -> Nothing
                        (xs') -> Just (a, nub . map (T.filter (/=' ')) . T.splitOn "," . head $ xs')
+
+-- | Print the poll as a message to send to discord
+printPoll :: Poll -> T.Text
+printPoll p = let totalVotes = sum . map (\(_,v,_) -> v) $ votes p
+    in "> " <> title p <> "\n"
+                <> "_ poll id: " <> (T.pack . show . pollId) p <> "_" <> "\n"
+                <> votesStr totalVotes <> "\n"
+    where votesStr to 
+            | to == 0 = T.concat $ map (\(t,v,e) -> ":" <> e <> ":" <> " - " <> t <> ": 0%\n") (votes p)
+            | otherwise = T.concat $ map (\(t,v,e) -> e <> " - " <> t <> ": " <> (T.pack . show) (v `doDiv` to) <> "%") (votes p)

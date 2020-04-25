@@ -12,6 +12,7 @@ import qualified Data.Text as T
 import qualified GlobalStats as G
 import qualified CountryStats as C
 import Botty.Event
+import Botty.Utils (doDiv)
 
 covidEvent :: BottyEvent
 covidEvent = Botty { cmd = covidStatsCommand 
@@ -164,5 +165,4 @@ craftResponse r y (C.Population p) =  let deaths' = C.deaths r
     where formatNumber n = if (n >= 0)
             then ("+"++) . commas . show $ n
             else ("-"++) . commas . snd . splitAt (1) $ show n
-          doDiv = (/) `on` fromIntegral
 
