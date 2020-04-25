@@ -42,8 +42,8 @@ poll :: T.Text -> Persistent -> IO (Maybe T.Text)
 poll t p = do
     gen <- newStdGen
     let (n,newGen) = randomR (0, maxBound :: Int) (gen)
-        (pollCommand:t') = T.unpack t
-    poll <- makePoll n (T.pack t')
+        t' =  (T.unwords . tail . T.words) t
+    poll <- makePoll n t'
     case poll of
         Nothing -> return (Just $ pollDesc T.empty)
         Just (poll') -> do 
