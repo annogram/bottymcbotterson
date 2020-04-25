@@ -84,7 +84,7 @@ parseInformation :: T.Text -> Maybe (T.Text, [T.Text])
 parseInformation t' = let (a,_,_,xs) =  t' =~ ("\\((.+)\\)" :: T.Text) :: RegCap
                    in case xs of
                        [] -> Nothing
-                       (xs') -> Just (a, nub . map (T.filter (/=' ')) . T.splitOn "," . head $ xs')
+                       (xs') -> Just (a, nub . map (T.strip) . T.splitOn "," . head $ xs')
 
 -- | Print the poll as a message to send to discord
 printPoll :: Poll -> T.Text
