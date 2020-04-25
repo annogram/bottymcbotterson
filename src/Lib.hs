@@ -5,7 +5,7 @@ module Lib
 import Control.Monad        (when)
 import System.Environment   (getEnv)
 import Events               (eventPool)
-import BottyEvent
+import Botty.Event
 import Data.Monoid
 import Discord
 import Discord.Types

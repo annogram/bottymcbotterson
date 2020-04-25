@@ -2,7 +2,7 @@
 module PongEvent ( pongEvent)
     where
 import Data.Text
-import BottyEvent
+import Botty.Event
 
 pongEvent :: BottyEvent
 pongEvent = Botty { cmd = pongCommand

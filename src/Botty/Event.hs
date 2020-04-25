@@ -1,4 +1,4 @@
-module BottyEvent (
+module Botty.Event (
     BottyEvent (..)
     , Persistent
     ) where

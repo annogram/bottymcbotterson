@@ -11,7 +11,7 @@ import System.IO
 import qualified Data.Text as T
 import qualified Data.ByteString as B
 import qualified Data.Text.Encoding as TLE
-import BottyEvent
+import Botty.Event
 
 communityEvent :: BottyEvent
 communityEvent = Botty { cmd = communityCmd

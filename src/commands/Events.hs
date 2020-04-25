@@ -6,7 +6,7 @@ import CovidStatsEvent  ( covidEvent )
 import CommunityEvent   ( communityEvent )
 import PollEvent        ( pollEvent )
 import Data.List
-import BottyEvent
+import Botty.Event
 import qualified Data.Map.Lazy as M
 import qualified Data.Text as T
 

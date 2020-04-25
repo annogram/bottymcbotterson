@@ -8,7 +8,7 @@ import Control.Concurrent.STM
 import Text.Regex.TDFA
 import Data.List.Split
 import System.Random
-import BottyEvent
+import Botty.Event
 import Data.List
 import Botty.Utils
 import Text.Emoji

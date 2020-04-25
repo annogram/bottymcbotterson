@@ -11,7 +11,7 @@ import Network.HTTP.Req
 import qualified Data.Text as T
 import qualified GlobalStats as G
 import qualified CountryStats as C
-import BottyEvent
+import Botty.Event
 
 covidEvent :: BottyEvent
 covidEvent = Botty { cmd = covidStatsCommand 
