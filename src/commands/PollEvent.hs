@@ -2,6 +2,7 @@
 module PollEvent 
     ( pollEvent
     , pollFollowUp
+    , vote
     ) where
 import Control.Monad
 import Control.Concurrent
@@ -66,8 +67,6 @@ writeStore :: Persistent -> Poll -> IO ()
 writeStore st p = atomically $ readTVar st >>= 
     \store -> writeTVar st $ M.insert (pollId p) (show p) store
 
--- | Functionality to cast a vote
-
 -- | Parse a string into a poll
 makePoll :: Int -> T.Text -> IO (Maybe Poll)
 makePoll pollId t = do
@@ -100,8 +99,25 @@ printPoll p = let totalVotes = sum . map (\(_,v,_) -> v) $ votes p
 followUp ::  DiscordHandle -> Message -> T.Text -> Persistent -> IO (Maybe T.Text)
 followUp h m t p = do
     persistent <- readTVarIO p
-    let (_,_,_,pid:_) = messageText m =~ ("poll id: ([0-9]+)" :: T.Text) :: RegCap
-        poll = read $ persistent M.! (read . T.unpack $ pid :: Int) :: Poll
+    let poll = pollFromMessage (messageText m) persistent
         es = [ e | (_,_,e) <- votes $ poll]
     forM_ es (\e -> restCall h $ R.CreateReaction (messageChannel m, messageId m) e)
+    return Nothing
+
+-- | Construct a poll from a message (with the poll id) and persistent storage
+pollFromMessage :: T.Text -> M.Map Int String -> Poll
+pollFromMessage m p = let (_,_,_,pid:_) = m =~ ("poll id: ([0-9]+)" :: T.Text) :: RegCap
+                    in read $ p M.! (read . T.unpack $ pid :: Int) :: Poll
+
+-- | Functionality to cast a vote
+vote :: DiscordHandle -> ReactionInfo -> Persistent -> IO (Maybe T.Text)
+vote h ri p = do
+    persistent <- readTVarIO p
+    Right (m) <- restCall h $ R.GetChannelMessage (reactionChannelId ri, reactionMessageId ri)
+    let poll = pollFromMessage (messageText m) persistent
+        e = reactionEmoji ri
+        votes' = map (\(x,v,em) -> if em == emojiName e then (x,v+1,em) else (x,v,em)) $ votes poll
+        newPoll = Poll {votes = votes', pollId = pollId poll, title = title poll}
+    writeStore p newPoll -- This is done atomically
+    _ <- restCall h $ R.EditMessage (messageChannel m, messageId m) (printPoll newPoll) Nothing
     return Nothing
