@@ -1,4 +1,7 @@
-image: fpco/stack-build-small:lts-15.5
+image: docker:latest
+
+services:
+  - docker:dind
 
 variables:
   STACK_ROOT: "${CI_PROJECT_DIR}/.stack-root"
@@ -14,12 +17,13 @@ cache:
 
 stages:
   - build
-  - publish
   - test
+  - publish
   - deploy
 
 application_build:
   stage: build
+  image: fpco/stack-build-small:lts-15.5
   script:
     - stack install --local-bin-path ./build --system-ghc
     - cp -R --verbose res ./build/
@@ -30,6 +34,7 @@ application_build:
 
 test:
   stage: test
+  image: fpco/stack-build-small:lts-15.5
   script:
     - stack test
 
@@ -51,7 +56,8 @@ deploy_staging:
   script:
     - aws ecs register-task-definition ${CI_AWS_ECS_TASK_DEFINITION}
   environment:
-    name: production
+    name: staging
+    url: www.example.com
   only:
     - master
   when: manual
