@@ -29,7 +29,7 @@ build:
 test:
   stage: test
   script:
-    - stack test --trace --profile
+    - stack test
 
 deploy_staging:
   stage: deploy
