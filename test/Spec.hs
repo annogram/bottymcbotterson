@@ -85,7 +85,6 @@ malformedPollT = TestCase $ do
     after <- readTVarIO p
     assertBool "persitence updated" $ (length . M.elems) after == 0
 
-
 testList = TestList [ TestLabel "Should return 2" moqTest
                     , divTest
                     , divTest2

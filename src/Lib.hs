@@ -16,7 +16,7 @@ import qualified Data.Text.IO as TIO
 import qualified Data.Text as T
 import qualified Data.Map.Lazy as M
 
--- The program entry point, this function will grab the environment key and attach the event handler
+-- | The program entry point, this function will grab the environment key and attach the event handler
 botstart :: IO ()
 botstart = do 
     putStrLn "Starting bot..."
@@ -30,10 +30,9 @@ botstart = do
                     , discordForkThreadForEvents = True
                     }
     TIO.putStrLn userFacing
-    where persistent :: M.Map Int String
-          persistent = M.fromList []
+    where persistent = M.empty :: M.Map Int String
 
--- The event handler will be passed to the discord client and execute the comands in the event module
+-- | The event handler will be passed to the discord client and execute the comands in the event module
 eventHandler :: Persistent -> DiscordHandle -> Event -> IO ()
 eventHandler p handle event = case event of 
     MessageCreate m -> botFilter m Nothing $ do
