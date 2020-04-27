@@ -21,6 +21,7 @@ emojiRange = let ranges = (\(a,b) -> [readH a .. readH b]) <$> [ ("1F300", "1F32
                           , ("1F3E0", "1F3F0")
                           , ("1F400", "1F43E")
                           , ("1F442", "1F4F7")
+                          , ("1F5FB", "1F636")
                           ] 
              in (discordSyn . T.singleton . chr) <$> concat ranges
     where readH c = let (n,_):[] = readHex c
