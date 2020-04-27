@@ -1,5 +1,6 @@
 {-# LANGUAGE OverloadedStrings #-}
 import Test.HUnit
+import System.Exit (exitSuccess, exitFailure)
 import Lib
 import Botty.Utils
 import Data.List
@@ -13,8 +14,9 @@ import qualified Data.Map.Lazy as M
 blankPersistent :: IO Persistent
 blankPersistent = newTVarIO $ M.fromList []
 
-main :: IO ()
-main = runTestTT testList >> pure ()
+-- | Exit failure to stop job in gitlab
+main :: IO Int
+main = runTestTT testList >>= \c -> if errors c + failures c == 0 then exitSuccess else exitFailure
 
 moqTest = TestCase $ assertEqual "Should return 2" 2 3
 
