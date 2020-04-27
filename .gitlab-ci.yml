@@ -13,6 +13,7 @@ cache:
 
 stages:
   - build
+  - test
   - deploy
 
 build:
@@ -24,6 +25,11 @@ build:
     paths:
       - build/*
     expire_in: 1 week
+
+test:
+  stage: test
+  script:
+    - stack test --trace --profile
 
 deploy_staging:
   stage: deploy
