@@ -1,11 +1,12 @@
 {-# Language OverloadedStrings #-}
 module Events ( eventPool
               , followUpPool
+              , vote
               ) where
 import PongEvent        ( pongEvent )
 import CovidStatsEvent  ( covidEvent )
 import CommunityEvent   ( communityEvent )
-import PollEvent        ( pollEvent, pollFollowUp )
+import PollEvent        ( pollEvent, pollFollowUp, vote )
 import Data.List
 import Botty.Event
 import Discord

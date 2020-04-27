@@ -4,7 +4,7 @@ module Lib
     ) where
 import Control.Monad        (when)
 import System.Environment   (getEnv)
-import Events               (eventPool, followUpPool)
+import Events               (eventPool, followUpPool, vote)
 import Botty.Event
 import Data.Monoid
 import Discord
@@ -38,8 +38,8 @@ eventHandler :: Persistent -> DiscordHandle -> Event -> IO ()
 eventHandler p handle event = case event of 
     MessageCreate m -> botFilter m Nothing $ do
         case (getCommandStart m) `M.lookup` eventPool of
-            Nothing     -> pure ()
-            Just (f)    -> do
+            Nothing  -> pure ()
+            Just (f) -> do
                 let command  = messageText m
                 _ <- logEvent handle m
                 succ <- f command p
@@ -50,6 +50,13 @@ eventHandler p handle event = case event of
                         shouldFollowUp handle result (getCommandStart m) p
                         pure ()
                     Nothing -> addReaction "thumbsdown" handle m
+    MessageReactionAdd ri -> do
+        Right (callingUser) <- restCall handle $ R.GetUser (reactionUserId ri)
+        when (not . userIsBot $ callingUser) $ do
+            Right (m) <- restCall handle $ R.GetChannelMessage (reactionChannelId ri, reactionMessageId ri)
+            when (userIsBot (messageAuthor m)) $ do
+                _ <- vote handle ri p
+                pure ()
     _ -> pure ()
     where getCommandStart = head . T.words . T.toLower . messageText
 
