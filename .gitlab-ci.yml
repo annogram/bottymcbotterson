@@ -36,7 +36,7 @@ application_test_and_build:
 docker_build:
   stage: publish
   dependencies:
-    - application_build
+    - application_test_and_build
   script:
     - apk add --no-cache curl jq python py-pip
     - pip install awscli
