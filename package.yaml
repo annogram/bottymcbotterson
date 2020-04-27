@@ -63,5 +63,11 @@ tests:
     - -with-rtsopts=-N
     dependencies:
     - discord-bot
+    - stm
     - HUnit
+    - bytestring
+    - split
+    - text
+    - containers
+
 

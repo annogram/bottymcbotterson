@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: b60d515d71cf8ebff2e20af23b36ca4a9f2442fec55737df8965d74cae3cdacc
+-- hash: 4738482654ad5b0849b18ed7e745004d207ea00ca19a753f2ede2f5a95dcda70
 
 name:           discord-bot
 version:        0.2.0.0
@@ -84,5 +84,10 @@ test-suite discord-bot-test
   build-depends:
       HUnit
     , base >=4.7 && <5
+    , bytestring
+    , containers
     , discord-bot
+    , split
+    , stm
+    , text
   default-language: Haskell2010
