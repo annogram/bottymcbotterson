@@ -1,5 +1,5 @@
 {-# Language OverloadedStrings, DeriveGeneric #-}
-module CountryStats ( CountryStat(..)
+module Botty.Commands.Types.CountryStats ( CountryStat(..)
                     , Population(..)
                     , CountryInfo(..)
                     ) where

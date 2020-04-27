@@ -2,9 +2,9 @@
 module Lib
     ( botstart
     ) where
-import Control.Monad        (when)
-import System.Environment   (getEnv)
-import Events               (eventPool, followUpPool, vote)
+import Control.Monad         (when)
+import System.Environment    (getEnv)
+import Botty.Commands.Events (eventPool, followUpPool, vote)
 import Botty.Event
 import Data.Monoid
 import Discord

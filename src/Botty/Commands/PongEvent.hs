@@ -1,5 +1,5 @@
 {-# Language OverloadedStrings #-}
-module PongEvent ( pongEvent)
+module Botty.Commands.PongEvent ( pongEvent)
     where
 import Data.Text
 import Botty.Event

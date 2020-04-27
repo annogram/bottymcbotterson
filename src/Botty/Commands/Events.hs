@@ -1,12 +1,12 @@
 {-# Language OverloadedStrings #-}
-module Events ( eventPool
+module Botty.Commands.Events ( eventPool
               , followUpPool
               , vote
               ) where
-import PongEvent        ( pongEvent )
-import CovidStatsEvent  ( covidEvent )
-import CommunityEvent   ( communityEvent )
-import PollEvent        ( pollEvent, pollFollowUp, vote )
+import Botty.Commands.PongEvent        ( pongEvent )
+import Botty.Commands.CovidStatsEvent  ( covidEvent )
+import Botty.Commands.CommunityEvent   ( communityEvent )
+import Botty.Commands.PollEvent        ( pollEvent, pollFollowUp, vote )
 import Data.List
 import Botty.Event
 import Discord

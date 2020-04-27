@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 4738482654ad5b0849b18ed7e745004d207ea00ca19a753f2ede2f5a95dcda70
+-- hash: d6541bc75b8c1929f9f686b6ea929bff5768095791d6ba73c0e72fbd716d75da
 
 name:           discord-bot
 version:        0.2.0.0
@@ -27,22 +27,20 @@ source-repository head
 
 library
   exposed-modules:
+      Botty.Commands.CommunityEvent
+      Botty.Commands.CovidStatsEvent
+      Botty.Commands.Events
+      Botty.Commands.PollEvent
+      Botty.Commands.PongEvent
+      Botty.Commands.Types.CountryStats
+      Botty.Commands.Types.GlobalStats
       Botty.Event
       Botty.Utils
       Lib
-      CommunityEvent
-      CovidStatsEvent
-      Events
-      PollEvent
-      PongEvent
-      CountryStats
-      GlobalStats
   other-modules:
       Paths_discord_bot
   hs-source-dirs:
       src
-      src/commands
-      src/commands/covid-types
   build-depends:
       aeson
     , base >=4.7 && <5

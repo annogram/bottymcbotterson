@@ -4,10 +4,12 @@ import System.Exit (exitSuccess, exitFailure)
 import Lib
 import Botty.Utils
 import Data.List
-import PongEvent
 import Botty.Event
+import Botty.Commands.PongEvent
+import Botty.Commands.CovidStatsEvent
 import Control.Concurrent
 import Control.Concurrent.STM
+import qualified Data.Text as T
 import qualified Data.Map.Lazy as M
 
 
@@ -18,22 +20,44 @@ blankPersistent = newTVarIO $ M.fromList []
 main :: IO Int
 main = runTestTT testList >>= \c -> if errors c + failures c == 0 then exitSuccess else exitFailure
 
-moqTest = TestCase $ assertEqual "Should return 2" 2 3
+moqTest = TestCase $ assertEqual "Should return 2" 2 2
 
 divTest = TestCase $ assertEqual "should return 0.5" (1 `doDiv` 2) 0.5
 divTest2 = TestCase $ assertEqual "should return 1" (1 `doDiv` 1) 1
 
 emojiT = TestCase $ assertBool "list should contain neutral_face" ("neutral_face" `elem` emojiRange)
 
-pongTest = TestCase $ do
+pongT = TestCase $ do
     p <- blankPersistent
     assertEqual "Ping command" "/ping" (cmd pongEvent)
     Just (f) <- func pongEvent "" p
     assertEqual "Pong response" "Pong!" f
 
+covidT = TestCase $ do
+    p <- blankPersistent
+    assertEqual "Covid command" "/covid" (cmd covidEvent)
+    Just (f) <- func covidEvent "/covid" p
+    assertBool "Covid response deaths" ("Deaths" `T.isInfixOf` f)
+    assertBool "Covid response Infections" ("Infections" `T.isInfixOf` f)
+    assertBool "🤮 in response" (":face_vomiting:" `T.isInfixOf` f)
+
+covidCountryT = TestCase $ do
+    p <- blankPersistent
+    assertEqual "Covid command" "/covid" (cmd covidEvent)
+    Just (f) <- func covidEvent "/covid nz" p
+    assertBool "Covid response deaths" ("Deaths" `T.isInfixOf` f)
+    assertBool "Covid response Infections" ("Infections" `T.isInfixOf` f)
+    assertBool "🤮 in response" (":face_vomiting:" `T.isInfixOf` f)
+    assertBool "Covid response Recovered" ("%" `T.isInfixOf` f)
+    assertBool "New Zealand in title" ("New Zealand's" `T.isInfixOf` f)
+
+
+
 testList = TestList [ TestLabel "Should return 2" moqTest
                     , divTest
                     , divTest2
                     , emojiT
-                    , TestLabel "Pong event" pongTest
+                    , pongT
+                    , covidT
+                    , covidCountryT
                     ]

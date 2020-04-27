@@ -1,5 +1,5 @@
 {-# Language OverloadedStrings, TemplateHaskell #-}
-module CommunityEvent
+module Botty.Commands.CommunityEvent
     ( communityEvent )
     where
 import System.Directory (listDirectory, getCurrentDirectory)
@@ -43,7 +43,6 @@ getRandomQuote = do
     print quote
     return ("> Quote from: " <> (T.pack . fst . break (== '.') $ name) <> "\n\n"
                 <> quote)
-    -- pure ""
 
 findQuote :: StdGen -> T.Text -> T.Text
 findQuote gen fileContent = (T.pack .  randomQuote . getQuotes . splitOn ("\r\n\r") . T.unpack) fileContent

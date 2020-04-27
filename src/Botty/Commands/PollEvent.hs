@@ -1,5 +1,5 @@
 {-# LANGUAGE OverloadedStrings, NamedFieldPuns #-}
-module PollEvent 
+module Botty.Commands.PollEvent 
     ( pollEvent
     , pollFollowUp
     , vote
