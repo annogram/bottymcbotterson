@@ -17,26 +17,21 @@ cache:
 
 stages:
   - build
-  - test
   - publish
   - deploy
 
-application_build:
+application_test_and_build:
   stage: build
   image: fpco/stack-build-small:lts-15.5
   script:
     - stack install --local-bin-path ./build --system-ghc
     - cp -R --verbose res ./build/
+    - stack test
   artifacts:
     paths:
       - build/*
     expire_in: 1 week
 
-test:
-  stage: test
-  image: fpco/stack-build-small:lts-15.5
-  script:
-    - stack test
 
 docker_build:
   stage: publish
