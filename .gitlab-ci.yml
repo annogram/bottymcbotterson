@@ -51,8 +51,7 @@ deploy_staging:
   script:
     - aws ecs register-task-definition ${CI_AWS_ECS_TASK_DEFINITION}
   environment:
-    name: staging
-    url: www.example.com
+    name: production
   only:
     - master
   when: manual
