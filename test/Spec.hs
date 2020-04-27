@@ -7,6 +7,7 @@ import Data.List
 import Botty.Event
 import Botty.Commands.PongEvent
 import Botty.Commands.CovidStatsEvent
+import Botty.Commands.PollEvent
 import Control.Concurrent
 import Control.Concurrent.STM
 import qualified Data.Text as T
@@ -14,11 +15,13 @@ import qualified Data.Map.Lazy as M
 
 
 blankPersistent :: IO Persistent
-blankPersistent = newTVarIO $ M.fromList []
+blankPersistent = newTVarIO $ M.empty
 
 -- | Exit failure to stop job in gitlab
 main :: IO Int
-main = runTestTT testList >>= \c -> if errors c + failures c == 0 then exitSuccess else exitFailure
+main = runTestTT testList >>= \c -> if errors c + failures c == 0
+    then exitSuccess 
+    else exitFailure
 
 moqTest = TestCase $ assertEqual "Should return 2" 2 2
 
@@ -51,6 +54,36 @@ covidCountryT = TestCase $ do
     assertBool "Covid response Recovered" ("%" `T.isInfixOf` f)
     assertBool "New Zealand in title" ("New Zealand's" `T.isInfixOf` f)
 
+multipleCovidCountryT = TestCase $ do
+    p <- blankPersistent
+    Just (f) <- func covidEvent "/covid nz,mexico" p
+    assertBool "Two blocks" ((length . T.lines) f == 15)
+    assertBool "New Zealand in title" ("New Zealand's" `T.isInfixOf` f)
+    assertBool "Mexico in title" ("Mexico's" `T.isInfixOf` f)
+
+pollT = TestCase $ do
+    -- Arrange
+    let options = ["yip yip", "cha cha cha", "yahe yahe yahe yo"]
+        commandOpts = foldl1 (\agg x -> agg <> "," <> x) options
+    p <- blankPersistent
+    -- Act
+    Just (f) <- func pollEvent ("/poll What does the fox say? (" <> commandOpts <> ")") p
+    -- Assert
+    assertBool "options in response" $ foldr (\x agg -> agg && (x `T.isInfixOf` f)) True options
+    after <- readTVarIO p
+    assertBool "persitence updated" $ (length . M.elems) after == 1
+
+malformedPollT = TestCase $ do
+    -- Arrange
+    let options = ["yip yip", "cha cha cha", "yahe yahe yahe yo"]
+        commandOpts = foldl1 (\agg x -> agg <> "," <> x) options
+    p <- blankPersistent
+    -- Act
+    Just (f) <- func pollEvent "/poll No options" p
+    -- Assert
+    assertEqual "Responds with usage" "/poll - Starts a poll with options \n\tUsage: /poll" f
+    after <- readTVarIO p
+    assertBool "persitence updated" $ (length . M.elems) after == 0
 
 
 testList = TestList [ TestLabel "Should return 2" moqTest
@@ -60,4 +93,7 @@ testList = TestList [ TestLabel "Should return 2" moqTest
                     , pongT
                     , covidT
                     , covidCountryT
+                    , multipleCovidCountryT
+                    , pollT
+                    , malformedPollT
                     ]
