@@ -82,7 +82,7 @@ malformedPollT = TestCase $ do
     -- Act
     Just (f) <- func pollEvent "/poll No options" p
     -- Assert
-    assertEqual "Responds with usage" "/poll - Starts a poll with options \n\tUsage: /poll" f
+    assertEqual "Responds with usage" "/poll - Starts a poll with options \n\tUsage: /poll Poll title (poll options,other option)\n\tvoting: click on the emoji that relates to the option in the poll" f
     after <- readTVarIO p
     assertBool "persitence updated" $ (length . M.elems) after == 0
 

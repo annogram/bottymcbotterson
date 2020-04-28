@@ -47,7 +47,8 @@ pollCommand = "/poll"
 -- | Poll description and usage
 pollDesc :: T.Text -> T.Text
 pollDesc _ = pollCommand <> " - Starts a poll with options \n"
-            <> "\tUsage: " <> pollCommand
+            <> "\tUsage: " <> pollCommand <> " Poll title (poll options,other option)\n"
+            <> "\tvoting: click on the emoji that relates to the option in the poll"
 
 -- | Functionality to create a poll
 poll :: T.Text -> Persistent -> IO (Maybe T.Text)
