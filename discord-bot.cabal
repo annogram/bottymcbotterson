@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 8be4efeb8480d3d1868e83c6673bc7981b9d4113a032f130700f5d4bd78c4020
+-- hash: d6541bc75b8c1929f9f686b6ea929bff5768095791d6ba73c0e72fbd716d75da
 
 name:           discord-bot
 version:        0.2.0.0
@@ -27,21 +27,20 @@ source-repository head
 
 library
   exposed-modules:
+      Botty.Commands.CommunityEvent
+      Botty.Commands.CovidStatsEvent
+      Botty.Commands.Events
+      Botty.Commands.PollEvent
+      Botty.Commands.PongEvent
+      Botty.Commands.Types.CountryStats
+      Botty.Commands.Types.GlobalStats
+      Botty.Event
+      Botty.Utils
       Lib
-      BottyEvent
-      CommunityEvent
-      CovidStatsEvent
-      Events
-      PollEvent
-      PongEvent
-      CountryStats
-      GlobalStats
   other-modules:
       Paths_discord_bot
   hs-source-dirs:
       src
-      src/commands
-      src/commands/covid-types
   build-depends:
       aeson
     , base >=4.7 && <5
@@ -49,8 +48,10 @@ library
     , containers
     , directory
     , discord-haskell
+    , emojis
     , file-embed
     , random
+    , regex-tdfa
     , req
     , split
     , stm
@@ -79,6 +80,12 @@ test-suite discord-bot-test
       test
   ghc-options: -threaded -rtsopts -with-rtsopts=-N
   build-depends:
-      base >=4.7 && <5
+      HUnit
+    , base >=4.7 && <5
+    , bytestring
+    , containers
     , discord-bot
+    , split
+    , stm
+    , text
   default-language: Haskell2010

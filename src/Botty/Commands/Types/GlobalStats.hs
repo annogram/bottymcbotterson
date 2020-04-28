@@ -1,5 +1,5 @@
 {-# Language OverloadedStrings, DeriveGeneric #-}
-module GlobalStats (
+module Botty.Commands.Types.GlobalStats (
     GlobalStat(..)
 ) where
 import GHC.Generics

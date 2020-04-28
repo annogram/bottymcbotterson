@@ -1,5 +1,5 @@
 {-# Language OverloadedStrings #-}
-module CovidStatsEvent 
+module Botty.Commands.CovidStatsEvent 
     (covidEvent)
     where
 import Data.Text         (Text)
@@ -9,9 +9,10 @@ import Data.Function     (on)
 import Control.Exception (catch)
 import Network.HTTP.Req
 import qualified Data.Text as T
-import qualified GlobalStats as G
-import qualified CountryStats as C
-import BottyEvent
+import qualified Botty.Commands.Types.GlobalStats as G
+import qualified Botty.Commands.Types.CountryStats as C
+import Botty.Event
+import Botty.Utils (doDiv)
 
 covidEvent :: BottyEvent
 covidEvent = Botty { cmd = covidStatsCommand 
@@ -28,8 +29,8 @@ covidDesc _ = "/covid - Reports statistics on the covid-19 pandameic \n"
                 <> "\tUsage: /covid {country,country,...} - countries statistics"
 
 -- Get information on the Covid-19 pandemic
-getCovidInfo :: Text -> IO (Maybe Text)
-getCovidInfo text = return =<< covidBasic . T.words $ text
+getCovidInfo :: Text -> Persistent -> IO (Maybe Text)
+getCovidInfo text _ = return =<< covidBasic . T.words $ text
 
 
 covidBasic :: [Text] -> IO (Maybe Text)
@@ -164,5 +165,4 @@ craftResponse r y (C.Population p) =  let deaths' = C.deaths r
     where formatNumber n = if (n >= 0)
             then ("+"++) . commas . show $ n
             else ("-"++) . commas . snd . splitAt (1) $ show n
-          doDiv = (/) `on` fromIntegral
 

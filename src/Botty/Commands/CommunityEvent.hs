@@ -1,5 +1,5 @@
 {-# Language OverloadedStrings, TemplateHaskell #-}
-module CommunityEvent
+module Botty.Commands.CommunityEvent
     ( communityEvent )
     where
 import System.Directory (listDirectory, getCurrentDirectory)
@@ -11,7 +11,7 @@ import System.IO
 import qualified Data.Text as T
 import qualified Data.ByteString as B
 import qualified Data.Text.Encoding as TLE
-import BottyEvent
+import Botty.Event
 
 communityEvent :: BottyEvent
 communityEvent = Botty { cmd = communityCmd
@@ -29,8 +29,8 @@ communityDesc :: T.Text -> T.Text
 communityDesc _ = communityCmd <> " - get a random quote from community\n"
                 <> "\tUsage: " <> communityCmd
 
-communityFunc :: T.Text -> IO (Maybe T.Text)
-communityFunc _ = pure . Just =<< getRandomQuote
+communityFunc :: T.Text -> Persistent -> IO (Maybe T.Text)
+communityFunc _ _ = pure . Just =<< getRandomQuote
 
 getRandomQuote :: IO T.Text
 getRandomQuote = do
@@ -43,7 +43,6 @@ getRandomQuote = do
     print quote
     return ("> Quote from: " <> (T.pack . fst . break (== '.') $ name) <> "\n\n"
                 <> quote)
-    -- pure ""
 
 findQuote :: StdGen -> T.Text -> T.Text
 findQuote gen fileContent = (T.pack .  randomQuote . getQuotes . splitOn ("\r\n\r") . T.unpack) fileContent

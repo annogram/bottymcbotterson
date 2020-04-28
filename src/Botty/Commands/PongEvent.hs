@@ -1,8 +1,8 @@
 {-# Language OverloadedStrings #-}
-module PongEvent ( pongEvent)
+module Botty.Commands.PongEvent ( pongEvent)
     where
 import Data.Text
-import BottyEvent
+import Botty.Event
 
 pongEvent :: BottyEvent
 pongEvent = Botty { cmd = pongCommand
@@ -19,5 +19,5 @@ pongDesc _ = "/ping - Responds with pong \n"
             <> "\tUsage: /ping"
 
 -- Functionality to reply to ping
-pongResp :: Text -> IO (Maybe Text)
-pongResp _ = return $ Just "Pong!"
+pongResp :: Text -> Persistent -> IO (Maybe Text)
+pongResp _ _ = return $ Just "Pong!"
