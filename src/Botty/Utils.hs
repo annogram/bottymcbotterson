@@ -1,6 +1,7 @@
 module Botty.Utils ( emojiRange
                    , randomEmoji
                    , doDiv
+                   , discordSyn
                    ) where
 
 import Data.Char
@@ -10,6 +11,10 @@ import Text.Emoji
 import System.Random
 import Data.Function (on)
 import qualified Data.Text as T
+
+discordSyn :: T.Text -> T.Text
+discordSyn x = let Just (e:_) = aliasesFromEmoji x
+               in e
 
 emojiRange :: [T.Text]
 emojiRange = let ranges = (\(a,b) -> [readH a .. readH b]) <$> [ ("1F300", "1F320")
@@ -26,8 +31,6 @@ emojiRange = let ranges = (\(a,b) -> [readH a .. readH b]) <$> [ ("1F300", "1F32
              in (discordSyn . T.singleton . chr) <$> concat ranges
     where readH c = let (n,_):[] = readHex c
                     in n
-          discordSyn x = let Just (e:_) = aliasesFromEmoji x
-                         in e
 
 randomEmoji :: IO T.Text
 randomEmoji = randomRIO(0, length emojiRange) >>= \i -> return $ emojiRange !! i

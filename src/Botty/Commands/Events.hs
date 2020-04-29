@@ -2,11 +2,12 @@
 module Botty.Commands.Events ( eventPool
               , followUpPool
               , vote
+              , unvote
               ) where
 import Botty.Commands.PongEvent        ( pongEvent )
 import Botty.Commands.CovidStatsEvent  ( covidEvent )
 import Botty.Commands.CommunityEvent   ( communityEvent )
-import Botty.Commands.PollEvent        ( pollEvent, pollFollowUp, vote )
+import Botty.Commands.PollEvent        ( pollEvent, pollFollowUp, vote, unvote )
 import Data.List
 import Botty.Event
 import Discord
@@ -24,6 +25,7 @@ followups = [pollFollowUp]
 eventPool :: M.Map T.Text (T.Text -> Persistent -> IO (Maybe T.Text))
 eventPool = M.fromList $ ("/help", helpEvent):[ (cmd x, func x) | x <- events ]
 
+-- | Followups are actions that are done after a mesasge is sent
 followUpPool :: M.Map T.Text (DiscordHandle -> Message -> T.Text -> Persistent -> IO (Maybe T.Text))
 followUpPool = M.fromList $ [ (fcmd x, ffunc x) | x <- followups ]
 
