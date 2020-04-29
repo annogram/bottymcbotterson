@@ -97,7 +97,11 @@ printPoll p = let totalVotes = sum . map (\(_,v,_,_) -> v) $ votes p
     where votesStr to 
             | to == 0 = T.concat $ map (\(t,v,e,_) -> ":" <> e <> ":" <> " - " <> t <> ": 0%\n") (votes p)
             | otherwise = T.concat $ map 
-                (\(t,v,e,us) -> ":" <> e <> ":" <> " - " <> t <> ": " <> (T.pack . show) (100 * v `doDiv` to) <> "% (" <> voters us <> ")\n") 
+                (\(t,v,e,us) -> ":" <> e <> ":" <> " - " <> t <> ": " 
+                    <> (T.pack . fst . break (== '.') . show) (100 * v `doDiv` to) <> 
+                    if v == 0 
+                        then "%\n"
+                        else "% (" <> voters us <> ")\n")
                 (votes p)
           voters [] = T.empty
           voters (x:[]) = "<@" <> (T.pack . show) x <> ">" <> voters []
@@ -108,14 +112,17 @@ followUp ::  DiscordHandle -> Message -> T.Text -> Persistent -> IO (Maybe T.Tex
 followUp h m t p = do
     persistent <- readTVarIO p
     let poll = pollFromMessage (messageText m) persistent
-        es = [ e | (_,_,e,_) <- votes $ poll]
-    forM_ es (\e -> restCall h $ R.CreateReaction (messageChannel m, messageId m) e)
-    return Nothing
+    case poll of
+        Nothing -> return Nothing
+        Just (poll') -> do
+            let es = [ e | (_,_,e,_) <- votes $ poll']
+            forM_ es (\e -> restCall h $ R.CreateReaction (messageChannel m, messageId m) e)
+            return Nothing
 
 -- | Construct a poll from a message (with the poll id) and persistent storage
-pollFromMessage :: T.Text -> M.Map Int String -> Poll
+pollFromMessage :: T.Text -> M.Map Int String -> Maybe Poll
 pollFromMessage m p = let (_,_,_,pid:_) = m =~ ("poll id: ([0-9]+)" :: T.Text) :: RegCap
-                    in read $ p M.! (read . T.unpack $ pid :: Int) :: Poll
+                    in read <$> M.lookup (read . T.unpack $ pid :: Int) p:: Maybe Poll
 
 -- | Functionality to cast a vote
 vote :: DiscordHandle -> ReactionInfo -> Persistent -> IO (Maybe T.Text)
@@ -124,14 +131,17 @@ vote h ri p = do
     Right (m) <- restCall h $ R.GetChannelMessage (reactionChannelId ri, reactionMessageId ri)
     let poll = pollFromMessage (messageText m) persistent
         e = reactionEmoji ri
-        votes' = map (\(x,v,em,us) -> if em == (discordSyn . emojiName) e 
-            then (x,v+1,em,(reactionUserId ri):us)
-            else (x,v,em,us)
-            ) $ votes poll
-        newPoll = Poll {votes = votes', pollId = pollId poll, title = title poll}
-    writeStore p newPoll -- This is done atomically
-    _ <- restCall h $ R.EditMessage (messageChannel m, messageId m) (printPoll newPoll) Nothing
-    return Nothing
+    case poll of 
+        Nothing -> return Nothing
+        Just (poll') -> do
+            let votes' = map (\(x,v,em,us) -> if em == (discordSyn . emojiName) e 
+                    then (x,v+1,em,(reactionUserId ri):us)
+                    else (x,v,em,us)
+                    ) $ votes poll'
+                newPoll = Poll {votes = votes', pollId = pollId poll', title = title poll'}
+            writeStore p newPoll -- This is done atomically
+            _ <- restCall h $ R.EditMessage (messageChannel m, messageId m) (printPoll newPoll) Nothing
+            return Nothing
 
 -- | When users undo a selection
 unvote :: DiscordHandle -> ReactionInfo -> Persistent -> IO (Maybe T.Text)
@@ -140,12 +150,15 @@ unvote h ri p = do
     Right (m) <- restCall h $ R.GetChannelMessage (reactionChannelId ri, reactionMessageId ri)
     let poll = pollFromMessage (messageText m) persistent
         e = reactionEmoji ri
-        votes' = map (\(x,v,em,us) -> if em == (discordSyn . emojiName) e 
-            then (x,v-1,em,delete (reactionUserId ri) us)
-            else (x,v,em,us)
-            ) $ votes poll
-        newPoll = Poll {votes = votes', pollId = pollId poll, title = title poll}
-    writeStore p newPoll -- This is done atomically
-    _ <- restCall h $ R.EditMessage (messageChannel m, messageId m) (printPoll newPoll) Nothing
-    return Nothing
+    case poll of
+        Nothing -> return Nothing
+        Just poll' -> do
+            let votes' = map (\(x,v,em,us) -> if em == (discordSyn . emojiName) e 
+                    then (x,v-1,em,delete (reactionUserId ri) us)
+                    else (x,v,em,us)
+                    ) $ votes poll'
+                newPoll = Poll {votes = votes', pollId = pollId poll', title = title poll'}
+            writeStore p newPoll -- This is done atomically
+            _ <- restCall h $ R.EditMessage (messageChannel m, messageId m) (printPoll newPoll) Nothing
+            return Nothing
     
