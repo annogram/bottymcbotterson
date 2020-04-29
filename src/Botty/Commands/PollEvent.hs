@@ -9,6 +9,7 @@ import Control.Concurrent
 import Control.Concurrent.STM
 import Text.Regex.TDFA
 import Data.List.Split
+import Data.Char
 import System.Random
 import Botty.Event
 import Data.List
@@ -94,7 +95,7 @@ printPoll p = let totalVotes = sum . map (\(_,v,_) -> v) $ votes p
                 <> votesStr totalVotes <> "\n"
     where votesStr to 
             | to == 0 = T.concat $ map (\(t,v,e) -> ":" <> e <> ":" <> " - " <> t <> ": 0%\n") (votes p)
-            | otherwise = T.concat $ map (\(t,v,e) -> e <> " - " <> t <> ": " <> (T.pack . show) (v `doDiv` to) <> "%") (votes p)
+            | otherwise = T.concat $ map (\(t,v,e) -> ":" <> e <> ":" <> " - " <> t <> ": " <> (T.pack . show) (100 * v `doDiv` to) <> "%\n") (votes p)
 
 -- | This follow up will add the reactions to message after it's been posted
 followUp ::  DiscordHandle -> Message -> T.Text -> Persistent -> IO (Maybe T.Text)
@@ -117,8 +118,14 @@ vote h ri p = do
     Right (m) <- restCall h $ R.GetChannelMessage (reactionChannelId ri, reactionMessageId ri)
     let poll = pollFromMessage (messageText m) persistent
         e = reactionEmoji ri
-        votes' = map (\(x,v,em) -> if em == emojiName e then (x,v+1,em) else (x,v,em)) $ votes poll
+        votes' = map (\(x,v,em) -> if em == (discordSyn . emojiName) e 
+            then (x,v+1,em)
+            else (x,v,em)) $ votes poll
         newPoll = Poll {votes = votes', pollId = pollId poll, title = title poll}
+    print $ (discordSyn . emojiName) e
+    print votes'
     writeStore p newPoll -- This is done atomically
     _ <- restCall h $ R.EditMessage (messageChannel m, messageId m) (printPoll newPoll) Nothing
     return Nothing
+    where discordSyn x = let Just (e:_) = aliasesFromEmoji x
+                         in e

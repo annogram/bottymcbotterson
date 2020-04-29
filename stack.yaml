@@ -35,7 +35,7 @@ packages:
 # forks / in-progress versions pinned to a git hash. For example:
 #
 extra-deps:
-- discord-haskell-1.5.0
+- discord-haskell-1.5.2
 - containers-0.6.2.1
 - aeson-1.4.7.1
 - emoji-0.1.0.2
