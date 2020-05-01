@@ -4,7 +4,7 @@ module Lib
     ) where
 import Control.Monad         (when)
 import System.Environment    (getEnv)
-import Botty.Commands.Events (eventPool, followUpPool, vote)
+import Botty.Commands.Events (eventPool, followUpPool, vote, unvote)
 import Botty.Event
 import Data.Monoid
 import Discord
@@ -55,6 +55,13 @@ eventHandler p handle event = case event of
             Right (m) <- restCall handle $ R.GetChannelMessage (reactionChannelId ri, reactionMessageId ri)
             when (userIsBot (messageAuthor m)) $ do
                 _ <- vote handle ri p
+                pure ()
+    MessageReactionRemove ri -> do
+        Right (callingUser) <- restCall handle $ R.GetUser (reactionUserId ri)
+        when (not . userIsBot $ callingUser) $ do
+            Right (m) <- restCall handle $ R.GetChannelMessage (reactionChannelId ri, reactionMessageId ri)
+            when (userIsBot (messageAuthor m)) $ do
+                _ <- unvote handle ri p
                 pure ()
     _ -> pure ()
     where getCommandStart = head . T.words . T.toLower . messageText

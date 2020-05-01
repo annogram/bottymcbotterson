@@ -27,6 +27,7 @@ moqTest = TestCase $ assertEqual "Should return 2" 2 2
 
 divTest = TestCase $ assertEqual "should return 0.5" (1 `doDiv` 2) 0.5
 divTest2 = TestCase $ assertEqual "should return 1" (1 `doDiv` 1) 1
+divTest3 = TestCase $ assertEqual "should return NaN" (1 `doDiv` 0) (1/0)
 
 emojiT = TestCase $ assertBool "list should contain neutral_face" ("neutral_face" `elem` emojiRange)
 
@@ -81,13 +82,14 @@ malformedPollT = TestCase $ do
     -- Act
     Just (f) <- func pollEvent "/poll No options" p
     -- Assert
-    assertEqual "Responds with usage" "/poll - Starts a poll with options \n\tUsage: /poll" f
+    assertEqual "Responds with usage" "/poll - Starts a poll with options \n\tUsage: /poll Poll title (poll options,other option)\n\tvoting: click on the emoji that relates to the option in the poll" f
     after <- readTVarIO p
     assertBool "persitence updated" $ (length . M.elems) after == 0
 
 testList = TestList [ TestLabel "Should return 2" moqTest
                     , divTest
                     , divTest2
+                    , divTest3
                     , emojiT
                     , pongT
                     , covidT

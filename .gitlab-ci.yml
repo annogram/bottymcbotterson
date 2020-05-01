@@ -1,4 +1,7 @@
-image: fpco/stack-build-small:lts-15.5
+image: docker:latest
+
+services:
+  - docker:dind
 
 variables:
   STACK_ROOT: "${CI_PROJECT_DIR}/.stack-root"
@@ -15,28 +18,25 @@ cache:
 stages:
   - build
   - publish
-  - test
   - deploy
 
-build:
+application_test_and_build:
   stage: build
+  image: fpco/stack-build-small:lts-15.5
   script:
     - stack install --local-bin-path ./build --system-ghc
     - cp -R --verbose res ./build/
+    - stack test
   artifacts:
     paths:
       - build/*
     expire_in: 1 week
 
-test:
-  stage: test
-  script:
-    - stack test
 
 docker_build:
   stage: publish
   dependencies:
-    - application_build
+    - application_test_and_build
   script:
     - apk add --no-cache curl jq python py-pip
     - pip install awscli
@@ -51,7 +51,8 @@ deploy_staging:
   script:
     - aws ecs register-task-definition ${CI_AWS_ECS_TASK_DEFINITION}
   environment:
-    name: production
+    name: staging
+    url: www.example.com
   only:
     - master
   when: manual
