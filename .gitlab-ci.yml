@@ -43,7 +43,7 @@ docker_build:
     - $(aws ecr get-login --no-include-email --region ap-southeast-2)
     - docker build --no-cache -t $REPOSITORY_URL .
     - docker tag $REPOSITORY_URL $REPOSITORY_URL:$CI_COMMIT_SHORT_SHA
-    - docker push $REPOSITORY_URL:$CI_COMMIT_REF_NAME
+    - docker push $REPOSITORY_URL:$CI_COMMIT_SHORT_SHA
 
 deploy_staging:
   stage: deploy
