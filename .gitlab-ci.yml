@@ -42,17 +42,20 @@ docker_build:
     - pip install awscli
     - $(aws ecr get-login --no-include-email --region ap-southeast-2)
     - docker build --no-cache -t $REPOSITORY_URL .
-    - docker tag $REPOSITORY_URL $REPOSITORY_URL:test
-    - docker push $REPOSITORY_URL:test
+    - docker tag $REPOSITORY_URL $REPOSITORY_URL:$CI_COMMIT_REF_NAME
+    - docker push $REPOSITORY_URL:$CI_COMMIT_REF_NAME
 
 deploy_staging:
   stage: deploy
+  dependencies:
+    - docker_build
   image: registry.gitlab.com/gitlab-org/cloud-deploy/aws-base:latest
   script:
-    - aws ecs register-task-definition ${CI_AWS_ECS_TASK_DEFINITION}
+    - aws ecs register-task-definition --family first-run-task-definition --requires-compatibilities FARGATE --cpu 256 --memory 512 --cli-input-json file://aws/botty-task-definition.json --region ap-southeast-2
+    - aws ecs update-service --cluster $CI_AWS_ECS_CLUSTER --service $CI_AWS_ECS_SERVICE --task-definition first-run-task-definition --region ap-southeast-2
   environment:
-    name: staging
-    url: www.example.com
+    name: production
   only:
     - master
+    - 13-create-environments-for-deployment
   when: manual
