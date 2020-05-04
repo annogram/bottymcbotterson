@@ -1,4 +1,4 @@
-{-# Language OverloadedStrings #-}
+{-# Language OverloadedStrings, ScopedTypeVariables #-}
 module Botty.Commands.CovidStatsEvent 
     (covidEvent)
     where
@@ -8,6 +8,7 @@ import Data.List.Split   (chunksOf)
 import Data.Function     (on)
 import Control.Exception (catch)
 import Network.HTTP.Req
+import Text.Printf
 import qualified Data.Text as T
 import qualified Botty.Commands.Types.GlobalStats as G
 import qualified Botty.Commands.Types.CountryStats as C
@@ -35,7 +36,7 @@ getCovidInfo text _ = return =<< covidBasic . T.words $ text
 
 covidBasic :: [Text] -> IO (Maybe Text)
 covidBasic (_:[])   = getInfo
-covidBasic (_:f)    = getInfoForCountry $ T.unwords f
+covidBasic (_:f:_)    = getInfoForCountry $ T.splitOn "," f
 
 commas :: String -> String
 commas = reverse . intercalate "," . chunksOf (3) . reverse . fst . break (== '.')
@@ -57,33 +58,9 @@ getInfo = do
         Nothing -> return Nothing
         Just (i) -> return (Just $ craftBasicResponse i)
 
-getInfoForCountry :: Text -> IO (Maybe Text)
+getInfoForCountry :: [Text] -> IO (Maybe Text)
 getInfoForCountry c
-    | ',' `elem` T.unpack c = do -- multiple countries
-        today <- catch
-                    (runReq httpConfig $ pure =<< callToday url)
-                    (\(JsonHttpException _) -> return Nothing)
-        yesterday <- catch
-                        (runReq httpConfig $ pure =<< callYesterday url)
-                        (\(JsonHttpException _) -> return Nothing)
-        case today of
-            Nothing     -> return Nothing
-            Just (info) -> do
-                let Just (yestInfo) = yesterday
-                    both = zip info yestInfo :: [(C.CountryStat, C.CountryStat)]
-                cs <- mapM (\(t, y) -> do
-                        let restCountries' = restContries /: (C.iso2 . C.countryInfo $ t)
-                        r <- runReq httpConfig $ do
-                            req GET
-                                restCountries'
-                                NoReqBody
-                                jsonResponse
-                                mempty
-                        let b = responseBody r
-                        return $ (craftResponse t y b)
-                        ) $ both
-                return $ Just (foldl1 (\agg x -> agg <> "\n" <> x) $ cs)
-    | otherwise = do
+    | length c == 1 = do
         today <- catch
                     (runReq httpConfig $ pure =<< callToday url)
                     (\(JsonHttpException _) -> return Nothing)
@@ -103,6 +80,40 @@ getInfoForCountry c
                             mempty
                 let b = responseBody r
                 return $ Just (craftResponse info yestInfo b)
+    | length c <= 5 = do -- multiple countries
+        today <- catch
+                    (runReq httpConfig $ pure =<< callToday url)
+                    (\(JsonHttpException _) -> return Nothing)
+        yesterday <- catch
+                        (runReq httpConfig $ pure =<< callYesterday url)
+                        (\(JsonHttpException _) -> return Nothing)
+        case today of
+            Nothing     -> return Nothing
+            Just (info) -> do
+                let Just (yestInfo) = yesterday
+                    both = zip info yestInfo
+                cs <- mapM (\(t, y) -> do
+                        let restCountries' = restContries /: (C.iso2 . C.countryInfo $ t)
+                        r <- runReq httpConfig $ do
+                            req GET
+                                restCountries'
+                                NoReqBody
+                                jsonResponse
+                                mempty
+                        let b = responseBody r
+                        return $ (craftResponse t y b)
+                        ) $ both
+                return $ Just (foldl1 (\agg x -> agg <> "\n" <> x) $ cs)
+    | length c > 5 = do -- bulk
+        today <- catch
+                    (runReq httpConfig $ pure =<< callToday url)
+                    (\(JsonHttpException _) -> return Nothing)
+        case today of
+            Nothing     -> return Nothing
+            Just (info :: [C.CountryStat]) -> do
+                cs <- mapM (\t -> return $ (craftBulkResponse t)) $ info
+                return $ Just (foldl1 (\agg x -> agg <> "\n" <> x) $ cs)
+    | otherwise = return Nothing
     where callToday u = do
             r' <- req GET
                 u
@@ -117,7 +128,7 @@ getInfoForCountry c
                 jsonResponse
                 ("yesterday" =: ("true" :: Text))
             return (Just (responseBody r'))
-          url = https "corona.lmao.ninja" /: "v2" /:"countries" /: c
+          url = https "corona.lmao.ninja" /: "v2" /:"countries" /: T.intercalate "," c
           restContries = https "restcountries.eu" /: "rest" /: "v2" /: "alpha"
 
 craftBasicResponse :: G.GlobalStat -> Text
@@ -166,3 +177,18 @@ craftResponse r y (C.Population p) =  let deaths' = C.deaths r
             then ("+"++) . commas . show $ n
             else ("-"++) . commas . snd . splitAt (1) $ show n
 
+craftBulkResponse :: C.CountryStat -> Text
+craftBulkResponse c = let countryCode = T.unpack $ C.iso2 . C.countryInfo $ c
+                          deaths = (commas. show .C.deaths) c
+                          critical = (commas. show . C.cases ) c
+                          todayInfections = (commas. show . C.todayCases ) c
+                          totalInfections = (commas. show . C.cases ) c
+                          activeInfections = (commas. show . C.active ) c
+                          recovered = (commas. show . C.recovered ) c
+    in T.pack $ printf "%s - %s %s %s %s %s %s %s %s %s %s" 
+        countryCode
+        (":skull_crossbones:" :: String) deaths 
+        (":biohazard:" :: String) critical 
+        (":calendar:" :: String) todayInfections 
+        (":nauseated_face:" :: String) totalInfections
+        (":muscle:" :: String) recovered
