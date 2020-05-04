@@ -62,10 +62,31 @@ multipleCovidCountryT = TestCase $ do
     assertBool "New Zealand in title" ("New Zealand's" `T.isInfixOf` f)
     assertBool "Mexico in title" ("Mexico's" `T.isInfixOf` f)
 
+bulkCovidCountryT = TestCase $ do
+    -- Arrange
+    p <- blankPersistent
+    let countries = ["nz", "usa", "uk", "norway", "india", "aus", "japan"]
+    -- Act
+    Just (f) <- func covidEvent ("/covid " <> (T.intercalate "," countries)) p
+    -- Assert
+    assertBool "all queries lines" ((length . T.lines) f == length countries)
+    assertBool "🤮 in response" (":face_vomiting:" `T.isInfixOf` f)
+
+bulkCovidInvalidQueryT = TestCase $ do
+     -- Arrange
+    p <- blankPersistent
+    let countries = ["nz", "usa", "uk", "sweeden", "india", "aus", "japan"]
+    -- Act
+    Just (f) <- func covidEvent ("/covid " <> (T.intercalate "," countries)) p
+    -- Assert
+    assertBool "all queries lines" ((length . T.lines) f == (length countries) -1)
+    assertBool "🤮 in response" (":face_vomiting:" `T.isInfixOf` f)
+
+
 pollT = TestCase $ do
     -- Arrange
     let options = ["yip yip", "cha cha cha", "yahe yahe yahe yo"]
-        commandOpts = foldl1 (\agg x -> agg <> "," <> x) options
+        commandOpts = T.intercalate "," options
     p <- blankPersistent
     -- Act
     Just (f) <- func pollEvent ("/poll What does the fox say? (" <> commandOpts <> ")") p
@@ -77,7 +98,7 @@ pollT = TestCase $ do
 malformedPollT = TestCase $ do
     -- Arrange
     let options = ["yip yip", "cha cha cha", "yahe yahe yahe yo"]
-        commandOpts = foldl1 (\agg x -> agg <> "," <> x) options
+        commandOpts = T.intercalate "," options
     p <- blankPersistent
     -- Act
     Just (f) <- func pollEvent "/poll No options" p
@@ -95,6 +116,8 @@ testList = TestList [ TestLabel "Should return 2" moqTest
                     , covidT
                     , covidCountryT
                     , multipleCovidCountryT
+                    , bulkCovidCountryT
+                    , bulkCovidInvalidQueryT
                     , pollT
                     , malformedPollT
                     ]
