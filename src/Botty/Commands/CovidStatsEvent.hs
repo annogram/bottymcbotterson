@@ -185,10 +185,11 @@ craftBulkResponse c = let countryCode = T.unpack $ C.iso2 . C.countryInfo $ c
                           totalInfections = (commas. show . C.cases ) c
                           activeInfections = (commas. show . C.active ) c
                           recovered = (commas. show . C.recovered ) c
-    in T.pack $ printf "%s - %s %s %s %s %s %s %s %s %s %s" 
+    in T.pack $ printf "%s - %s %s %s %s %s %s %s %s %s %s %s %s" 
         countryCode
         (":skull_crossbones:" :: String) deaths 
         (":biohazard:" :: String) critical 
         (":calendar:" :: String) todayInfections 
         (":nauseated_face:" :: String) totalInfections
+        (":face_vomiting:" :: String) activeInfections
         (":muscle:" :: String) recovered
