@@ -22,7 +22,7 @@ import qualified Discord.Requests as R
 import qualified Data.Map.Lazy as M
 import qualified Data.Text as T
 
-type Vote = (T.Text, Int, T.Text, [UserId])
+type Vote = (T.Text, T.Text, [UserId])
 
 -- | A Poll consists of a title, a voting category (which is a title and a list of users)
 -- and an id to uniquely identify the poll in memory
@@ -80,7 +80,7 @@ makePoll pollId t = do
         Just (title, categories) -> do
             e <- forM categories (\_ -> randomEmoji)
             let dogegories = zip categories e
-            return $ Just Poll {votes = [ (x, 0, y, []) | (x,y) <- dogegories] , pollId, title}
+            return $ Just Poll {votes = [ (x, y, []) | (x,y) <- dogegories] , pollId, title}
 
 
 -- | Regular expression matching
@@ -92,16 +92,16 @@ parseInformation t' = let (a,_,_,xs) =  t' =~ ("\\((.+)\\)" :: T.Text) :: RegCap
 
 -- | Print the poll as a message to send to discord
 printPoll :: Poll -> T.Text
-printPoll p = let totalVotes = sum . map (\(_,v,_,_) -> v) $ votes p
+printPoll p = let totalVotes = sum . map (\(_,_,vs) -> length vs) $ votes p
     in "> " <> title p <> "\n"
                 <> "_ poll id: " <> (T.pack . show . pollId) p <> "_" <> "\n"
                 <> votesStr totalVotes <> "\n"
     where votesStr to 
-            | to == 0 = T.concat $ map (\(t,v,e,_) -> ":" <> e <> ":" <> " - " <> t <> ": 0%\n") (votes p)
+            | to == 0 = T.concat $ map (\(t,e,_) -> ":" <> e <> ":" <> " - " <> t <> ": 0%\n") (votes p)
             | otherwise = T.concat $ map 
-                (\(t,v,e,us) -> ":" <> e <> ":" <> " - " <> t <> ": " 
-                    <> (T.pack . fst . break (== '.') . show) (100 * v `doDiv` to) <> 
-                    if v == 0 
+                (\(t,e,us) -> ":" <> e <> ":" <> " - " <> t <> ": " 
+                    <> (T.pack . fst . break (== '.') . show) (100 * (length us) `doDiv` to) <> 
+                    if length us == 0 
                         then "%\n"
                         else "% (" <> voters us <> ")\n")
                 (votes p)
@@ -117,7 +117,7 @@ followUp h m t p = do
     case poll of
         Nothing -> return Nothing
         Just (poll') -> do
-            let es = [ e | (_,_,e,_) <- votes $ poll']
+            let es = [ e | (_,e,_) <- votes $ poll']
             forM_ es (\e -> restCall h $ R.CreateReaction (messageChannel m, messageId m) e)
             return Nothing
 
@@ -135,27 +135,28 @@ cast f h ri p = do
     case poll of 
         Nothing -> return Nothing
         Just (poll') -> do
-            let votes' = map f $ votes poll'
+            let votes' = reverse . sortBy (sortGT) . map f $ votes poll'
                 newPoll = Poll {votes = votes', pollId = pollId poll', title = title poll'}
             writeStore p newPoll -- This is done atomically
             _ <- restCall h $ R.EditMessage (messageChannel m, messageId m) (printPoll newPoll) Nothing
             return Nothing
+    where sortGT (_,_,vs) (_,_,us) = compare (length vs) (length us)
 
 -- | Functionality to cast a vote
 vote :: DiscordHandle -> ReactionInfo -> Persistent -> IO (Maybe T.Text)
 vote h ri p = do
     let e = reactionEmoji ri
-    cast (\(x,v,em,us) -> if em == (discordSyn . emojiName) e
-            then (x,v+1,em,(reactionUserId ri):us)
-            else (x,v,em,us)
+    cast (\(x,em,us) -> if em == (discordSyn . emojiName) e
+            then (x,em,(reactionUserId ri):us)
+            else (x,em,us)
             ) h ri p
 
 -- | When users undo a selection
 unvote :: DiscordHandle -> ReactionInfo -> Persistent -> IO (Maybe T.Text)
 unvote h ri p = do
     let e = reactionEmoji ri
-    cast (\(x,v,em,us) -> if em == (discordSyn . emojiName) e 
-            then (x,v-1,em,delete (reactionUserId ri) us)
-            else (x,v,em,us)
+    cast (\(x,em,us) -> if em == (discordSyn . emojiName) e 
+            then (x, em, delete (reactionUserId ri) us)
+            else (x, em, us)
             ) h ri p
     
