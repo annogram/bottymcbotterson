@@ -35,6 +35,6 @@ deploy_produciton:
   when: manual
   script:
     - cp -a --verbose aws/. ./build/
-    - sudo apt-get install zip
+    - apt-get install zip
     - zip -r artifact.zip ./build
     - aws s3 cp artifact.zip $AWS_S3_LOCATION
