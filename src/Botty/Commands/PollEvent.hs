@@ -144,16 +144,19 @@ vote h ri p = do
     Right (m) <- restCall h $ R.GetChannelMessage (reactionChannelId ri, reactionMessageId ri)
     Right (user) <- restCall h $ R.GetUser (reactionUserId ri)
     persistent <- readTVarIO p
-    let Just oldPoll = pollFromMessage (messageText m) persistent
-    print $ "User: " ++ (T.unpack . userName) user ++ " cast a vote on a poll"
-    atomically $ cast (\(x,em,us) -> if em == (discordSyn . emojiName) e
-            then (x,em,(reactionUserId ri):us)
-            else (x,em,us)
-            ) oldPoll p
-    newPersistent <- readTVarIO p
-    let Just newPoll = pollFromMessage (messageText m) newPersistent
-    _ <- restCall h $ R.EditMessage (messageChannel m, messageId m) (printPoll newPoll) Nothing
-    return Nothing
+    case pollFromMessage (messageText m) persistent of
+        Just oldPoll -> do
+            print $ "User: " ++ (T.unpack . userName) user ++ " cast a vote on a poll"
+            atomically $ cast (\(x,em,us) -> if em == (discordSyn . emojiName) e
+                    then (x,em,(reactionUserId ri):us)
+                    else (x,em,us)
+                    ) oldPoll p
+            newPersistent <- readTVarIO p
+            let Just newPoll = pollFromMessage (messageText m) newPersistent
+            _ <- restCall h $ R.EditMessage (messageChannel m, messageId m) (printPoll newPoll) Nothing
+            return Nothing
+        Nothing -> return Nothing
+    
 
 -- | When users undo a selection
 unvote :: DiscordHandle -> ReactionInfo -> Persistent -> IO (Maybe T.Text)
@@ -162,13 +165,15 @@ unvote h ri p = do
     Right (m) <- restCall h $ R.GetChannelMessage (reactionChannelId ri, reactionMessageId ri)
     Right (user) <- restCall h $ R.GetUser (reactionUserId ri)
     persistent <- readTVarIO p
-    let Just oldPoll = pollFromMessage (messageText m) persistent
-    print $ "User: " ++ (T.unpack . userName) user ++ " uncast a vote on a poll"
-    atomically $ cast (\(x,em,us) -> if em == (discordSyn . emojiName) e 
-            then (x, em, delete (reactionUserId ri) us)
-            else (x, em, us)
-            ) oldPoll p
-    newPersistent <- readTVarIO p
-    let Just newPoll = pollFromMessage (messageText m) newPersistent
-    _ <- restCall h $ R.EditMessage (messageChannel m, messageId m) (printPoll newPoll) Nothing
-    return Nothing
+    case pollFromMessage (messageText m) persistent of
+        Nothing -> return Nothing
+        Just oldPoll -> do
+            print $ "User: " ++ (T.unpack . userName) user ++ " uncast a vote on a poll"
+            atomically $ cast (\(x,em,us) -> if em == (discordSyn . emojiName) e 
+                    then (x, em, delete (reactionUserId ri) us)
+                    else (x, em, us)
+                    ) oldPoll p
+            newPersistent <- readTVarIO p
+            let Just newPoll = pollFromMessage (messageText m) newPersistent
+            _ <- restCall h $ R.EditMessage (messageChannel m, messageId m) (printPoll newPoll) Nothing
+            return Nothing
