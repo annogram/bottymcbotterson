@@ -1,7 +1,7 @@
 version: 0.0
 os: linux
 files:
-  - source: ./artifact/ # This line assumes that your deployment code is located in
+  - source: ./build/ # This line assumes that your deployment code is located in
     destination: /home/ec2-user/botty_mc_botterson
 permissions:
   # sets application runner script as executable - This example assumes the sample 'my_app.sh' script has been added to the the directory 'my_app' and serves as the application launcher

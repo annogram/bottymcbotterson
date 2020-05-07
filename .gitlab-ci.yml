@@ -34,8 +34,9 @@ deploy_produciton:
     - 13-create-environments-for-deployment
   when: manual
   script:
-    - cp -a --verbose aws/. ./build/
+    - cp -a --verbose aws/. ./artifact/
+    - cp -a --verbose build ./artifact/build
     - apt-get install zip
-    - cd ./build
+    - cd ./artifact
     - zip -r ../artifact.zip ./*
     - aws s3 cp ../artifact.zip $AWS_S3_LOCATION
