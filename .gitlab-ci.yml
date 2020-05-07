@@ -38,4 +38,4 @@ deploy_produciton:
     - apt-get install zip
     - cd ./build
     - zip -r ../artifact.zip ./*
-    - aws s3 cp artifact.zip $AWS_S3_LOCATION
+    - aws s3 cp ../artifact.zip $AWS_S3_LOCATION
