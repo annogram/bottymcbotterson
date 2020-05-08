@@ -4,7 +4,7 @@
 # Can be added as a generic launcher to be executed by the deployment scripts
 # Should be added to the distribution zip file and referenced in appspec.yml
 
-APPHOME=/home/ec2-user/botty_mc_botterson
+APPHOME=/home/ubuntu/botty_mc_botterson
 cd $APPHOME
 
 BASE=$APPHOME
