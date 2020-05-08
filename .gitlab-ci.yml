@@ -31,8 +31,6 @@ deploy_produciton:
     - application_test_and_build
   only:
     - master
-    - 13-create-environments-for-deployment
-  when: manual
   script:
     - cp -a --verbose aws/. ./artifact/
     - cp -a --verbose build ./artifact/build
