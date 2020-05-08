@@ -2,7 +2,7 @@
 
 # This example assumes the sample 'my_app.sh' script has been added to the the directory 'my_app' and serves as the application launcher
 
-HOME=/home/ec2-user
+HOME=/home/ubuntu
 APP=$HOME/botty_mc_botterson
 PIDF=$APP/botty_mc_start.pid
 CMD=$APP/botty_mc_start.sh

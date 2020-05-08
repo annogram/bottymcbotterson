@@ -1,5 +1,5 @@
 #!/bin/bash
-HOME=/home/ec2-user
+HOME=/home/ubuntu
 APP=$HOME/botty_mc_botterson
 LOG=$HOME/deploy.log
 /bin/echo "$(date '+%Y-%m-%d %X'): ** Before Install Hook Started **" >> $LOG

@@ -1,5 +1,5 @@
 #!/bin/bash
-HOME=/home/ec2-user
+HOME=/home/ubuntu
 APP=$HOME/botty_mc_botterson
 CMD=$APP/botty_mc_start.sh
 PIDF=$APP/botty_mc_start.pid

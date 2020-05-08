@@ -2,19 +2,19 @@ version: 0.0
 os: linux
 files:
   - source: ./build/ # This line assumes that your deployment code is located in
-    destination: /home/ec2-user/botty_mc_botterson
+    destination: /home/ubuntu/botty_mc_botterson
 permissions:
   # sets application runner script as executable - This example assumes the sample 'my_app.sh' script has been added to the the directory 'my_app' and serves as the application launcher
-  - object: /home/ec2-user/botty_mc_botterson/
+  - object: /home/ubuntu/botty_mc_botterson/
     pattern: "botty_mc_start.sh"
-    owner: ec2-user
+    owner: ubuntu
     mode: 755
     type:
       - file
-  # sets ec2-user as the owner:group for the application deployment directory
-  - object: /home/ec2-user/
+  # sets ubuntu as the owner:group for the application deployment directory
+  - object: /home/ubuntu/
     pattern: "botty_mc_botterson"
-    owner: ec2-user
+    owner: ubuntu
     type:
       - directory
 hooks:
@@ -22,20 +22,20 @@ hooks:
   ApplicationStop:
     - location: scripts/app_stop.sh
       timeout: 180
-      runas: ec2-user
+      runas: ubuntu
   BeforeInstall:
     - location: scripts/before_install.sh
       timeout: 180
-      runas: ec2-user
+      runas: ubuntu
   AfterInstall:
     - location: scripts/after_install.sh
       timeout: 180
-      runas: ec2-user
+      runas: ubuntu
   ApplicationStart:
     - location: scripts/app_start.sh
       timeout: 180
-      runas: ec2-user
+      runas: ubuntu
   ValidateService:
     - location: scripts/validate_service.sh
       timeout: 180
-      runas: ec2-user
+      runas: ubuntu
