@@ -1,6 +1,8 @@
 # BottyMcBotterson
 
-A discord bot to manage my discord servers, also serves as learnings and showings for my haskell language training
+A discord bot to collect useful information on my discord servers, also serves as learnings and showings for my haskell language training.
+
+To add this bot to your own server use the following [link](https://discordapp.com/oauth2/authorize?client_id=348437835382259723&scope=bot&permissions=350272) (minimum permissions are given for functionality)
 
 ## Features
 
@@ -14,6 +16,9 @@ A discord bot to manage my discord servers, also serves as learnings and showing
 ![help](res/help.png)
 
 4. Quirky but usable interactions, the bot will notify you immediately when it has understood your command and will let you know
+5. Flashpolls so users can vote on whatever they want
+
+![poll](res/poll.png)
 
 # Prerequisites
 
