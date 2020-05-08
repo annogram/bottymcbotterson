@@ -1,0 +1,41 @@
+version: 0.0
+os: linux
+files:
+  - source: ./build/ # This line assumes that your deployment code is located in
+    destination: /home/ubuntu/botty_mc_botterson
+permissions:
+  # sets application runner script as executable - This example assumes the sample 'my_app.sh' script has been added to the the directory 'my_app' and serves as the application launcher
+  - object: /home/ubuntu/botty_mc_botterson/
+    pattern: "botty_mc_start.sh"
+    owner: ubuntu
+    mode: 755
+    type:
+      - file
+  # sets ubuntu as the owner:group for the application deployment directory
+  - object: /home/ubuntu/
+    pattern: "botty_mc_botterson"
+    owner: ubuntu
+    type:
+      - directory
+hooks:
+  # All hook scripts are assumed to be in the /install/aws_cd directory located at the root of the deployment zip archive
+  ApplicationStop:
+    - location: scripts/app_stop.sh
+      timeout: 180
+      runas: ubuntu
+  BeforeInstall:
+    - location: scripts/before_install.sh
+      timeout: 180
+      runas: ubuntu
+  AfterInstall:
+    - location: scripts/after_install.sh
+      timeout: 180
+      runas: ubuntu
+  ApplicationStart:
+    - location: scripts/app_start.sh
+      timeout: 180
+      runas: ubuntu
+  ValidateService:
+    - location: scripts/validate_service.sh
+      timeout: 180
+      runas: ubuntu
