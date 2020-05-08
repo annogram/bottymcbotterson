@@ -18,6 +18,7 @@ application_test_and_build:
   script:
     - stack install --local-bin-path ./build --system-ghc
     - cp -R --verbose res ./build/
+    - cp --verbose botty_mc_start.sh ./build/botty_mc_start.sh
     - stack test
   artifacts:
     paths:
