@@ -5,5 +5,4 @@ LOG=$HOME/deploy.log
 /bin/echo "$(date '+%Y-%m-%d %X'): ** Before Install Hook Started **" >> $LOG
 
 # Do some actions before the installation
-rm -rf $APP
 /bin/echo "$(date '+%Y-%m-%d %X'): ** Before Install Hook Completed **" >> $LOG
