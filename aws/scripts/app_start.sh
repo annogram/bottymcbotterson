@@ -16,7 +16,8 @@ if [ -f $CMD ]
 then
     echo $APP >> $LOG
     pwd >> $LOG
-    $CMD start
+    /usr/bin/sudo systemctl botty.service start
+    # $CMD start
     /bin/echo "$(date '+%Y-%m-%d %X'): Starting $APPLICATION_NAME" >> $LOG
 else
     /bin/echo "$(date '+%Y-%m-%d %X'): $CMD not found. Proceeding with deployment" >> $LOG
