@@ -18,7 +18,8 @@ cd $APP
 
 if [ -f $CMD ]
 then
-    $CMD stop
+    # $CMD stop
+    /bin/sudo systemctl stop botty.service
     /bin/echo "$(date '+%Y-%m-%d %X'): Stopping $APPLICATION_NAME" >> $LOG
 elif [ -f $PIDF ]
 then
