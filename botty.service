@@ -1,0 +1,13 @@
+[Unit]
+Description = Botty McBotterson Service
+After network.target = auditd.service
+
+[Service]
+Type = forking
+Environment = DISCORD_CLIENT_SECRET=""
+ExecStart = /home/ubuntu/botty_mc_start.sh start
+ExecStop = /home/ubuntu/botty_mc_start.sh stop
+ExecReload = /home/ubuntu/botty_mc_start.sh restart
+
+[Install]
+WantedBy = multi-user.target
