@@ -15,6 +15,7 @@ import qualified Discord.Requests as R
 import qualified Data.Text.IO as TIO
 import qualified Data.Text as T
 import qualified Data.Map.Lazy as M
+import qualified Data.ByteString as BS
 
 -- | The program entry point, this function will grab the environment key and attach the event handler
 botstart :: IO ()
@@ -30,7 +31,7 @@ botstart = do
                     , discordForkThreadForEvents = True
                     }
     TIO.putStrLn userFacing
-    where persistent = M.empty :: M.Map Int String
+    where persistent = M.empty :: M.Map Int BS.ByteString
 
 -- | The event handler will be passed to the discord client and execute the comands in the event module
 eventHandler :: Persistent -> DiscordHandle -> Event -> IO ()

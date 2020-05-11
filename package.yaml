@@ -40,6 +40,7 @@ library:
   - stm
   - regex-tdfa
   - emojis
+  - cereal
 executables:
   discord-bot-exe:
     main:                Main.hs

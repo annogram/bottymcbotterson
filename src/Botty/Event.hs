@@ -6,12 +6,13 @@ import Data.Text
 import Control.Concurrent
 import Control.Concurrent.STM
 import Data.Map.Lazy
+import Data.ByteString
 import Discord
 import Discord.Types
 
 
 -- | Type alias for global persistent state
-type Persistent = TVar (Map Int String)
+type Persistent = TVar (Map Int ByteString)
 
 -- | Minimal required information for a Botty event
 data BottyEvent = Botty { desc :: Text -> Text

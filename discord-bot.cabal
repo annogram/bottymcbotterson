@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 8e327944156e41f75a2e398bec140b3a3a628f624de129189e3f52bae0f6caba
+-- hash: de39318cbc99cae51a04e0e7fabac251752dfd0648544c413976b8ffece7516a
 
 name:           discord-bot
 version:        1.0.0.0
@@ -45,6 +45,7 @@ library
       aeson
     , base >=4.7 && <5
     , bytestring
+    , cereal
     , containers
     , directory
     , discord-haskell

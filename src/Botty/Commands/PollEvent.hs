@@ -1,4 +1,4 @@
-{-# LANGUAGE OverloadedStrings, NamedFieldPuns #-}
+{-# LANGUAGE OverloadedStrings, NamedFieldPuns, DeriveGeneric #-}
 module Botty.Commands.PollEvent 
     ( pollEvent
     , pollFollowUp
@@ -11,6 +11,7 @@ import Control.Concurrent.STM
 import Text.Regex.TDFA
 import Data.List.Split
 import Data.Char
+import Data.Serialize
 import System.Random
 import Botty.Event
 import Data.List
@@ -19,10 +20,13 @@ import Text.Emoji
 import Text.Printf
 import Discord
 import Debug.Trace
+import GHC.Generics
 import Discord.Types
 import qualified Discord.Requests as R
 import qualified Data.Map.Lazy as M
 import qualified Data.Text as T
+import qualified Data.ByteString as BS
+import qualified Data.Text.Encoding as TE
 
 type Vote = (T.Text, T.Text, [UserId])
 
@@ -31,7 +35,17 @@ type Vote = (T.Text, T.Text, [UserId])
 data Poll = Poll { title :: T.Text
                  , votes :: [Vote]
                  , pollId :: Int
-                 } deriving (Read, Show, Eq)
+                 } deriving (Eq, Generic)
+
+instance Serialize T.Text where
+    put = put . TE.encodeUtf8
+    get = TE.decodeUtf8 <$> get
+
+instance Serialize Snowflake where
+    put = put . show
+    get = read <$> get
+
+instance Serialize Poll
 
 pollEvent :: BottyEvent
 pollEvent = Botty { cmd = pollCommand
@@ -72,7 +86,7 @@ poll t p = do
 
 writeStore :: Persistent -> Poll -> IO ()
 writeStore st p = atomically $ readTVar st >>= 
-    \store -> writeTVar st $ M.insert (pollId p) (show p) store
+    \store -> writeTVar st $ M.insert (pollId p) (encode p) store
 
 -- | Parse a string into a poll
 makePoll :: Int -> T.Text -> IO (Maybe Poll)
@@ -124,9 +138,12 @@ followUp h m t p = do
             return Nothing
 
 -- | Construct a poll from a message (with the poll id) and persistent storage
-pollFromMessage :: T.Text -> M.Map Int String -> Maybe Poll
+pollFromMessage :: T.Text -> M.Map Int BS.ByteString -> Maybe Poll
 pollFromMessage m p = let (_,_,_,pid:_) = m =~ ("poll id: ([0-9]+)" :: T.Text) :: RegCap
-                    in read <$> M.lookup (read . T.unpack $ pid :: Int) p:: Maybe Poll
+                    in case decode <$> M.lookup (read . T.unpack $ pid :: Int) p of
+                        Nothing -> Nothing
+                        Just (Left _) -> Nothing
+                        Just (Right (poll)) -> Just poll
 
 -- | Common functionality for voting and unvoting
 cast :: (Vote -> Vote) -> Poll -> Persistent -> STM ()
@@ -134,7 +151,7 @@ cast fn p store = do
     let votes' = reverse . sortBy (sortGT) . map (fn) $ votes p
         newPoll = Poll {votes = votes', pollId = pollId p, title = title p}
     persistent <- readTVar store
-    writeTVar store $ M.insert (pollId newPoll) (show newPoll) persistent
+    writeTVar store $ M.insert (pollId newPoll) (encode newPoll) persistent
     where sortGT (_,_,vs) (_,_,us) = compare (length vs) (length us)
 
 -- | Functionality to cast a vote

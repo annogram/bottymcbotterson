@@ -67,6 +67,13 @@ packages:
       sha256: 270a6f8d6ef23eba3a9a1697aa244576abb168d10cb8e4736cf4add2b09eb650
   original:
     hackage: HUnit-1.6.0.0
+- completed:
+    hackage: cereal-0.5.8.1@sha256:37cb7a78c84412e94592a658768320c41f015f2b8707a433de835afb8ebc18d7,2767
+    pantry-tree:
+      size: 641
+      sha256: 65ec816e5c39253f0060b8b1019450f5c6fa1e0c06c1c7b4a36f09e186a607fd
+  original:
+    hackage: cereal-0.5.8.1
 snapshots:
 - completed:
     size: 491372

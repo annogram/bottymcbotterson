@@ -1,4 +1,4 @@
-{-# Language OverloadedStrings, DeriveGeneric #-}
+{-# Language DeriveGeneric #-}
 module Botty.Commands.Types.GlobalStats (
     GlobalStat(..)
 ) where
