@@ -19,7 +19,6 @@ import Botty.Utils
 import Text.Emoji
 import Text.Printf
 import Discord
-import Debug.Trace
 import GHC.Generics
 import Discord.Types
 import qualified Discord.Requests as R

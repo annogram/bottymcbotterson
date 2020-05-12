@@ -40,16 +40,18 @@ eventHandler p handle event = case event of
         case (getCommandStart m) `M.lookup` eventPool of
             Nothing  -> pure ()
             Just (f) -> do
+                seen handle m
                 let command  = messageText m
                 _ <- logEvent handle m
                 succ <- f command p
                 case succ of
                     Just (text) -> do
-                        seen handle m
                         result <- restCall handle $ R.CreateMessage (messageChannel m) $ text
                         shouldFollowUp handle result (getCommandStart m) p
                         pure ()
-                    Nothing -> addReaction "thumbsdown" handle m
+                    Nothing -> do
+                        removeReaction "ok_hand" handle m
+                        addReaction "thumbsdown" handle m
     MessageReactionAdd ri -> do
         Right (callingUser) <- restCall handle $ R.GetUser (reactionUserId ri)
         when (not . userIsBot $ callingUser) $ do
@@ -89,6 +91,11 @@ logEvent handle m = do
     putStrLn $ prefix
         <> "Event from user: " <> T.unpack thisUser
         <> " with command: " <> T.unpack command
+
+removeReaction :: T.Text -> DiscordHandle -> Message -> IO ()
+removeReaction emoji handle m = do
+    _ <- restCall handle $ R.DeleteOwnReaction (messageChannel m, messageId m) emoji
+    return ()
 
 seen:: DiscordHandle -> Message -> IO ()
 seen = addReaction "ok_hand"
