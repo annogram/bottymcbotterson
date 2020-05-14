@@ -1,4 +1,4 @@
-{-# Language OverloadedStrings #-}
+{-# Language OverloadedStrings, ViewPatterns #-}
 module Lib
     ( botstart
     ) where
@@ -35,51 +35,50 @@ botstart = do
     botstart
     where persistent = M.empty :: M.Map Int BS.ByteString
 
+getCommandStart = head . T.words . T.toLower . messageText
+
 -- | The event handler will be passed to the discord client and execute the comands in the event module
 eventHandler :: Persistent -> DiscordHandle -> Event -> IO ()
-eventHandler p handle event = case event of 
-    MessageCreate m -> botFilter m Nothing $ do
-        case (getCommandStart m) `M.lookup` eventPool of
-            Nothing  -> pure ()
-            Just (f) -> do
-                seen handle m
-                let command  = messageText m
-                logEvent handle m
-                succ <- f command p
-                case succ of
-                    Just (text) -> do
-                        result <- restCall handle $ R.CreateMessage (messageChannel m) $ text
-                        shouldFollowUp handle result (getCommandStart m) p
-                        pure ()
-                    Nothing -> do
-                        removeReaction "ok_hand" handle m
-                        addReaction "thumbsdown" handle m
-    MessageReactionAdd ri -> do
-        Right (callingUser) <- restCall handle $ R.GetUser (reactionUserId ri)
-        when (not . userIsBot $ callingUser) $ do
-            Right (m) <- restCall handle $ R.GetChannelMessage (reactionChannelId ri, reactionMessageId ri)
-            when (userIsBot (messageAuthor m)) $ do
-                _ <- vote handle ri p
-                pure ()
-    MessageReactionRemove ri -> do
-        Right (callingUser) <- restCall handle $ R.GetUser (reactionUserId ri)
-        when (not . userIsBot $ callingUser) $ do
-            Right (m) <- restCall handle $ R.GetChannelMessage (reactionChannelId ri, reactionMessageId ri)
-            when (userIsBot (messageAuthor m)) $ do
-                _ <- unvote handle ri p
-                pure ()
-    _ -> pure ()
-    where getCommandStart = head . T.words . T.toLower . messageText
+eventHandler p handle (MessageCreate m) = botFilter m Nothing $ do
+    case (getCommandStart m) `M.lookup` eventPool of
+        Nothing  -> pure ()
+        Just (f) -> do
+            seen handle m
+            let command  = messageText m
+            logEvent handle m
+            succ <- f command p
+            case succ of
+                Just (text) -> do
+                    result <- restCall handle $ R.CreateMessage (messageChannel m) $ text
+                    shouldFollowUp handle result (getCommandStart m) p
+                    pure ()
+                Nothing -> do
+                    removeReaction "ok_hand" handle m
+                    addReaction "thumbsdown" handle m
+eventHandler p handle (MessageReactionAdd ri) = do
+    Right (callingUser) <- restCall handle $ R.GetUser (reactionUserId ri)
+    when (not . userIsBot $ callingUser) $ do
+        Right (m) <- restCall handle $ R.GetChannelMessage (reactionChannelId ri, reactionMessageId ri)
+        when (userIsBot (messageAuthor m)) $ do
+            _ <- vote handle ri p
+            pure ()
+eventHandler p handle (MessageReactionRemove ri) = do
+    Right (callingUser) <- restCall handle $ R.GetUser (reactionUserId ri)
+    when (not . userIsBot $ callingUser) $ do
+        Right (m) <- restCall handle $ R.GetChannelMessage (reactionChannelId ri, reactionMessageId ri)
+        when (userIsBot (messageAuthor m)) $ do
+            _ <- unvote handle ri p
+            pure ()
+eventHandler p handle (_) = pure ()
 
 -- | Handle followups for commands that need it
 shouldFollowUp :: DiscordHandle -> Either RestCallErrorCode Message -> T.Text -> Persistent -> IO ()
-shouldFollowUp h res cmd p = case res of
-    Left _ -> pure ()
-    Right m -> case cmd `M.lookup` followUpPool of
-        Nothing -> pure ()
-        Just (f) -> do
-            succ <- f h m cmd p
-            pure ()
+shouldFollowUp h (Left _) cmd p = pure ()
+shouldFollowUp h (Right m) cmd p = case cmd `M.lookup` followUpPool of
+    Nothing -> pure ()
+    Just (f) -> do
+        succ <- f h m cmd p
+        pure ()
 
 logEvent :: DiscordHandle -> Message -> IO ()
 logEvent handle m = do
