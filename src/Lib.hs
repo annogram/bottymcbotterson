@@ -31,6 +31,7 @@ botstart = do
                     , discordForkThreadForEvents = True
                     }
     TIO.putStrLn userFacing
+    botstart
     where persistent = M.empty :: M.Map Int BS.ByteString
 
 -- | The event handler will be passed to the discord client and execute the comands in the event module
@@ -105,11 +106,6 @@ addReaction emoji handle m = do
                                _ <- restCall handle $ R.CreateReaction (messageChannel m, messageId m) emoji
                                pure ()
 
-unSeen :: DiscordHandle -> Message -> IO ()
-unSeen handle m = do
-                   _ <- restCall handle $ R.DeleteAllReactions (messageChannel m, messageId m)
-                   pure ()
-
 -- The bot command query will filter all messages that do not meet the criteria for the bot to respond to
 botCommandQuery :: Message -> Bool
 botCommandQuery m = (notElem (messageText m) $ defaultCommand) && 
@@ -128,3 +124,7 @@ botCommandQuery m = (notElem (messageText m) $ defaultCommand) &&
 botFilter ::Applicative f => Message -> Maybe Bool -> f () -> f ()
 botFilter m (Just condition) f = when (botCommandQuery m && condition) $ f
 botFilter m Nothing f = when (botCommandQuery m) $ f
+
+-- | Write the current state of persistent storage to disk
+writePersistence :: Persistent -> IO ()
+writePersistence = undefined
