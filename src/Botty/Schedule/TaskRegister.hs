@@ -1,4 +1,4 @@
-module Botty.Shedule.TaskRegister ( registerTask ) where
+module Botty.Schedule.TaskRegister ( registerTask ) where
 import System.Cron
 import Data.Text
 

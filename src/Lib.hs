@@ -29,6 +29,7 @@ botstart = do
                     , discordOnEnd = putStrLn "Bot terminating."
                     , discordOnStart = \handle -> putStrLn "...Bot started"
                     , discordForkThreadForEvents = True
+                    , discordOnLog = print
                     }
     TIO.putStrLn userFacing
     botstart
@@ -43,7 +44,7 @@ eventHandler p handle event = case event of
             Just (f) -> do
                 seen handle m
                 let command  = messageText m
-                _ <- logEvent handle m
+                logEvent handle m
                 succ <- f command p
                 case succ of
                     Just (text) -> do
