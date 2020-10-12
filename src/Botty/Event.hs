@@ -10,6 +10,13 @@ import Data.ByteString
 import Discord
 import Discord.Types
 
+data Botty = BottyMessage  | BottyReact | BottyUnreact
+
+class BottyEvents a where
+    description :: a -> Text
+    function :: a -> Persistent -> IO (Maybe Text)
+    command :: a -> Text
+
 
 -- | Type alias for global persistent state
 type Persistent = TVar (Map Int ByteString)

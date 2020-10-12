@@ -35,8 +35,6 @@ botstart = do
     botstart
     where persistent = M.empty :: M.Map Int BS.ByteString
 
-getCommandStart = head . T.words . T.toLower . messageText
-
 -- | The event handler will be passed to the discord client and execute the comands in the event module
 eventHandler :: Persistent -> DiscordHandle -> Event -> IO ()
 eventHandler p handle (MessageCreate m) = botFilter m Nothing $ do
@@ -55,6 +53,7 @@ eventHandler p handle (MessageCreate m) = botFilter m Nothing $ do
                 Nothing -> do
                     removeReaction "ok_hand" handle m
                     addReaction "thumbsdown" handle m
+    where getCommandStart = head . T.words . T.toLower . messageText
 eventHandler p handle (MessageReactionAdd ri) = do
     Right (callingUser) <- restCall handle $ R.GetUser (reactionUserId ri)
     when (not . userIsBot $ callingUser) $ do
